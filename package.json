@@ -18,7 +18,7 @@
     "validator",
     "assertion"
   ],
-  "author": "Ben Howl",
+  "author": "Ben Howl <mrbenhowl@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "lodash": "3.10.1",
