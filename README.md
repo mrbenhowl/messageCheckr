@@ -1,3 +1,5 @@
+*Please note I am adding the npm module today* 
+
 messageCheckr
 ==============
 
