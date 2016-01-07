@@ -1,5 +1,5 @@
- messageCheckr
-==============
+messageCheckr
+=============
 
 messageChecker allows the checking of SOAP and Java Message Service (JMS) xml messages at a path level using Node.js
 
