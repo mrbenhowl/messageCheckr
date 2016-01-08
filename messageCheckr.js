@@ -4,7 +4,8 @@ var xmldoc = require('xmldoc'),
   moment = require('moment'),
   convertToXmlDocumentType = require('./libs/convertToXmlDocumentType.js'),
   validateParams = require('./libs/validateParams.js'),
-  validateExpectedMsg = require('./libs/validateExpectedMsg.js');
+  validateExpectedMsg = require('./libs/validateExpectedMsg.js'),
+  cleanRawSoapMessage = require('./libs/cleanRawSoapMessage.js');
 
 var result = {
   allChecksPassed: true,
@@ -13,29 +14,6 @@ var result = {
 
 // for storing user defined attributes
 var store = {};
-
-function prepareRawSoapMessage(beginFrom, message) {
-
-  var cleansedMessage =
-    message.substr(beginFrom)
-      .replace(/(soap-env|soapenv)/gi, 'SOAP-ENV')
-      .replace(/<([a-z0-9\-]+):/gi, function(str) {
-        if (str != '<SOAP-ENV:') {
-          return '<';
-        } else {
-          return str;
-        }
-      })
-      .replace(/<\/([a-z0-9\-]+):/gi, function(str) {
-        if (str != '</SOAP-ENV:') {
-          return '</';
-        } else {
-          return str;
-        }
-      });
-
-  return cleansedMessage;
-}
 
 function prepareRawXmlMessage(beginFrom, message) {
 
@@ -342,12 +320,7 @@ var messageCheckr = function messageCheckr(params) {
     expectedRootElement = params.expectedRootElement;
 
   if (type === 'soap') {
-    var scanMessageFromPosition = 0;
-    if (actualMsg.toLowerCase().indexOf('<soap') != -1) {
-      scanMessageFromPosition = actualMsg.toLowerCase().indexOf('<soap');
-    }
-
-    var cleansedSoapMessage = prepareRawSoapMessage(scanMessageFromPosition, actualMsg);
+    var cleansedSoapMessage = cleanRawSoapMessage(actualMsg);
     var actualSOAPMessageAsXmlDocument = convertToXmlDocumentType(cleansedSoapMessage);
 
     checkRootElement(actualSOAPMessageAsXmlDocument, 'SOAP-ENV:Envelope');

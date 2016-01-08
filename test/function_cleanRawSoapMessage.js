@@ -1,11 +1,10 @@
-var messageValidator = rewire('../messageCheckr.js');
+var cleanRawSoapMessage = require('../libs/cleanRawSoapMessage.js');
 
-describe('prepareRawSoapMessage()', function(){
+describe('cleanRawSoapMessage()', function(){
 
   it('should convert all references of soap-env to SOAP-ENV', function(){
-    var result, prepareRawSoapMessage, actualMsg, expectedMsg;
-    
-    prepareRawSoapMessage = messageValidator.__get__("prepareRawSoapMessage");
+    var result, actualMsg, expectedMsg;
+
     actualMsg =
       `<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
       <soap-env:Header/>
@@ -22,14 +21,13 @@ describe('prepareRawSoapMessage()', function(){
       </SOAP-ENV:Body>
     </SOAP-ENV:Envelope>`;
 
-    result = prepareRawSoapMessage(0, actualMsg);
+    result = cleanRawSoapMessage(actualMsg);
     assert.equal(result, expectedMsg);
   });
 
   it('should convert all references of soapenv to SOAP-ENV', function(){
-    var result, prepareRawSoapMessage, actualMsg, expectedMsg;
+    var result, actualMsg, expectedMsg;
 
-    prepareRawSoapMessage = messageValidator.__get__("prepareRawSoapMessage");
     actualMsg =
       `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
       <soapenv:Header/>
@@ -46,16 +44,13 @@ describe('prepareRawSoapMessage()', function(){
       </SOAP-ENV:Body>
     </SOAP-ENV:Envelope>`;
 
-    result = prepareRawSoapMessage(0, actualMsg);
+    result = cleanRawSoapMessage(actualMsg);
     assert.equal(result, expectedMsg);
   });
 
   it('should leave all references of SOAP-ENV unchanged', function(){
-    var prepareRawSoapMessage = messageValidator.__get__("prepareRawSoapMessage");
+    var result, actualMsg;
 
-    var result, prepareRawSoapMessage, actualMsg;
-
-    prepareRawSoapMessage = messageValidator.__get__("prepareRawSoapMessage");
     actualMsg =
       `<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
       <SOAP-ENV:Header/>
@@ -64,7 +59,7 @@ describe('prepareRawSoapMessage()', function(){
       </SOAP-ENV:Body>
     </SOAP-ENV:Envelope>`;
 
-    result = prepareRawSoapMessage(0, actualMsg);
+    result = cleanRawSoapMessage(actualMsg);
     assert.equal(result, actualMsg);
   });
 });
