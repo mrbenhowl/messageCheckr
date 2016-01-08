@@ -2,10 +2,11 @@ var xmldoc = require('xmldoc'),
   validator = require('validator'),
   _ = require('lodash'),
   moment = require('moment'),
-  convertToXmlDocumentType = require('./libs/convertToXmlDocumentType.js'),
+  convertToXmlDocumentType = require('./libs/convertToXmlDocumentType'),
   validateParams = require('./libs/validateParams.js'),
-  validateExpectedMsg = require('./libs/validateExpectedMsg.js'),
-  cleanRawSoapMessage = require('./libs/cleanRawSoapMessage.js');
+  validateExpectedMsg = require('./libs/validateExpectedMsg'),
+  cleanRawSoapMessage = require('./libs/cleanRawSoapMessage'),
+  cleanRawXmlMessage = require('./libs/cleanRawXmlMessage');
 
 var result = {
   allChecksPassed: true,
@@ -14,23 +15,6 @@ var result = {
 
 // for storing user defined attributes
 var store = {};
-
-function prepareRawXmlMessage(beginFrom, message) {
-
-  var cleansedMessage =
-    message.substr(beginFrom)
-      .replace(/(<\?xml)/gi, '<?XML')
-      .replace(/<([a-z0-9\-]+):/gi, function(str) {
-        if (str != '<?XML:') {
-          return '<';
-        } else {
-          return str;
-        }
-      })
-      .replace(/<\/([a-z0-9\-]+):/gi, '</');
-
-  return cleansedMessage;
-}
 
 function compareAndRecord(actual, expected, description) {
   var record = {};
@@ -326,11 +310,9 @@ var messageCheckr = function messageCheckr(params) {
     checkRootElement(actualSOAPMessageAsXmlDocument, 'SOAP-ENV:Envelope');
     checkForAllExpectedMsgComponents(actualSOAPMessageAsXmlDocument, expectedMsg, 'SOAP-ENV:Envelope');
   } else if (type === 'jms') {
-    var scanMessageFromPosition = actualMsg.toLowerCase().indexOf('<?xml');
-    if (scanMessageFromPosition === -1) throw new Error('message does contain the initial <?xml attribute.');
-
-    var cleansedXmlMessage = prepareRawXmlMessage(scanMessageFromPosition, actualMsg);
+    var cleansedXmlMessage = cleanRawXmlMessage(actualMsg);
     var actualXmlMessageAsXmlDocument = convertToXmlDocumentType(cleansedXmlMessage);
+
     checkRootElement(actualXmlMessageAsXmlDocument, expectedRootElement);
     checkForAllExpectedMsgComponents(actualXmlMessageAsXmlDocument, expectedMsg, actualXmlMessageAsXmlDocument.name);
   } else {
