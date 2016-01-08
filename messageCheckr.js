@@ -291,6 +291,8 @@ function checkForAllExpectedMsgComponents(actualMsgAsXmlDocument, expectedMsg, r
 }
 
 var messageCheckr = function messageCheckr(params) {
+  var type, actualMsg, expectedMsg, expectedRootElement, cleansedMessage, xmlDocument;
+
   validateParams(params);
   validateExpectedMsg(params.expectedMsg);
 
@@ -298,23 +300,21 @@ var messageCheckr = function messageCheckr(params) {
   result.checks = [];
   store = {};
 
-  var type = params.type,
-    actualMsg = params.actualMsg,
-    expectedMsg = params.expectedMsg,
-    expectedRootElement = params.expectedRootElement;
+  type = params.type;
+  actualMsg = params.actualMsg;
+  expectedMsg = params.expectedMsg;
+  expectedRootElement = params.expectedRootElement;
 
   if (type === 'soap') {
-    var cleansedSoapMessage = cleanRawSoapMessage(actualMsg);
-    var actualSOAPMessageAsXmlDocument = convertToXmlDocumentType(cleansedSoapMessage);
-
-    checkRootElement(actualSOAPMessageAsXmlDocument, 'SOAP-ENV:Envelope');
-    checkForAllExpectedMsgComponents(actualSOAPMessageAsXmlDocument, expectedMsg, 'SOAP-ENV:Envelope');
+    cleansedMessage = cleanRawSoapMessage(actualMsg);
+    xmlDocument = convertToXmlDocumentType(cleansedMessage);
+    checkRootElement(xmlDocument, 'SOAP-ENV:Envelope');
+    checkForAllExpectedMsgComponents(xmlDocument, expectedMsg, 'SOAP-ENV:Envelope');
   } else if (type === 'jms') {
-    var cleansedXmlMessage = cleanRawXmlMessage(actualMsg);
-    var actualXmlMessageAsXmlDocument = convertToXmlDocumentType(cleansedXmlMessage);
-
-    checkRootElement(actualXmlMessageAsXmlDocument, expectedRootElement);
-    checkForAllExpectedMsgComponents(actualXmlMessageAsXmlDocument, expectedMsg, actualXmlMessageAsXmlDocument.name);
+    cleansedMessage = cleanRawXmlMessage(actualMsg);
+    xmlDocument = convertToXmlDocumentType(cleansedMessage);
+    checkRootElement(xmlDocument, expectedRootElement);
+    checkForAllExpectedMsgComponents(xmlDocument, expectedMsg, xmlDocument.name);
   } else {
     throw new Error('type ' + type + ' is not handled yet');
   }
