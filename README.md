@@ -534,7 +534,7 @@ To run tests, node v4.0.0 or higher is required. I would recommend installing no
 
 Clone the github repository:
 
-    git clone https://github.com/benhowl/messageCheckr
+    git clone https://github.com/mrbenhowl/messageCheckr
     cd messageCheckr
     nvm use (optional - use if you use node version manager)
     npm install
