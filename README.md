@@ -1,4 +1,4 @@
-messageCheckr
+messageCheckr [![Build Status](https://travis-ci.org/mrbenhowl/messageCheckr.svg)](https://travis-ci.org/mrbenhowl/messageCheckr)
 =============
 
 messageChecker allows the checking of SOAP and Java Message Service (JMS) xml messages at a path level using Node.js
