@@ -23,7 +23,8 @@ describe('jms - equals value check', function () {
       actual: 'hello',
       expected: 'helloo',
       description: 'Check actual value hello is equal to helloo',
-      passedCheck: false
+      pass: false,
+      path: 'checkJustTheValue'
     });
   });
 
@@ -44,7 +45,8 @@ describe('jms - equals value check', function () {
       actual: '',
       expected: 'something',
       description: 'Check actual value  is equal to something',
-      passedCheck: false
+      pass: false,
+      path: 'emptyElement'
     });
   });
 
@@ -65,7 +67,8 @@ describe('jms - equals value check', function () {
       actual: 'hello',
       expected: 'hello',
       description: 'Check actual value hello is equal to hello',
-      passedCheck: true
+      pass: true,
+      path: 'checkJustTheValue'
     });
   });
 
@@ -86,7 +89,8 @@ describe('jms - equals value check', function () {
       actual: '',
       expected: '',
       description: 'Check actual value  is equal to ',
-      passedCheck: true
+      pass: true,
+      path: 'emptyElement'
     });
   });
 });

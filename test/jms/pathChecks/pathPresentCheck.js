@@ -20,8 +20,11 @@ describe('jms - path checks', function () {
 
     assert.equal(result.allChecksPassed, true);
     assert.deepEqual(result.checks[1], {
+      actual: true,
+      expected: true,
+      path: 'subRootLevel.field',
       description: 'Check existence of path: subRootLevel.field',
-      passedCheck: true
+      pass: true
     });
   });
 
@@ -40,8 +43,11 @@ describe('jms - path checks', function () {
 
     assert.equal(result.allChecksPassed, true);
     assert.deepEqual(result.checks[1], {
-      description: 'Check existence of path: testRootElement',
-      passedCheck: true
+      actual: true,
+      expected: true,
+      path: 'testRootElement (attribute: xmlns)',
+      description: 'Check existence of path: testRootElement (attribute: xmlns)',
+      pass: true
     });
   });
 
@@ -62,7 +68,8 @@ describe('jms - path checks', function () {
       actual: "testRootElement",
       expected: "testRootElement",
       description: 'Check actual root element testRootElement is equal to expected root element testRootElement',
-      passedCheck: true
+      pass: true,
+      path: 'testRootElement'
     });
   });
 
@@ -80,8 +87,11 @@ describe('jms - path checks', function () {
 
     assert.equal(result.allChecksPassed, false);
     assert.deepEqual(result.checks[1], {
+      actual: false,
+      expected: true,
+      path: 'subRootLevel.fieldDoesNotExist',
       description: 'Check existence of path: subRootLevel.fieldDoesNotExist',
-      passedCheck: false
+      pass: false
     });
   });
 
@@ -100,8 +110,11 @@ describe('jms - path checks', function () {
 
     assert.equal(result.allChecksPassed, false);
     assert.deepEqual(result.checks[1], {
-      description: 'Check existence of path: testRootElement',
-      passedCheck: false
+      actual: false,
+      expected: true,
+      path: 'testRootElement (attribute: wrong)',
+      description: 'Check existence of path: testRootElement (attribute: wrong)',
+      pass: false
     });
   });
 
@@ -122,7 +135,8 @@ describe('jms - path checks', function () {
       actual: "testRootElement",
       expected: "testRootElementDoesNotExist",
       description: 'Check actual root element testRootElement is equal to expected root element testRootElementDoesNotExist',
-      passedCheck: false
+      pass: false,
+      path: 'testRootElementDoesNotExist'
     });
   });
 });

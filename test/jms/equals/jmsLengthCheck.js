@@ -18,8 +18,11 @@ describe('jms - length check', function () {
 
     assert.equal(result.allChecksPassed, false);
     assert.deepEqual(result.checks[2], {
+      actual: 'thisIs22CharactersLong',
+      expected: '{length(21)}',
+      path: 'elementToCheckLengthOf',
       description: 'Check actual value thisIs22CharactersLong has a length equal to 21',
-      passedCheck: false
+      pass: false
     });
   });
 
@@ -37,8 +40,11 @@ describe('jms - length check', function () {
 
     assert.equal(result.allChecksPassed, true);
     assert.deepEqual(result.checks[2], {
+      actual: 'thisIs22CharactersLong',
+      expected: '{length(22)}',
+      path: 'elementToCheckLengthOf',
       description: 'Check actual value thisIs22CharactersLong has a length equal to 22',
-      passedCheck: true
+      pass: true
     });
   });
 
@@ -56,8 +62,11 @@ describe('jms - length check', function () {
 
     assert.equal(result.allChecksPassed, false);
     assert.deepEqual(result.checks[2], {
+      actual: 'thisIs22CharactersLong',
+      expected: '{length(<22)}',
+      path: 'elementToCheckLengthOf',
       description: 'Check actual value thisIs22CharactersLong has a length less than 22',
-      passedCheck: false
+      pass: false
     });
   });
 
@@ -75,8 +84,11 @@ describe('jms - length check', function () {
 
     assert.equal(result.allChecksPassed, true);
     assert.deepEqual(result.checks[2], {
+      actual: 'thisIs22CharactersLong',
+      expected: '{length(<23)}',
+      path: 'elementToCheckLengthOf',
       description: 'Check actual value thisIs22CharactersLong has a length less than 23',
-      passedCheck: true
+      pass: true
     });
   });
 
@@ -94,8 +106,11 @@ describe('jms - length check', function () {
 
     assert.equal(result.allChecksPassed, false);
     assert.deepEqual(result.checks[2], {
+      actual: 'thisIs22CharactersLong',
+      expected: '{length(>22)}',
+      path: 'elementToCheckLengthOf',
       description: 'Check actual value thisIs22CharactersLong has a length greater than 22',
-      passedCheck: false
+      pass: false
     });
   });
 
@@ -113,8 +128,11 @@ describe('jms - length check', function () {
 
     assert.equal(result.allChecksPassed, true);
     assert.deepEqual(result.checks[2], {
+      actual: 'thisIs22CharactersLong',
+      expected: '{length(>21)}',
+      path: 'elementToCheckLengthOf',
       description: 'Check actual value thisIs22CharactersLong has a length greater than 21',
-      passedCheck: true
+      pass: true
     });
   });
 });

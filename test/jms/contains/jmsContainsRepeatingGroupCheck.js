@@ -1,4 +1,4 @@
-describe('jms - contains repeating group check', function() {
+describe('jms - contains repeating group check', function () {
 
   var actualMsg = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -14,7 +14,7 @@ describe('jms - contains repeating group check', function() {
     </thingContainingRepeatingGroups>
   </testRootElement>`;
 
-  it('should report a musmatch where the actual repeating group element value does not match the expected value', function() {
+  it('should report a mismatch where the actual repeating group element value does not match the expected value', function () {
     var expectedMessage = [
       {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', contains: 10002},
       {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', contains: 10004},
@@ -32,27 +32,39 @@ describe('jms - contains repeating group check', function() {
     assert.equal(result.allChecksPassed, false);
 
     assert.deepEqual(result.checks[2], {
-      "description": "Check actual value 10001 contains 10002",
-      "passedCheck": false
+      actual: '10001',
+      expected: 'contains: 10002',
+      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 1',
+      description: "Check actual value 10001 contains 10002",
+      pass: false
     });
 
     assert.deepEqual(result.checks[4], {
-      "description": "Check actual value 10003 contains 10004",
-      "passedCheck": false
+      actual: '10003',
+      expected: 'contains: 10004',
+      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldTwoOfRepeatingGroup number: 1',
+      description: "Check actual value 10003 contains 10004",
+      pass: false
     });
 
     assert.deepEqual(result.checks[6], {
-      "description": "Check actual value 10002 contains 10001",
-      "passedCheck": false
+      actual: '10002',
+      expected: 'contains: 10001',
+      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 2',
+      description: "Check actual value 10002 contains 10001",
+      pass: false
     });
 
     assert.deepEqual(result.checks[8], {
-      "description": "Check actual value 10004 contains 10003",
-      "passedCheck": false
+      actual: '10004',
+      expected: 'contains: 10003',
+      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldTwoOfRepeatingGroup number: 2',
+      description: "Check actual value 10004 contains 10003",
+      pass: false
     });
   });
 
-  it('should report a match where the actual repeating group element value does contain the expected value', function() {
+  it('should report a match where the actual repeating group element value does contain the expected value', function () {
     var expectedMessage = [
       {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', contains: 10001},
       {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', contains: 10003},
@@ -69,23 +81,35 @@ describe('jms - contains repeating group check', function() {
 
     assert.equal(result.allChecksPassed, true);
     assert.deepEqual(result.checks[2], {
-      "description": "Check actual value 10001 contains 10001",
-      "passedCheck": true
+      actual: '10001',
+      expected: 'contains: 10001',
+      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 1',
+      description: "Check actual value 10001 contains 10001",
+      pass: true
     });
 
     assert.deepEqual(result.checks[4], {
-      "description": "Check actual value 10003 contains 10003",
-      "passedCheck": true
+      actual: '10003',
+      expected: 'contains: 10003',
+      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldTwoOfRepeatingGroup number: 1',
+      description: "Check actual value 10003 contains 10003",
+      pass: true
     });
 
     assert.deepEqual(result.checks[6], {
-      "description": "Check actual value 10002 contains 10002",
-      "passedCheck": true
+      actual: '10002',
+      expected: 'contains: 10002',
+      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 2',
+      description: "Check actual value 10002 contains 10002",
+      pass: true
     });
 
     assert.deepEqual(result.checks[8], {
-      "description": "Check actual value 10004 contains 10004",
-      "passedCheck": true
+      actual: '10004',
+      expected: 'contains: 10004',
+      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldTwoOfRepeatingGroup number: 2',
+      description: "Check actual value 10004 contains 10004",
+      pass: true
     });
   });
 });

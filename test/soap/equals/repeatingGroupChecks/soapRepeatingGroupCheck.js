@@ -33,31 +33,37 @@ describe('jms - repeating group check', function() {
 
     assert.equal(result.allChecksPassed, true);
     assert.deepEqual(result.checks[2], {
-      "actual": 10001,
-      "description": "Check actual value 10001 is equal to 10001",
-      "expected": 10001,
-      "passedCheck": true
+      actual: 10001,
+      description: "Check actual value 10001 is equal to 10001",
+      expected: 10001,
+      pass: true,
+      path: 'SOAP-ENV:Body.thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 1'
+      
     });
 
     assert.deepEqual(result.checks[4], {
-      "actual": 10003,
-      "description": "Check actual value 10003 is equal to 10003",
-      "expected": 10003,
-      "passedCheck": true
+      actual: 10003,
+      description: "Check actual value 10003 is equal to 10003",
+      expected: 10003,
+      pass: true,
+      path: 'SOAP-ENV:Body.thingContainingRepeatingGroups.RepeatingGroup.fieldTwoOfRepeatingGroup number: 1'
+
     });
 
     assert.deepEqual(result.checks[6], {
-      "actual": 10002,
-      "description": "Check actual value 10002 is equal to 10002",
-      "expected": 10002,
-      "passedCheck": true
+      actual: 10002,
+      description: "Check actual value 10002 is equal to 10002",
+      expected: 10002,
+      pass: true,
+      path: 'SOAP-ENV:Body.thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 2'
     });
 
     assert.deepEqual(result.checks[8], {
-      "actual": 10004,
-      "description": "Check actual value 10004 is equal to 10004",
-      "expected": 10004,
-      "passedCheck": true
+      actual: 10004,
+      description: "Check actual value 10004 is equal to 10004",
+      expected: 10004,
+      pass: true,
+      path: 'SOAP-ENV:Body.thingContainingRepeatingGroups.RepeatingGroup.fieldTwoOfRepeatingGroup number: 2'
     });
   });
 });

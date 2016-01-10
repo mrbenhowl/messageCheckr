@@ -22,8 +22,11 @@ describe('soap - is alpha check', function() {
 
     assert.equal(result.allChecksPassed, true);
     assert.deepEqual(result.checks[2], {
-      "description": "Check actual value abc is alpha",
-      "passedCheck": true
+      actual: 'abc',
+      expected: '{alpha}',
+      path: 'SOAP-ENV:Body.lettersOnlyField',
+      description: "Check actual value abc is alpha",
+      pass: true
     });
   });
 });

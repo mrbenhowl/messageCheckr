@@ -21,8 +21,11 @@ describe('jms - path not present checks', function () {
 
     assert.equal(result.allChecksPassed, true);
     assert.deepEqual(result.checks[1], {
+      actual: false,
+      expected: false,
+      path: 'subRootLevel.fieldDoesNotExist',
       description: 'Check existence of path: subRootLevel.fieldDoesNotExist',
-      passedCheck: true
+      pass: true
     });
   });
 
@@ -41,8 +44,11 @@ describe('jms - path not present checks', function () {
 
     assert.equal(result.allChecksPassed, false);
     assert.deepEqual(result.checks[1], {
+      actual: true,
+      expected: false,
+      path: 'subRootLevel.field',
       description: 'Check existence of path: subRootLevel.field',
-      passedCheck: false
+      pass: false
     });
   });
 

@@ -77,40 +77,55 @@ The object returned by messageCheckr also has an attribute called `checks`, whic
 
     [
       {
-        "passedCheck": true,
+        "pass": true,
+        "path": "testRootElement",
         "actual": "testRootElement",
         "expected": "testRootElement",
         "description": "Check actual root element testRootElement is equal to expected root element testRootElement"
       },
       {
-        "passedCheck": true,
-        "description": "Check existence of path: testRootElement"
+        "pass": true,
+        "path": "testRootElement (attribute: xmlns)",
+        "actual": true,
+        "expected": true,
+        "description": "Check existence of path: testRootElement (attribute: xmlns)"
       },
       {
-        "passedCheck": true,
+        "pass": true,
+        "path": "testRootElement (attribute: xmlns)",
         "actual": "http://www.testing.com/integration/event",
         "expected": "http://www.testing.com/integration/event",
         "description": "Check actual value http://www.testing.com/integration/event is equal to http://www.testing.com/integration/event"
       },
       {
-        "passedCheck": true,
+        "pass": true,
+        "path": "elementOne",
+        "actual": true,
+        "expected": true,
         "description": "Check existence of path: elementOne"
       },
       {
-        "passedCheck": true,
+        "pass": true,
+        "path": "elementOne",
         "actual": "hello",
         "expected": "hello",
         "description": "Check actual value hello is equal to hello"
       },
       {
-        "passedCheck": true,
+        "pass": true,
+        "path": "anotherElement.elementTwo",
+        "actual": true,
+        "expected": true,
         "description": "Check existence of path: anotherElement.elementTwo"
       },
       {
-        "passedCheck": true,
+        "pass": true,
+        "path": "anotherElement.elementTwo",
+        "actual": "123",
+        "expected": "{integer}",
         "description": "Check actual value 123 is an integer"
       }
-     ]
+    ]
 
 The attribute `checks` is an array of all checks that were specified in `expectedMessage`. For each check there will be 2 objects in the array, the first detailing the result of checking that the path existed, the second detailing the result of the check specified. Each object contains the attribute `passedCheck`, which is set to true if the test passed, otherwise false. In a future release the structure of `checks` will change so that there will only be one object for each path specified.
 
@@ -557,7 +572,6 @@ I am planning to work on the following tasks/features in the near future:
 - Change the structure of the output, so that the key is the path being checked. That key will point to an object containing all checks
 - Support for position delimited messages
 - The ability to check floating point numbers
-- Actual and expected values are not always present in the output, this needs to change and be present
 - Converter for Cucumber.js datatable to enable use in cucumber tests (separate repo)
 - Improve unit tests - more coverage (e.g. errors) and more stubbing
 - Add unit test code coverage reports

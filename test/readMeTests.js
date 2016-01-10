@@ -16,7 +16,7 @@ describe('readme tests', function () {
       var expectedMessage = [
         {path: 'testRootElement', attribute: 'xmlns', equals: 'http://www.testing.com/integration/event'},
         {path: 'elementOne', equals: 'hello'},
-        {path: 'anotherElement.elementTwo', equals: '{integer}'},
+        {path: 'anotherElement.elementTwo', equals: '{integer}'}
       ];
 
       var result = messageCheckr({

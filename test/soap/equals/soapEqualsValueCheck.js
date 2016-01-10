@@ -24,7 +24,8 @@ describe('soap - equals value check', function() {
       actual: 'hello',
       expected: 'hello',
       description: 'Check actual value hello is equal to hello',
-      passedCheck: true
+      pass: true,
+      path: 'SOAP-ENV:Body.checkJustTheValue'
     });
   });
 });

@@ -18,8 +18,9 @@ describe('jms - attribute value check', function () {
     assert.deepEqual(result.checks[2], {
       actual: 'http://www.testing.com/integration/event',
       expected: 'http://www.testing.com/integration/event_willNotMatchThisBit',
+      path: 'testRootElement (attribute: xmlns)',
       description: 'Check actual value http://www.testing.com/integration/event is equal to http://www.testing.com/integration/event_willNotMatchThisBit',
-      passedCheck: false
+      pass: false
     });
   });
 
@@ -39,8 +40,9 @@ describe('jms - attribute value check', function () {
     assert.deepEqual(result.checks[2], {
       actual: 'http://www.testing.com/integration/event',
       expected: 'http://www.testing.com/integration/event',
+      path: 'testRootElement (attribute: xmlns)',
       description: 'Check actual value http://www.testing.com/integration/event is equal to http://www.testing.com/integration/event',
-      passedCheck: true
+      pass: true
     });
   });
 });

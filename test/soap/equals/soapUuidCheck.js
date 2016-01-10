@@ -21,8 +21,11 @@ describe('soap - UUID check', function() {
 
     assert.equal(result.allChecksPassed, true);
     assert.deepEqual(result.checks[2], {
+      actual: '49276fbd-d143-4fb4-9a00-6b60ae6b0c9e',
+      expected: '{uuid}',
+      path: 'SOAP-ENV:Body.validUuidElement',
       description: 'Check actual value 49276fbd-d143-4fb4-9a00-6b60ae6b0c9e is a valid UUID',
-      passedCheck: true
+      pass: true
     });
   });
 });

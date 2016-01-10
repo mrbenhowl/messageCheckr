@@ -21,8 +21,11 @@ describe('jms - contains value check', function () {
 
       assert.equal(result.allChecksPassed, false);
       assert.deepEqual(result.checks[2], {
+        actual: 'noisehellonoise',
         description: 'Check actual value noisehellonoise contains yello',
-        passedCheck: false
+        expected: 'contains: yello',
+        pass: false,
+        path: 'containsElement'
       });
     });
 
@@ -40,8 +43,11 @@ describe('jms - contains value check', function () {
 
       assert.equal(result.allChecksPassed, true);
       assert.deepEqual(result.checks[2], {
+        actual: 'noisehellonoise',
         description: 'Check actual value noisehellonoise contains hello',
-        passedCheck: true
+        expected: 'contains: hello',
+        pass: true,
+        path: 'containsElement'
       });
     });
 
@@ -59,8 +65,11 @@ describe('jms - contains value check', function () {
 
       assert.equal(result.allChecksPassed, true);
       assert.deepEqual(result.checks[2], {
+        actual: 'noisehellonoise',
         description: 'Check actual value noisehellonoise contains noisehellonoise',
-        passedCheck: true
+        expected: 'contains: noisehellonoise',
+        pass: true,
+        path: 'containsElement'
       });
     });
   });
@@ -86,8 +95,11 @@ describe('jms - contains value check', function () {
 
       assert.equal(result.allChecksPassed, false);
       assert.deepEqual(result.checks[2], {
+        actual: '12345',
         description: 'Check actual value 12345 contains 123456',
-        passedCheck: false
+        expected: 'contains: 123456',
+        pass: false,
+        path: 'containsElement'
       });
     });
 
@@ -105,8 +117,11 @@ describe('jms - contains value check', function () {
 
       assert.equal(result.allChecksPassed, true);
       assert.deepEqual(result.checks[2], {
+        actual: '12345',
         description: 'Check actual value 12345 contains 1234',
-        passedCheck: true
+        expected: 'contains: 1234',
+        pass: true,
+        path: 'containsElement'
       });
     });
 
@@ -124,8 +139,11 @@ describe('jms - contains value check', function () {
 
       assert.equal(result.allChecksPassed, true);
       assert.deepEqual(result.checks[2], {
+        actual: '12345',
         description: 'Check actual value 12345 contains 12345',
-        passedCheck: true
+        expected: 'contains: 12345',
+        pass: true,
+        path: 'containsElement'
       });
     });
   });

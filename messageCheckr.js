@@ -6,37 +6,23 @@ var xmldoc = require('xmldoc'),
   validateParams = require('./libs/validateParams.js'),
   validateExpectedMsg = require('./libs/validateExpectedMsg'),
   cleanRawSoapMessage = require('./libs/cleanRawSoapMessage'),
-  cleanRawXmlMessage = require('./libs/cleanRawXmlMessage');
-
-var result = {
-  allChecksPassed: true,
-  checks: []
-};
+  cleanRawXmlMessage = require('./libs/cleanRawXmlMessage'),
+  verificationResults = require('./libs/verificationResults'),
+  getFullPath = require('./libs/getFullPath');
 
 // for storing user defined attributes
 var store = {};
 
-function compareAndRecord(actual, expected, description) {
-  var record = {};
-  record.passedCheck = actual === expected;
-
-  if (typeof actual != "boolean") {
-    record.actual = actual;
-    record.expected = expected;
-  }
-
-  if (description) {
-    record.description = description;
-  }
-  result.checks.push(record);
-
-  if (!record.passedCheck) {
-    result.allChecksPassed = false;
-  }
-}
-
 function checkRootElement(xmlDocument, expectedRootElement) {
-  compareAndRecord(xmlDocument.name, expectedRootElement, 'Check actual root element ' + xmlDocument.name + ' is equal to expected root element ' + expectedRootElement);
+  verificationResults.add(
+    {
+      pass: xmlDocument.name === expectedRootElement,
+      path: expectedRootElement,
+      actual: xmlDocument.name,
+      expected: expectedRootElement,
+      description: 'Check actual root element ' + xmlDocument.name + ' is equal to expected root element ' + expectedRootElement
+    }
+  );
 }
 
 function checkPathForExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgComponent, pathIsRootElement) {
@@ -71,10 +57,18 @@ function checkPathForExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgCom
       }
     }
 
-    compareAndRecord(_.isUndefined(pathShouldNotExist), pathExists, 'Check existence of path: ' + path);
+    verificationResults.add(
+      {
+        pass: _.isUndefined(pathShouldNotExist) === pathExists,
+        path: getFullPath(expectedMsgComponent),
+        actual: pathExists,
+        expected: _.isUndefined(pathShouldNotExist),
+        description: 'Check existence of path: ' + getFullPath(expectedMsgComponent)
+      }
+    );
 
   } else {
-    // TODO: no support for child/attribute in the repeating group yet
+    // TODO: no support for child/attribute in the repeating group yet, including getFullPath
     var pathToElementEnclosingRepeatingGroup = expectedMsgComponent.repeatingGroup.path;
     var repeatingElement = expectedMsgComponent.repeatingGroup.repeater;
     var pathToElementFromRepeatingElement = path;
@@ -82,18 +76,26 @@ function checkPathForExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgCom
 
     var matchingGroups = _(actualMsgAsXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children)
       .pluck('name')
-      .map(function(el, index) {
+      .map(function (el, index) {
         if (el === repeatingElement) return index;
         return -1;
       })
-      .filter(function(el) {
+      .filter(function (el) {
         return el != -1;
       })
       .value();
 
     pathExists = actualMsgAsXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children[matchingGroups[version - 1]].descendantWithPath(pathToElementFromRepeatingElement) != undefined;
 
-    compareAndRecord(_.isUndefined(pathShouldNotExist), pathExists, 'Check for presence of the path: ' + pathToElementEnclosingRepeatingGroup + '.' + repeatingElement + '.' + pathToElementFromRepeatingElement + ' version: ' + version);
+    verificationResults.add(
+      {
+        pass: _.isUndefined(pathShouldNotExist) === pathExists,
+        path: getFullPath(expectedMsgComponent),
+        actual: pathExists,
+        expected: _.isUndefined(pathShouldNotExist),
+        description: 'Check for presence of the path: ' + getFullPath(expectedMsgComponent)
+      }
+    );
   }
 }
 
@@ -139,11 +141,11 @@ function getActualValueAtPathSpecified(actualMsgAsXmlDocument, expectedMsgCompon
 
     var matchingGroups = _(actualMsgAsXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children)
       .pluck('name')
-      .map(function(el, index) {
+      .map(function (el, index) {
         if (el === repeatingElement) return index;
         return -1;
       })
-      .filter(function(el) {
+      .filter(function (el) {
         return el != -1;
       })
       .value();
@@ -154,39 +156,105 @@ function getActualValueAtPathSpecified(actualMsgAsXmlDocument, expectedMsgCompon
   return actualValue;
 }
 
-function uuidCheck(actualValue) {
-  compareAndRecord(validator.isUUID(actualValue), true, 'Check actual value ' + actualValue + ' is a valid UUID');
+function uuidCheck(path, actualValue) {
+  verificationResults.add(
+    {
+      pass: validator.isUUID(actualValue),
+      path: path,
+      actual: actualValue,
+      expected: '{uuid}',
+      description: 'Check actual value ' + actualValue + ' is a valid UUID'
+    }
+  );
 }
 
-function isAlphanumericCheck(actualValue) {
-  compareAndRecord(validator.isAlphanumeric(actualValue), true, 'Check actual value ' + actualValue + ' is alphanumeric');
+function isAlphanumericCheck(path, actualValue) {
+  verificationResults.add(
+    {
+      pass: validator.isAlphanumeric(actualValue),
+      path: path,
+      actual: actualValue,
+      expected: '{alphanumeric}',
+      description: 'Check actual value ' + actualValue + ' is alphanumeric'
+    }
+  );
 }
 
-function isAlphaCheck(actualValue) {
-  compareAndRecord(validator.isAlpha(actualValue), true, 'Check actual value ' + actualValue + ' is alpha');
+function isAlphaCheck(path, actualValue) {
+  verificationResults.add(
+    {
+      pass: validator.isAlpha(actualValue),
+      path: path,
+      actual: actualValue,
+      expected: '{alpha}',
+      description: 'Check actual value ' + actualValue + ' is alpha'
+    }
+  );
 }
 
-function isInteger(actualValue) {
+function isInteger(path, actualValue) {
+  var descriptionOfCheck = 'Check actual value ' + actualValue + ' is an integer';
+
   if (Number.isNaN(Number(actualValue))) {
-    compareAndRecord(false, true, 'Check actual value ' + actualValue + ' is an integer');
+    verificationResults.add(
+      {
+        pass: false,
+        path: path,
+        actual: actualValue,
+        expected: '{integer}',
+        description: descriptionOfCheck
+      }
+    );
   } else {
-    compareAndRecord(Number.isInteger(Number.parseFloat(actualValue)), true, 'Check actual value ' + actualValue + ' is an integer');
+    verificationResults.add(
+      {
+        pass: Number.isInteger(Number.parseFloat(actualValue)),
+        path: path,
+        actual: actualValue,
+        expected: '{integer}',
+        description: descriptionOfCheck
+      }
+    );
   }
 }
 
-function lessThanLengthCheck(actualValue, expectedLength) {
+function lessThanLengthCheck(path, actualValue, expectedLength) {
   var lessThanExpected = actualValue.toString().length < expectedLength;
-  compareAndRecord(lessThanExpected, true, 'Check actual value ' + actualValue + ' has a length less than ' + expectedLength);
+  verificationResults.add(
+    {
+      pass: lessThanExpected,
+      path: path,
+      actual: actualValue,
+      expected: '{length(<' + expectedLength + ')}',
+      description: 'Check actual value ' + actualValue + ' has a length less than ' + expectedLength
+    }
+  );
 }
 
-function greaterThanLengthCheck(actualValue, expectedLength) {
+function greaterThanLengthCheck(path, actualValue, expectedLength) {
   var greaterThanExpected = actualValue.toString().length > expectedLength;
-  compareAndRecord(greaterThanExpected, true, 'Check actual value ' + actualValue + ' has a length greater than ' + expectedLength);
+  verificationResults.add(
+    {
+      pass: greaterThanExpected,
+      path: path,
+      actual: actualValue,
+      expected: '{length(>' + expectedLength + ')}',
+      description: 'Check actual value ' + actualValue + ' has a length greater than ' + expectedLength
+    }
+  );
 }
 
-function equalLengthCheck(actualValue, expectedLength) {
+function equalLengthCheck(path, actualValue, expectedLength) {
   var equal = actualValue.toString().length === expectedLength;
-  compareAndRecord(equal, true, 'Check actual value ' + actualValue + ' has a length equal to ' + expectedLength);
+  verificationResults.add(
+    {
+      pass: equal,
+      path: path,
+      actual: actualValue,
+      expected: '{length(' + expectedLength + ')}',
+      description: 'Check actual value ' + actualValue + ' has a length equal to ' + expectedLength
+    }
+  );
 }
 
 function storeNameAndActualValue(storeName, actualValue) {
@@ -196,18 +264,34 @@ function storeNameAndActualValue(storeName, actualValue) {
   store[storeName] = actualValue;
 }
 
-function compareToStoredValue(storeName, actualValue) {
+function compareToStoredValue(path, storeName, actualValue) {
   if (Object.keys(store).indexOf(storeName) === -1) {
     throw new Error('The store name you have provided to compare to does not exist.');
   }
-  compareAndRecord(actualValue, store[storeName], 'Check actual value ' + actualValue + ' matches value ' + store[storeName] + ' in store[' + storeName + ']');
+  verificationResults.add(
+    {
+      pass: store[storeName] === actualValue,
+      path: path,
+      actual: actualValue,
+      expected: store[storeName],
+      description: 'Check actual value ' + actualValue + ' matches value ' + store[storeName] + ' in store[' + storeName + ']'
+    }
+  );
 }
 
-function regexCheck(actualValue, regexPattern) {
-  compareAndRecord(regexPattern.test(actualValue), true, 'Check actual value ' + actualValue + ' against regex ' + regexPattern.toString());
+function regexCheck(path, actualValue, regexPattern) {
+  verificationResults.add(
+    {
+      pass: regexPattern.test(actualValue),
+      path: path,
+      actual: actualValue,
+      expected: regexPattern,
+      description: 'Check actual value ' + actualValue + ' against regex ' + regexPattern.toString()
+    }
+  );
 }
 
-function timestampCheck(actualValue, regexPattern, timezone, dateFormat) {
+function timestampCheck(path, actualValue, regexPattern, timezone, dateFormat) {
   var currentDate, regexObj;
 
   if (_.isUndefined(dateFormat)) {
@@ -224,11 +308,18 @@ function timestampCheck(actualValue, regexPattern, timezone, dateFormat) {
   }
 
   regexObj = new RegExp(regexPattern.toString().replace(timezone, currentDate).slice(1, -1));
-  compareAndRecord(regexObj.test(actualValue), true, 'Check actual value ' + actualValue + ' matches date/regex pattern ' + regexObj);
+  verificationResults.add(
+    {
+      pass: regexObj.test(actualValue),
+      path: path,
+      actual: actualValue,
+      expected: regexPattern + ' where ' + timezone + ' has the date format ' + dateFormat,
+      description: 'Check actual value ' + actualValue + ' matches date/regex pattern ' + regexObj
+    }
+  );
 }
 
 function checkForExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgComponent, pathIsRootElement) {
-
   checkPathForExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgComponent, pathIsRootElement);
 
   if (_.isUndefined(expectedMsgComponent.pathShouldNotExist) || !expectedMsgComponent.pathShouldNotExist) {
@@ -238,17 +329,24 @@ function checkForExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgCompone
 
     if (expectedValue != undefined) {
       if (Number.isInteger(expectedValue)) {
-        compareAndRecord(parseInt(actualValue), expectedValue, 'Check actual value ' + actualValue + ' is equal to ' + expectedValue);
+        verificationResults.add(
+          {
+            pass: parseInt(actualValue) === expectedValue,
+            path: getFullPath(expectedMsgComponent),
+            actual: parseInt(actualValue),
+            expected: expectedValue,
+            description: 'Check actual value ' + actualValue + ' is equal to ' + expectedValue
+          }
+        );
       } else if (_.isRegExp(expectedValue)) {
 
         if (expectedValue.toString().indexOf('local-timezone') != -1) {
-          timestampCheck(actualValue, expectedValue, 'local-timezone', expectedMsgComponent.dateFormat);
+          timestampCheck(getFullPath(expectedMsgComponent), actualValue, expectedValue, 'local-timezone', expectedMsgComponent.dateFormat);
         } else if (expectedValue.toString().indexOf('utc-timezone') != -1) {
-          timestampCheck(actualValue, expectedValue, 'utc-timezone', expectedMsgComponent.dateFormat);
+          timestampCheck(getFullPath(expectedMsgComponent), actualValue, expectedValue, 'utc-timezone', expectedMsgComponent.dateFormat);
         } else {
-          regexCheck(actualValue, expectedValue);
+          regexCheck(getFullPath(expectedMsgComponent), actualValue, expectedValue);
         }
-
       } else if (expectedValue.match(/^\{store\(.*\)}$/) != null) {
         var storeName = expectedValue.match(/\(([^)]+)\)/)[1];
         if (!/^[a-zA-Z]+$/.test(storeName)) {
@@ -257,34 +355,50 @@ function checkForExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgCompone
         storeNameAndActualValue(storeName, actualValue);
       } else if (expectedValue.match(/^\{matches\([a-zA-Z]*\)}$/) != null) {
         var storeName = expectedValue.match(/\(([^)]+)\)/)[1];
-        compareToStoredValue(storeName, actualValue);
+        compareToStoredValue(getFullPath(expectedMsgComponent), storeName, actualValue);
       } else if (expectedValue.match(/^\{uuid}$/) != null) {
-        uuidCheck(actualValue);
+        uuidCheck(getFullPath(expectedMsgComponent), actualValue);
       } else if (expectedValue.match(/^\{alphanumeric}$/) != null) {
-        isAlphanumericCheck(actualValue);
+        isAlphanumericCheck(getFullPath(expectedMsgComponent), actualValue);
       } else if (expectedValue.match(/^\{alpha}$/) != null) {
-        isAlphaCheck(actualValue);
+        isAlphaCheck(getFullPath(expectedMsgComponent), actualValue);
       } else if (expectedValue.match(/^\{integer}$/) != null) {
-        isInteger(actualValue);
+        isInteger(getFullPath(expectedMsgComponent), actualValue);
       } else if (expectedValue.match(/^\{length\(<\d+\)\}$/) != null) {
-        lessThanLengthCheck(actualValue, parseInt(expectedValue.match(/\d+/)[0]));
+        lessThanLengthCheck(getFullPath(expectedMsgComponent), actualValue, parseInt(expectedValue.match(/\d+/)[0]));
       } else if (expectedValue.match(/^\{length\(>\d+\)\}$/) != null) {
-        greaterThanLengthCheck(actualValue, parseInt(expectedValue.match(/\d+/)[0]));
+        greaterThanLengthCheck(getFullPath(expectedMsgComponent), actualValue, parseInt(expectedValue.match(/\d+/)[0]));
       } else if (expectedValue.match(/^\{length\(\d+\)\}$/) != null) {
-        equalLengthCheck(actualValue, parseInt(expectedValue.match(/\d+/)[0]));
+        equalLengthCheck(getFullPath(expectedMsgComponent), actualValue, parseInt(expectedValue.match(/\d+/)[0]));
       } else {
-        compareAndRecord(actualValue, expectedValue, 'Check actual value ' + actualValue + ' is equal to ' + expectedValue);
+        verificationResults.add(
+          {
+            pass: actualValue === expectedValue,
+            path: getFullPath(expectedMsgComponent),
+            actual: actualValue,
+            expected: expectedValue,
+            description: 'Check actual value ' + actualValue + ' is equal to ' + expectedValue
+          }
+        );
       }
     }
 
     if (containsExpectedValue != undefined) {
-      compareAndRecord(actualValue.indexOf(containsExpectedValue) != -1, true, 'Check actual value ' + actualValue + ' contains ' + containsExpectedValue);
+      verificationResults.add(
+        {
+          pass: actualValue.indexOf(containsExpectedValue) != -1,
+          path: getFullPath(expectedMsgComponent),
+          actual: actualValue,
+          expected: 'contains: ' + containsExpectedValue,
+          description: 'Check actual value ' + actualValue + ' contains ' + containsExpectedValue
+        }
+      );
     }
   }
 }
 
 function checkForAllExpectedMsgComponents(actualMsgAsXmlDocument, expectedMsg, rootElement) {
-  expectedMsg.forEach(function(expectedMsgComponent) {
+  expectedMsg.forEach(function (expectedMsgComponent) {
     // TODO: what if the root element name matches a child element?
     checkForExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgComponent, rootElement === expectedMsgComponent.path)
   });
@@ -295,9 +409,7 @@ var messageCheckr = function messageCheckr(params) {
 
   validateParams(params);
   validateExpectedMsg(params.expectedMsg);
-
-  result.allChecksPassed = true;
-  result.checks = [];
+  verificationResults.initialise();
   store = {};
 
   type = params.type;
@@ -319,7 +431,7 @@ var messageCheckr = function messageCheckr(params) {
     throw new Error('type ' + type + ' is not handled yet');
   }
 
-  return result;
+  return ({allChecksPassed: verificationResults.getOverallResult(), checks: verificationResults.getAllChecks()});
 };
 
 module.exports = messageCheckr;

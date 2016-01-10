@@ -17,8 +17,11 @@ describe('jms - contains attribute value check', function () {
 
     assert.equal(result.allChecksPassed, false);
     assert.deepEqual(result.checks[2], {
+      actual: 'http://www.testing.com/integration/event',
+      expected: 'contains: testing/',
       description: 'Check actual value http://www.testing.com/integration/event contains testing/',
-      passedCheck: false
+      pass: false,
+      path: 'testRootElement (attribute: xmlns)'
     });
   });
 
@@ -36,8 +39,11 @@ describe('jms - contains attribute value check', function () {
 
     assert.equal(result.allChecksPassed, true);
     assert.deepEqual(result.checks[2], {
+      actual: 'http://www.testing.com/integration/event',
+      expected: 'contains: testing',
       description: 'Check actual value http://www.testing.com/integration/event contains testing',
-      passedCheck: true
+      pass: true,
+      path: 'testRootElement (attribute: xmlns)'
     });
   });
 
@@ -55,8 +61,11 @@ describe('jms - contains attribute value check', function () {
 
     assert.equal(result.allChecksPassed, true);
     assert.deepEqual(result.checks[2], {
+      actual: 'http://www.testing.com/integration/event',
+      expected: 'contains: http://www.testing.com/integration/event',
       description: 'Check actual value http://www.testing.com/integration/event contains http://www.testing.com/integration/event',
-      passedCheck: true
+      pass: true,
+      path: 'testRootElement (attribute: xmlns)'
     });
   });
 });

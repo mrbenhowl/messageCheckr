@@ -24,7 +24,8 @@ describe('soap - attribute value check', function () {
       actual: 'http://schemas.xmlsoap.org/soap/envelope/',
       expected: 'http://schemas.xmlsoap.org/soap/envelope/',
       description: 'Check actual value http://schemas.xmlsoap.org/soap/envelope/ is equal to http://schemas.xmlsoap.org/soap/envelope/',
-      passedCheck: true
+      pass: true,
+      path: 'SOAP-ENV:Envelope (attribute: xmlns:SOAP-ENV)'
     });
   });
 
@@ -44,7 +45,8 @@ describe('soap - attribute value check', function () {
       actual: 'testAttributeValueInsideSoapHeaderTag',
       expected: 'testAttributeValueInsideSoapHeaderTag',
       description: 'Check actual value testAttributeValueInsideSoapHeaderTag is equal to testAttributeValueInsideSoapHeaderTag',
-      passedCheck: true
+      pass: true,
+      path: 'SOAP-ENV:Header (attribute: testAttribute)'
     });
   });
 
@@ -64,7 +66,8 @@ describe('soap - attribute value check', function () {
       actual: 'testAttributeValueInsideSoapBodyTag',
       expected: 'testAttributeValueInsideSoapBodyTag',
       description: 'Check actual value testAttributeValueInsideSoapBodyTag is equal to testAttributeValueInsideSoapBodyTag',
-      passedCheck: true
+      pass: true,
+      path: 'SOAP-ENV:Body (attribute: testAttribute)'
     });
   });
 
@@ -84,7 +87,8 @@ describe('soap - attribute value check', function () {
       actual: 'testAttributeValue',
       expected: 'testAttributeValue',
       description: 'Check actual value testAttributeValue is equal to testAttributeValue',
-      passedCheck: true
+      pass: true,
+      path: 'SOAP-ENV:Body.testAttributeElement (attribute: testAttribute)'
     });
   });
 });

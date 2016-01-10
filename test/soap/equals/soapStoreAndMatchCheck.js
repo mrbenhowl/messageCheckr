@@ -23,10 +23,11 @@ describe('soap - store and match check', function() {
 
     assert.equal(result.allChecksPassed, true);
     assert.deepEqual(result.checks[3], {
-      "actual": "49276fbd-d143-4fb4-9a00-6b60ae6b0c9e",
-      "description": "Check actual value 49276fbd-d143-4fb4-9a00-6b60ae6b0c9e matches value 49276fbd-d143-4fb4-9a00-6b60ae6b0c9e in store[nameForGuidFieldTwo]",
-      "expected": "49276fbd-d143-4fb4-9a00-6b60ae6b0c9e",
-      "passedCheck": true
+      actual: '49276fbd-d143-4fb4-9a00-6b60ae6b0c9e',
+      description: 'Check actual value 49276fbd-d143-4fb4-9a00-6b60ae6b0c9e matches value 49276fbd-d143-4fb4-9a00-6b60ae6b0c9e in store[nameForGuidFieldTwo]',
+      expected: '49276fbd-d143-4fb4-9a00-6b60ae6b0c9e',
+      pass: true,
+      path: 'SOAP-ENV:Body.duplicateOfUuidElementAbove'
     });
   });
 });
