@@ -563,7 +563,6 @@ TODO
 
 I am planning to work on the following tasks/features in the near future:
 
-- Refactor messageCheckr to be more modular - there are far too many functions in one file (#1 priority).
 - The ability to check current date in a repeating group
 - The ability to check attributes in a repeating group
 - I'm not happy with how you have to specifiy a repeating group, so this will probably be reworked in the future
@@ -573,6 +572,7 @@ I am planning to work on the following tasks/features in the near future:
 - Support for position delimited messages
 - The ability to check floating point numbers
 - Converter for Cucumber.js datatable to enable use in cucumber tests (separate repo)
+- Refactor - review any TODOs in the code
 - Improve unit tests - more coverage (e.g. errors) and more stubbing
 - Add unit test code coverage reports
 - The ability to check <?xml version="1.0" encoding="UTF-8" standalone="yes"?> for JMS messages
