@@ -1,21 +1,23 @@
+var _ = require('lodash');
+
 var validateExpectedMsg = function (expectedMsg) {
 
-  if (!Array.isArray(expectedMsg)){
+  if (!Array.isArray(expectedMsg)) {
     throw new Error('expectedMsg should be an array');
   }
 
-  if (expectedMsg.length === 0){
+  if (expectedMsg.length === 0) {
     throw new Error('expectedMsg is empty');
   }
 
   var nonMatchingPatterns = _(expectedMsg)
-    .filter(function(el) {
+    .filter(function (el) {
       var topLevelKeys = _.keys(el).sort();
       var matchesAnExpectedPattern = false;
 
       if (_.isEqual(topLevelKeys, ['equals', 'path'])) {
         matchesAnExpectedPattern = true;
-      } else if (_.isEqual(topLevelKeys, ['dateFormat', 'equals', 'path'])){
+      } else if (_.isEqual(topLevelKeys, ['dateFormat', 'equals', 'path'])) {
         matchesAnExpectedPattern = true;
       } else if (_.isEqual(topLevelKeys, ['contains', 'path'])) {
         matchesAnExpectedPattern = true;

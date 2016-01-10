@@ -23,7 +23,7 @@ describe('jms - store and match check', function() {
     assert.equal(result.allChecksPassed, false);
     assert.deepEqual(result.checks[3], {
       actual: "49276fbd-d143-4fb4-9a00-6b60ae6b0d1f",
-      description: "Check actual value 49276fbd-d143-4fb4-9a00-6b60ae6b0d1f matches value 49276fbd-d143-4fb4-9a00-6b60ae6b0c9e in store[nameForGuidField]",
+      description: "Check actual value 49276fbd-d143-4fb4-9a00-6b60ae6b0d1f matches value 49276fbd-d143-4fb4-9a00-6b60ae6b0c9e in {store(nameForGuidField)}",
       expected: "49276fbd-d143-4fb4-9a00-6b60ae6b0c9e",
       pass: false,
       path: 'uuidDifferentToAbove'
@@ -46,7 +46,7 @@ describe('jms - store and match check', function() {
     assert.equal(result.allChecksPassed, true);
     assert.deepEqual(result.checks[3], {
       actual: "49276fbd-d143-4fb4-9a00-6b60ae6b0c9e",
-      description: "Check actual value 49276fbd-d143-4fb4-9a00-6b60ae6b0c9e matches value 49276fbd-d143-4fb4-9a00-6b60ae6b0c9e in store[nameForGuidFieldTwo]",
+      description: "Check actual value 49276fbd-d143-4fb4-9a00-6b60ae6b0c9e matches value 49276fbd-d143-4fb4-9a00-6b60ae6b0c9e in {store(nameForGuidFieldTwo)}",
       expected: "49276fbd-d143-4fb4-9a00-6b60ae6b0c9e",
       pass: true,
       path: 'duplicateOfUuidElementAbove'

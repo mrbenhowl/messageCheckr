@@ -1,9 +1,74 @@
-var moment = require('moment'),
+var _ = require('lodash'),
+  moment = require('moment'),
   validator = require('validator'),
   verificationResults = require('./verificationResults'),
-  getFullPath = require('./getFullPath');
+  getFullPath = require('./getFullPath'),
+  getValueAtPath = require('./getValueAtPath'),
+  store = require('./store');
 
 var assertions = {
+
+  checkExpectedMsgComponent: function checkExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgComponent, pathIsRootElement) {
+    this.checkPathForExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgComponent, pathIsRootElement);
+
+    if (_.isUndefined(expectedMsgComponent.pathShouldNotExist) || !expectedMsgComponent.pathShouldNotExist) {
+      var actualValue = getValueAtPath(actualMsgAsXmlDocument, expectedMsgComponent, pathIsRootElement);
+      var expectedValue = expectedMsgComponent.equals;
+      var containsExpectedValue = expectedMsgComponent.contains;
+
+      if (expectedValue != undefined) {
+        if (Number.isInteger(expectedValue)) {
+          verificationResults.add(
+            {
+              pass: parseInt(actualValue) === expectedValue,
+              path: getFullPath(expectedMsgComponent),
+              actual: parseInt(actualValue),
+              expected: expectedValue,
+              description: 'Check actual value ' + actualValue + ' is equal to ' + expectedValue
+            }
+          );
+        } else if (_.isRegExp(expectedValue)) {
+
+          if (expectedValue.toString().indexOf('local-timezone') != -1) {
+            this.timestampCheck(getFullPath(expectedMsgComponent), actualValue, expectedValue, 'local-timezone', expectedMsgComponent.dateFormat);
+          } else if (expectedValue.toString().indexOf('utc-timezone') != -1) {
+            this.timestampCheck(getFullPath(expectedMsgComponent), actualValue, expectedValue, 'utc-timezone', expectedMsgComponent.dateFormat);
+          } else {
+            this.regexCheck(getFullPath(expectedMsgComponent), actualValue, expectedValue);
+          }
+        } else if (expectedValue.match(/^\{store\(.*\)}$/) != null) {
+          var storeName = expectedValue.match(/\(([^)]+)\)/)[1];
+          if (!/^[a-zA-Z]+$/.test(storeName)) {
+            throw new Error('Store name \'' + storeName + '\' is only allowed to consist of characters.')
+          }
+          store.add(storeName, actualValue);
+        } else if (expectedValue.match(/^\{matches\([a-zA-Z]*\)}$/) != null) {
+          var storeName = expectedValue.match(/\(([^)]+)\)/)[1];
+          this.storeCheck(getFullPath(expectedMsgComponent), storeName, actualValue);
+        } else if (expectedValue.match(/^\{uuid}$/) != null) {
+          this.uuidCheck(getFullPath(expectedMsgComponent), actualValue);
+        } else if (expectedValue.match(/^\{alphanumeric}$/) != null) {
+          this.isAlphanumericCheck(getFullPath(expectedMsgComponent), actualValue);
+        } else if (expectedValue.match(/^\{alpha}$/) != null) {
+          this.isAlphaCheck(getFullPath(expectedMsgComponent), actualValue);
+        } else if (expectedValue.match(/^\{integer}$/) != null) {
+          this.isInteger(getFullPath(expectedMsgComponent), actualValue);
+        } else if (expectedValue.match(/^\{length\(<\d+\)\}$/) != null) {
+          this.lessThanLengthCheck(getFullPath(expectedMsgComponent), actualValue, parseInt(expectedValue.match(/\d+/)[0]));
+        } else if (expectedValue.match(/^\{length\(>\d+\)\}$/) != null) {
+          this.greaterThanLengthCheck(getFullPath(expectedMsgComponent), actualValue, parseInt(expectedValue.match(/\d+/)[0]));
+        } else if (expectedValue.match(/^\{length\(\d+\)\}$/) != null) {
+          this.equalLengthCheck(getFullPath(expectedMsgComponent), actualValue, parseInt(expectedValue.match(/\d+/)[0]));
+        } else {
+          this.equalsCheck(getFullPath(expectedMsgComponent), actualValue, expectedValue);
+        }
+      }
+
+      if (containsExpectedValue != undefined) {
+        this.containsCheck(getFullPath(expectedMsgComponent), actualValue, containsExpectedValue);
+      }
+    }
+  },
 
   checkRootElement: function checkRootElement(xmlDocument, expectedRootElement) {
     verificationResults.add(
@@ -17,7 +82,7 @@ var assertions = {
     );
   },
 
-  equalCheck: function equalCheck(path, actualValue, expectedValue) {
+  equalsCheck: function equalsCheck(path, actualValue, expectedValue) {
     verificationResults.add(
       {
         pass: actualValue === expectedValue,
@@ -53,6 +118,20 @@ var assertions = {
     );
   },
 
+  storeCheck: function storeCheck(path, storeName, actualValue) {
+    var valuePreviouslyStored = store.get(storeName);
+
+    verificationResults.add(
+      {
+        pass: valuePreviouslyStored === actualValue,
+        path: path,
+        actual: actualValue,
+        expected: valuePreviouslyStored,
+        description: 'Check actual value ' + actualValue + ' matches value ' + valuePreviouslyStored + ' in {store(' + storeName + ')}'
+      }
+    );
+  },
+
   isAlphanumericCheck: function isAlphanumericCheck(path, actualValue) {
     verificationResults.add(
       {
@@ -63,7 +142,8 @@ var assertions = {
         description: 'Check actual value ' + actualValue + ' is alphanumeric'
       }
     );
-  },
+  }
+  ,
 
   isAlphaCheck: function isAlphaCheck(path, actualValue) {
     verificationResults.add(
@@ -75,7 +155,8 @@ var assertions = {
         description: 'Check actual value ' + actualValue + ' is alpha'
       }
     );
-  },
+  }
+  ,
 
   isInteger: function isInteger(path, actualValue) {
     var descriptionOfCheck = 'Check actual value ' + actualValue + ' is an integer';
@@ -101,7 +182,8 @@ var assertions = {
         }
       );
     }
-  },
+  }
+  ,
 
   lessThanLengthCheck: function lessThanLengthCheck(path, actualValue, expectedLength) {
     var lessThanExpected = actualValue.toString().length < expectedLength;
@@ -114,7 +196,8 @@ var assertions = {
         description: 'Check actual value ' + actualValue + ' has a length less than ' + expectedLength
       }
     );
-  },
+  }
+  ,
 
   greaterThanLengthCheck: function greaterThanLengthCheck(path, actualValue, expectedLength) {
     var greaterThanExpected = actualValue.toString().length > expectedLength;
@@ -127,7 +210,8 @@ var assertions = {
         description: 'Check actual value ' + actualValue + ' has a length greater than ' + expectedLength
       }
     );
-  },
+  }
+  ,
 
   equalLengthCheck: function equalLengthCheck(path, actualValue, expectedLength) {
     var equal = actualValue.toString().length === expectedLength;
@@ -140,7 +224,8 @@ var assertions = {
         description: 'Check actual value ' + actualValue + ' has a length equal to ' + expectedLength
       }
     );
-  },
+  }
+  ,
 
   regexCheck: function regexCheck(path, actualValue, regexPattern) {
     verificationResults.add(
@@ -152,7 +237,8 @@ var assertions = {
         description: 'Check actual value ' + actualValue + ' against regex ' + regexPattern.toString()
       }
     );
-  },
+  }
+  ,
 
   timestampCheck: function timestampCheck(path, actualValue, regexPattern, timezone, dateFormat) {
     var currentDate, regexObj;
@@ -180,7 +266,8 @@ var assertions = {
         description: 'Check actual value ' + actualValue + ' matches date/regex pattern ' + regexObj
       }
     );
-  },
+  }
+  ,
 
   checkPathForExpectedMsgComponent: function checkPathForExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgComponent, pathIsRootElement) {
     var path = expectedMsgComponent.path,
@@ -255,7 +342,6 @@ var assertions = {
       );
     }
   }
-
 };
 
 module.exports = assertions;

@@ -1,4 +1,5 @@
-var checks, allChecksPassed;
+var _ = require('lodash'),
+  checks, allChecksPassed;
 
 var verificationResults = {
 
@@ -29,7 +30,7 @@ var verificationResults = {
     return allChecksPassed;
   },
 
-  getAllChecks: function getAllChecks(){
+  getAllChecks: function getAllChecks() {
     return checks;
   }
 };
