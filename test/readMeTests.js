@@ -353,6 +353,41 @@ describe('readme tests', function () {
       assert.equal(result.allChecksPassed, true);
     });
 
+    it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}", function(){
+
+      var currentLocalDate = moment().format('YYYY-MM-DD');
+      var currentUtcDate = moment().utc().format('DD-MM-YYYY');
+
+      var actualMessage =
+        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        <testRootElement xmlns="http://www.testing.com/integration/event">
+        <elementOne>
+          <thingContainingRepeatingGroups>
+            <RepeatingGroup>
+              <fieldOneOfRepeatingGroup>`+currentLocalDate+`T18:39:00.896+11:00</fieldOneOfRepeatingGroup>
+            </RepeatingGroup>
+            <RepeatingGroup>
+              <fieldOneOfRepeatingGroup>T18:39:00.896+11:00 `+currentUtcDate+`</fieldOneOfRepeatingGroup>
+            </RepeatingGroup>
+          </thingContainingRepeatingGroups>
+        </elementOne>
+        </testRootElement>`;
+
+      var expectedMessage = [
+        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'},
+        //{repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'DD-MM-YYYY'},
+      ];
+
+      var result = messageCheckr({
+        type: 'jms',
+        actualMsg: actualMessage,
+        expectedMsg: expectedMessage,
+        expectedRootElement: 'testRootElement'
+      });
+
+      assert.equal(result.allChecksPassed, true);
+    });
+
     it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', contains: 'string' or integer}", function(){
       var actualMessage = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
         <testRootElement xmlns="http://www.testing.com/integration/event">

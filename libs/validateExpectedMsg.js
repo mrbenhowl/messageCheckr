@@ -29,6 +29,10 @@ var validateExpectedMsg = function (expectedMsg) {
         matchesAnExpectedPattern = true;
       } else if (_.isEqual(topLevelKeys, ['path', 'pathShouldNotExist'])) {
         matchesAnExpectedPattern = true;
+      } else if (_.isEqual(topLevelKeys, ['dateFormat', 'equals', 'path', 'repeatingGroup'])) {
+        if (_.isEqual(_.keys(el.repeatingGroup).sort(), ['number', 'path', 'repeater'])) {
+          matchesAnExpectedPattern = true;
+        }
       } else if (_.isEqual(topLevelKeys, ['equals', 'path', 'repeatingGroup'])) {
         if (_.isEqual(_.keys(el.repeatingGroup).sort(), ['number', 'path', 'repeater'])) {
           matchesAnExpectedPattern = true;

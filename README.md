@@ -180,6 +180,7 @@ The following is a list of all possible types that you can use to construct an `
 - **{path: 'path.to.element', attribute: 'attribute name', contains: 'string' or integer}**
 - **{path: 'path.to.element', pathShouldNotExist: true}**
 - **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', equals: operator - see section Operators}**
+- **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}**
 - **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', contains: 'string' or integer}**
 
 ### {path: 'path.to.element', equals: operator - see section Operators}
@@ -212,7 +213,7 @@ Example (local timezone):
     var expectedMessage = [
         {path: 'elementOne', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'}
     ];
-    // local-time will be translated to the local date in the format specified in dateFormat.
+    // local-timezone will be translated to the local date in the format specified in dateFormat.
 
 Example (UTC time):
 
@@ -281,7 +282,7 @@ Example (local timezone):
     var expectedMessage = [
         {path: 'elementOne', attribute: 'attributeContainingDateTimestamp', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'}
     ];
-    // local-time will be translated to the local date in the format specified in dateFormat.
+    // local-timezone will be translated to the local date in the format specified in dateFormat.
 
 Example (UTC time):
 
@@ -355,6 +356,34 @@ Example:
        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', equals: '{integer}'},
        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', equals: '{alpha}'}
     ];
+
+
+### {repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}**
+
+Example:
+
+    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <testRootElement xmlns="http://www.testing.com/integration/event">
+      <elementOne>
+        <thingContainingRepeatingGroups>
+          <RepeatingGroup>
+              <fieldOneOfRepeatingGroup>YYYY-MM-DDT18:39:00.896+11:00</fieldOneOfRepeatingGroup>
+          </RepeatingGroup>
+          <RepeatingGroup>
+              <fieldOneOfRepeatingGroup>T18:39:00.896+11:00 DD-MM-YYYY</fieldOneOfRepeatingGroup>
+          </RepeatingGroup>
+        </thingContainingRepeatingGroups>
+      </elementOne>
+    </testRootElement>
+
+    // where YYYY-MM-DD is today's date (local) and DD-MM-YYYY is today's date (UTC)
+
+    var expectedMessage = [
+       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'},
+       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'DD-MM-YYYY'},
+    ];
+
+    // local-timezone and utc-timezone will be translated to the local date and utc date respectively in the format specified in dateFormat attributes.
 
 ### {repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', contains: 'string' or integer}
 
@@ -563,7 +592,6 @@ TODO
 
 I am planning to work on the following tasks/features in the near future:
 
-* [The ability to check current date in a repeating group](https://github.com/mrbenhowl/messageCheckr/issues/1)
 * [The ability to check attributes in a repeating group](https://github.com/mrbenhowl/messageCheckr/issues/2)
 * [I'm not happy with how you have to specify a repeating group, so this will probably be reworked in the future](https://github.com/mrbenhowl/messageCheckr/issues/3)
 * [The ability to check an element by position within another element rather than by name](https://github.com/mrbenhowl/messageCheckr/issues/4)
