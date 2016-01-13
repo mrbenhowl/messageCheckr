@@ -34,7 +34,7 @@ var getValueAtPath = function getValueAtPath(actualMsgAsXmlDocument, expectedMsg
       }
     }
   } else {
-    // TODO: no support for child/attribute in the repeating group yet
+    // TODO: no support for child (and child/attribute combo) in the repeating group yet
     var pathToElementEnclosingRepeatingGroup = expectedMsgComponent.repeatingGroup.path;
     var repeatingElement = expectedMsgComponent.repeatingGroup.repeater;
     var pathToElementFromRepeatingElement = expectedMsgComponent.path;
@@ -51,9 +51,12 @@ var getValueAtPath = function getValueAtPath(actualMsgAsXmlDocument, expectedMsg
       })
       .value();
 
-    actualValue = actualMsgAsXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children[matchingGroups[version - 1]].valueWithPath(pathToElementFromRepeatingElement);
+    if (attribute) {
+      actualValue = actualMsgAsXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children[matchingGroups[version - 1]].descendantWithPath(pathToElementFromRepeatingElement).attr[attribute];
+    } else {
+      actualValue = actualMsgAsXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children[matchingGroups[version - 1]].valueWithPath(pathToElementFromRepeatingElement);
+    }
   }
-
   return actualValue;
 };
 

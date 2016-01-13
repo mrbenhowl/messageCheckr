@@ -447,6 +447,40 @@ describe('readme tests', function () {
 
       assert.equal(result.allChecksPassed, true);
     });
+
+    it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', equals: operator - see section Operators}", function(){
+      var actualMessage = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        <testRootElement xmlns="http://www.testing.com/integration/event">
+          <elementOne>
+            <thingContainingRepeatingGroups>
+              <RepeatingGroup>
+                <fieldOneOfRepeatingGroup testAttribute1="toffee">10001</fieldOneOfRepeatingGroup>
+                <fieldTwoOfRepeatingGroup testAttribute2="chocolate">hello</fieldTwoOfRepeatingGroup>
+              </RepeatingGroup>
+              <RepeatingGroup>
+                <fieldOneOfRepeatingGroup testAttribute1="tea">10002</fieldOneOfRepeatingGroup>
+                <fieldTwoOfRepeatingGroup testAttribute2="coffee">goodbye</fieldTwoOfRepeatingGroup>
+              </RepeatingGroup>
+            </thingContainingRepeatingGroups>
+          </elementOne>
+        </testRootElement>`;
+
+      var expectedMessage = [
+        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', equals: 'toffee'},
+        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2', equals: 'chocolate'},
+        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', equals: 'tea'},
+        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2', equals: 'coffee'}
+      ];
+
+      var result = messageCheckr({
+        type: 'jms',
+        actualMsg: actualMessage,
+        expectedMsg: expectedMessage,
+        expectedRootElement: 'testRootElement'
+      });
+
+      assert.equal(result.allChecksPassed, true);
+    });
   });
 });
 
