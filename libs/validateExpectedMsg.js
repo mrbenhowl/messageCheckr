@@ -41,6 +41,10 @@ var validateExpectedMsg = function (expectedMsg) {
         if (_.isEqual(_.keys(el.repeatingGroup).sort(), ['number', 'path', 'repeater'])) {
           matchesAnExpectedPattern = true;
         }
+      } else if (_.isEqual(topLevelKeys, ['path', 'pathShouldNotExist', 'repeatingGroup'])) {
+        if (_.isEqual(_.keys(el.repeatingGroup).sort(), ['number', 'path', 'repeater'])) {
+          matchesAnExpectedPattern = true;
+        }
       }
 
       return !matchesAnExpectedPattern;

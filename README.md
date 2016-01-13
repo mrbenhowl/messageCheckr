@@ -182,6 +182,7 @@ The following is a list of all possible types that you can use to construct an `
 - **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', equals: operator - see section Operators}**
 - **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}**
 - **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', contains: 'string' or integer}**
+- **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', pathShouldNotExist: true}**
 
 ### {path: 'path.to.element', equals: operator - see section Operators}
 
@@ -406,6 +407,28 @@ Example:
     var expectedMessage = [
        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', contains: 100},
        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', equals: 'howl'},
+    ];
+
+### {repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', pathShouldNotExist: true}
+
+Example:
+
+    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <testRootElement xmlns="http://www.testing.com/integration/event">
+      <elementOne>
+        <thingContainingRepeatingGroups>
+          <RepeatingGroup>
+              <fieldOneOfRepeatingGroup>10001</fieldOneOfRepeatingGroup>
+          </RepeatingGroup>
+          <RepeatingGroup>
+              <fieldOneOfRepeatingGroup>hello mr howl</fieldOneOfRepeatingGroup>
+          </RepeatingGroup>
+        </thingContainingRepeatingGroups>
+      </elementOne>
+    </testRootElement>
+
+    var expectedMessage = [
+        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', pathShouldNotExist: true}
     ];
 
 Operators

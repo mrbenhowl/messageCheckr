@@ -353,7 +353,7 @@ describe('readme tests', function () {
       assert.equal(result.allChecksPassed, true);
     });
 
-    it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}", function(){
+    it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}", function () {
 
       var currentLocalDate = moment().format('YYYY-MM-DD');
       var currentUtcDate = moment().utc().format('DD-MM-YYYY');
@@ -364,10 +364,10 @@ describe('readme tests', function () {
         <elementOne>
           <thingContainingRepeatingGroups>
             <RepeatingGroup>
-              <fieldOneOfRepeatingGroup>`+currentLocalDate+`T18:39:00.896+11:00</fieldOneOfRepeatingGroup>
+              <fieldOneOfRepeatingGroup>` + currentLocalDate + `T18:39:00.896+11:00</fieldOneOfRepeatingGroup>
             </RepeatingGroup>
             <RepeatingGroup>
-              <fieldOneOfRepeatingGroup>T18:39:00.896+11:00 `+currentUtcDate+`</fieldOneOfRepeatingGroup>
+              <fieldOneOfRepeatingGroup>T18:39:00.896+11:00 ` + currentUtcDate + `</fieldOneOfRepeatingGroup>
             </RepeatingGroup>
           </thingContainingRepeatingGroups>
         </elementOne>
@@ -388,7 +388,7 @@ describe('readme tests', function () {
       assert.equal(result.allChecksPassed, true);
     });
 
-    it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', contains: 'string' or integer}", function(){
+    it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', contains: 'string' or integer}", function () {
       var actualMessage = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
         <testRootElement xmlns="http://www.testing.com/integration/event">
           <elementOne>
@@ -403,10 +403,40 @@ describe('readme tests', function () {
           </elementOne>
         </testRootElement>`;
 
-        var expectedMessage = [
-          {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', contains: 100},
-          {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', contains: 'howl'},
-        ];
+      var expectedMessage = [
+        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', contains: 100},
+        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', contains: 'howl'},
+      ];
+
+      var result = messageCheckr({
+        type: 'jms',
+        actualMsg: actualMessage,
+        expectedMsg: expectedMessage,
+        expectedRootElement: 'testRootElement'
+      });
+
+      assert.equal(result.allChecksPassed, true);
+    });
+
+    it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', pathShouldNotExist: true}", function () {
+      var actualMessage =
+        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        <testRootElement xmlns="http://www.testing.com/integration/event">
+        <elementOne>
+          <thingContainingRepeatingGroups>
+            <RepeatingGroup>
+              <fieldOneOfRepeatingGroup>10001</fieldOneOfRepeatingGroup>
+            </RepeatingGroup>
+            <RepeatingGroup>
+              <fieldOneOfRepeatingGroup>hello mr howl</fieldOneOfRepeatingGroup>
+            </RepeatingGroup>
+          </thingContainingRepeatingGroups>
+        </elementOne>
+        </testRootElement>`;
+
+      var expectedMessage = [
+        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', pathShouldNotExist: true}
+      ];
 
       var result = messageCheckr({
         type: 'jms',
