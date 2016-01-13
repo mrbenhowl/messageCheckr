@@ -21,7 +21,7 @@ describe('jms - repeating group current date check', function() {
     var currentLocalDateRegexPattern = /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/;
     var currentUtcDateRegexPattern  = /utc-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/;
     var currentLocalDate = moment().format('YYYY MM DD');
-    var currentUtcDate = moment().format('DD MM YYYY');
+    var currentUtcDate = moment().utc().format('DD MM YYYY');
 
     var expectedMessage = [
       {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: currentLocalDateRegexPattern, dateFormat: 'YYYY MM DD'},
@@ -57,7 +57,7 @@ describe('jms - repeating group current date check', function() {
     var currentLocalDateRegexPattern = /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/;
     var currentUtcDateRegexPattern  = /utc-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/;
     var currentLocalDate = moment().format('YYYY-MM-DD');
-    var currentUtcDate = moment().format('DD-MM-YYYY');
+    var currentUtcDate = moment().utc().format('DD-MM-YYYY');
 
     var expectedMessage = [
       {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: currentLocalDateRegexPattern, dateFormat: 'YYYY-MM-DD'},
