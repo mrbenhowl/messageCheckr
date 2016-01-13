@@ -1,6 +1,6 @@
 {
   "name": "messagecheckr",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Allows the checking of SOAP and JMS (xml based) messages at a path level using Node.js",
   "main": "messageCheckr.js",
   "scripts": {
