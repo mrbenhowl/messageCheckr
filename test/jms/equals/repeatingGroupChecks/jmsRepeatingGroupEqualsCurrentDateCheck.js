@@ -17,7 +17,7 @@ describe('jms - repeating group current date check', function() {
     </thingContainingRepeatingGroups>
   </testRootElement>`;
 
-  it('should report a musmatch where the actual repeating group element value does not match the expected value', function() {
+  it('should report a mismatch where the actual repeating group element value does not match the expected value', function() {
     var currentLocalDateRegexPattern = /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/;
     var currentUtcDateRegexPattern  = /utc-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/;
     var currentLocalDate = moment().format('YYYY MM DD');
