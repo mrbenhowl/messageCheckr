@@ -1,6 +1,6 @@
 var moment = require('moment');
 
-describe('jms - repeating group current date check', function() {
+describe('jms - repeating element equals current date', function() {
   var currentDateTimeLocal, currentDateTimeUtc;
   currentDateTimeLocal = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ');
   currentDateTimeUtc = moment().utc().format('DD-MM-YYYYTHH:mm:ss.SSSZ');

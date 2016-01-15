@@ -1,4 +1,4 @@
-describe('jms - repeating group check', function() {
+describe('jms - repeating element equals integer', function() {
 
   var actualMsg = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <testRootElement xmlns="http://www.testing.com/integration/event">
