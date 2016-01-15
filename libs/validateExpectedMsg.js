@@ -13,8 +13,8 @@ var validateExpectedMsg = function (expectedMsg) {
   var nonMatchingPatterns = _(expectedMsg)
     .filter(function (el) {
       var topLevelKeys = _.keys(el).sort(),
-      matchesAnExpectedPattern = false,
-      repeatingGroupKeys = ['number', 'path', 'repeater'];
+        matchesAnExpectedPattern = false,
+        repeatingGroupKeys = ['number', 'path', 'repeater'];
 
       if (_.isEqual(topLevelKeys, ['equals', 'path'])) {
         matchesAnExpectedPattern = true;
@@ -35,6 +35,10 @@ var validateExpectedMsg = function (expectedMsg) {
           matchesAnExpectedPattern = true;
         }
       } else if (_.isEqual(topLevelKeys, ['attribute', 'equals', 'path', 'repeatingGroup'])) {
+        if (_.isEqual(_.keys(el.repeatingGroup).sort(), repeatingGroupKeys)) {
+          matchesAnExpectedPattern = true;
+        }
+      } else if (_.isEqual(topLevelKeys, ['attribute', 'contains', 'path', 'repeatingGroup'])) {
         if (_.isEqual(_.keys(el.repeatingGroup).sort(), repeatingGroupKeys)) {
           matchesAnExpectedPattern = true;
         }

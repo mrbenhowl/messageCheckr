@@ -418,7 +418,6 @@ Example:
     ];
 
 
-
 ### {repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', equals: operator - see section Operators}
 
 Example:
@@ -446,14 +445,37 @@ Example:
        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'attribute2', equals: 'coffee}'}
     ];
 
-
 ### {repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}
 
 TODO: example and read me unit test
 
 ### {repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', contains: 'string' or integer}
 
-TODO: example and read me unit test
+Example:
+
+    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <testRootElement xmlns="http://www.testing.com/integration/event">
+      <elementOne>
+        <thingContainingRepeatingGroups>
+          <RepeatingGroup>
+              <fieldOneOfRepeatingGroup testAttribute1="toffee">10001</fieldOneOfRepeatingGroup>
+              <fieldTwoOfRepeatingGroup testAttribute2="123">hello</fieldTwoOfRepeatingGroup>
+          </RepeatingGroup>
+          <RepeatingGroup>
+              <fieldOneOfRepeatingGroup testAttribute1="tea">10002</fieldOneOfRepeatingGroup>
+              <fieldTwoOfRepeatingGroup testAttribute2="123">goodbye</fieldTwoOfRepeatingGroup>
+          </RepeatingGroup>
+        </thingContainingRepeatingGroups>
+      </elementOne>
+    </testRootElement>
+
+    var expectedMessage = [
+       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', contains: 'toffee'},
+       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'attribute2', contains: 123},
+       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', contains: 'ea'},
+       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'attribute2', contains: 2}
+    ];
+
 
 ### {repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', pathShouldNotExist: true}
 
@@ -673,3 +695,4 @@ I am planning to work on the following tasks/features in the near future:
 * [Improve unit tests - more coverage (e.g. errors) and more stubbing](https://github.com/mrbenhowl/messageCheckr/issues/9)
 * [Add unit test code coverage reports](https://github.com/mrbenhowl/messageCheckr/issues/10)
 * [The ability to check <?xml version="1.0" encoding="UTF-8" standalone="yes"?> for JMS messages](https://github.com/mrbenhowl/messageCheckr/issues/12)
+* Noticed when a path does not exist we still try to check the value. If the path does not exit then don't check the value

@@ -1,4 +1,4 @@
-describe('jms - contains repeating group check', function () {
+describe('jms - repeating element contains integer', function () {
 
   var actualMsg = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -14,7 +14,7 @@ describe('jms - contains repeating group check', function () {
     </thingContainingRepeatingGroups>
   </testRootElement>`;
 
-  it('should report a mismatch where the actual repeating group element value does not match the expected value', function () {
+  it('should report a mismatch where the actual repeating group element value does not contain the expected value', function () {
     var expectedMessage = [
       {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', contains: 10002},
       {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', contains: 10004},
