@@ -392,7 +392,7 @@ Example:
        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'DD-MM-YYYY'},
     ];
 
-    // local-timezone and utc-timezone will be translated to the local date and utc date respectively in the format specified in dateFormat attributes.
+    // local-timezone and utc-timezone will be translated to the local date and utc date respectively in the format specified in the dateFormat attributes.
 
 ### {repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', contains: 'string' or integer}
 
@@ -427,12 +427,12 @@ Example:
       <elementOne>
         <thingContainingRepeatingGroups>
           <RepeatingGroup>
-              <fieldOneOfRepeatingGroup testAttribute1="toffee">10001</fieldOneOfRepeatingGroup>
-              <fieldTwoOfRepeatingGroup testAttribute2="chocolate">hello</fieldTwoOfRepeatingGroup>
+              <fieldOneOfRepeatingGroup testAttribute1="toffee">not interested in this value</fieldOneOfRepeatingGroup>
+              <fieldTwoOfRepeatingGroup testAttribute2="chocolate">not interested in this value</fieldTwoOfRepeatingGroup>
           </RepeatingGroup>
           <RepeatingGroup>
-              <fieldOneOfRepeatingGroup testAttribute1="tea">10002</fieldOneOfRepeatingGroup>
-              <fieldTwoOfRepeatingGroup testAttribute2="coffee">goodbye</fieldTwoOfRepeatingGroup>
+              <fieldOneOfRepeatingGroup testAttribute1="tea">not interested in this value</fieldOneOfRepeatingGroup>
+              <fieldTwoOfRepeatingGroup testAttribute2="coffee">not interested in this value</fieldTwoOfRepeatingGroup>
           </RepeatingGroup>
         </thingContainingRepeatingGroups>
       </elementOne>
@@ -442,13 +442,36 @@ Example:
        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: 'toffee'},
        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'attribute2', equals: 'chocolate'},
        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: 'tea'},
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'attribute2', equals: 'coffee}'}
+       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'attribute2', equals: 'coffee'}
     ];
 
 ### {repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}
 
-TODO: example and read me unit test
+Example:
 
+    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <testRootElement xmlns="http://www.testing.com/integration/event">
+      <elementOne>
+        <thingContainingRepeatingGroups>
+          <RepeatingGroup>
+              <fieldOneOfRepeatingGroup testAttribute1="YYYY-MM-DDT18:39:00.896+11:00">not interested in this value</fieldOneOfRepeatingGroup>
+          </RepeatingGroup>
+          <RepeatingGroup>
+              <fieldOneOfRepeatingGroup testAttribute1="T18:39:00.896+11:00 DD-MM-YYYY">not interested in this value</fieldOneOfRepeatingGroup>
+          </RepeatingGroup>
+        </thingContainingRepeatingGroups>
+      </elementOne>
+    </testRootElement>
+
+    // where YYYY-MM-DD is today's date (local) and DD-MM-YYYY is today's date (UTC)
+
+    var expectedMessage = [
+       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat:'YYYY-MM-DD'},
+       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat:'DD-MM-YYYY'}
+    ];
+
+    // local-timezone and utc-timezone will be translated to the local date and utc date respectively in the format specified in the dateFormat attributes.
+    
 ### {repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', contains: 'string' or integer}
 
 Example:
@@ -458,12 +481,12 @@ Example:
       <elementOne>
         <thingContainingRepeatingGroups>
           <RepeatingGroup>
-              <fieldOneOfRepeatingGroup testAttribute1="toffee">10001</fieldOneOfRepeatingGroup>
-              <fieldTwoOfRepeatingGroup testAttribute2="123">hello</fieldTwoOfRepeatingGroup>
+              <fieldOneOfRepeatingGroup testAttribute1="toffee">not interested in this value</fieldOneOfRepeatingGroup>
+              <fieldTwoOfRepeatingGroup testAttribute2="123">not interested in this value</fieldTwoOfRepeatingGroup>
           </RepeatingGroup>
           <RepeatingGroup>
-              <fieldOneOfRepeatingGroup testAttribute1="tea">10002</fieldOneOfRepeatingGroup>
-              <fieldTwoOfRepeatingGroup testAttribute2="123">goodbye</fieldTwoOfRepeatingGroup>
+              <fieldOneOfRepeatingGroup testAttribute1="tea">not interested in this value</fieldOneOfRepeatingGroup>
+              <fieldTwoOfRepeatingGroup testAttribute2="123">not interested in this value</fieldTwoOfRepeatingGroup>
           </RepeatingGroup>
         </thingContainingRepeatingGroups>
       </elementOne>

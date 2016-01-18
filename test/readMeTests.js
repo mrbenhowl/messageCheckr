@@ -448,18 +448,18 @@ describe('readme tests', function () {
       assert.equal(result.allChecksPassed, true);
     });
 
-    it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', equals: operator - see section Operators}", function(){
+    it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', equals: operator - see section Operators}", function () {
       var actualMessage = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
         <testRootElement xmlns="http://www.testing.com/integration/event">
           <elementOne>
             <thingContainingRepeatingGroups>
               <RepeatingGroup>
-                <fieldOneOfRepeatingGroup testAttribute1="toffee">10001</fieldOneOfRepeatingGroup>
-                <fieldTwoOfRepeatingGroup testAttribute2="chocolate">hello</fieldTwoOfRepeatingGroup>
+                <fieldOneOfRepeatingGroup testAttribute1="toffee">not interested in this value</fieldOneOfRepeatingGroup>
+                <fieldTwoOfRepeatingGroup testAttribute2="chocolate">not interested in this value</fieldTwoOfRepeatingGroup>
               </RepeatingGroup>
               <RepeatingGroup>
-                <fieldOneOfRepeatingGroup testAttribute1="tea">10002</fieldOneOfRepeatingGroup>
-                <fieldTwoOfRepeatingGroup testAttribute2="coffee">goodbye</fieldTwoOfRepeatingGroup>
+                <fieldOneOfRepeatingGroup testAttribute1="tea">not interested in this value</fieldOneOfRepeatingGroup>
+                <fieldTwoOfRepeatingGroup testAttribute2="coffee">not interested in this value</fieldTwoOfRepeatingGroup>
               </RepeatingGroup>
             </thingContainingRepeatingGroups>
           </elementOne>
@@ -482,7 +482,7 @@ describe('readme tests', function () {
       assert.equal(result.allChecksPassed, true);
     });
 
-    it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', contains: 'string' or integer}", function(){
+    it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', contains: 'string' or integer}", function () {
 
       var actualMessage =
         `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -490,12 +490,12 @@ describe('readme tests', function () {
           <elementOne>
             <thingContainingRepeatingGroups>
               <RepeatingGroup>
-                  <fieldOneOfRepeatingGroup testAttribute1="toffee">10001</fieldOneOfRepeatingGroup>
-                  <fieldTwoOfRepeatingGroup testAttribute2="123">hello</fieldTwoOfRepeatingGroup>
+                  <fieldOneOfRepeatingGroup testAttribute1="toffee">not interested in this value</fieldOneOfRepeatingGroup>
+                  <fieldTwoOfRepeatingGroup testAttribute2="123">not interested in this value</fieldTwoOfRepeatingGroup>
               </RepeatingGroup>
               <RepeatingGroup>
-                  <fieldOneOfRepeatingGroup testAttribute1="tea">10002</fieldOneOfRepeatingGroup>
-                  <fieldTwoOfRepeatingGroup testAttribute2="123">goodbye</fieldTwoOfRepeatingGroup>
+                  <fieldOneOfRepeatingGroup testAttribute1="tea">not interested in this value</fieldOneOfRepeatingGroup>
+                  <fieldTwoOfRepeatingGroup testAttribute2="123">not interested in this value</fieldTwoOfRepeatingGroup>
               </RepeatingGroup>
             </thingContainingRepeatingGroups>
           </elementOne>
@@ -516,9 +516,42 @@ describe('readme tests', function () {
       });
 
       assert.equal(result.allChecksPassed, true);
-
     });
 
+    it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}", function () {
+
+      var localDate = moment().format('YYYY-MM-DD');
+      var utcDate = moment().utc().format('DD-MM-YYYY');
+
+      var actualMessage =
+        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        <testRootElement xmlns="http://www.testing.com/integration/event">
+        <elementOne>
+          <thingContainingRepeatingGroups>
+            <RepeatingGroup>
+              <fieldOneOfRepeatingGroup testAttribute1="` + localDate +`T18:39:00.896+11:00">not interested in this value</fieldOneOfRepeatingGroup>
+            </RepeatingGroup>
+            <RepeatingGroup>
+              <fieldOneOfRepeatingGroup testAttribute1="T18:39:00.896+11:00 ` + utcDate + `">not interested in this value</fieldOneOfRepeatingGroup>
+            </RepeatingGroup>
+          </thingContainingRepeatingGroups>
+        </elementOne>
+      </testRootElement>`;
+
+      var expectedMessage = [
+        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'},
+        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'DD-MM-YYYY'}
+      ];
+
+      var result = messageCheckr({
+        type: 'jms',
+        actualMsg: actualMessage,
+        expectedMsg: expectedMessage,
+        expectedRootElement: 'testRootElement'
+      });
+
+      assert.equal(result.allChecksPassed, true);
+    });
   });
 });
 

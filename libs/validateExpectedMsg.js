@@ -30,6 +30,10 @@ var validateExpectedMsg = function (expectedMsg) {
         matchesAnExpectedPattern = true;
       } else if (_.isEqual(topLevelKeys, ['path', 'pathShouldNotExist'])) {
         matchesAnExpectedPattern = true;
+      } else if (_.isEqual(topLevelKeys, ['attribute', 'dateFormat', 'equals', 'path', 'repeatingGroup'])) {
+        if (_.isEqual(_.keys(el.repeatingGroup).sort(), repeatingGroupKeys)) {
+          matchesAnExpectedPattern = true;
+        }
       } else if (_.isEqual(topLevelKeys, ['dateFormat', 'equals', 'path', 'repeatingGroup'])) {
         if (_.isEqual(_.keys(el.repeatingGroup).sort(), repeatingGroupKeys)) {
           matchesAnExpectedPattern = true;
