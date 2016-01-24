@@ -1,26 +1,13 @@
 var _ = require('lodash');
 
 var getValueAtPath = function getValueAtPath(actualMsgAsXmlDocument, expectedMsgComponent, pathIsRootElement) {
-  var child = expectedMsgComponent.child,
-    attribute = expectedMsgComponent.attribute,
+  var attribute = expectedMsgComponent.attribute,
     actualValue;
 
-  if (_.isUndefined(expectedMsgComponent.repeatingGroup)) {
+  if (_.isUndefined(expectedMsgComponent.repeatingGroup) && _.isUndefined(expectedMsgComponent.parentPath)) {
     var path = expectedMsgComponent.path;
 
-    if (child && attribute) {
-      if (pathIsRootElement) {
-        actualValue = actualMsgAsXmlDocument.children[parseInt(child)].attr[attribute];
-      } else {
-        actualValue = actualMsgAsXmlDocument.descendantWithPath(path).children[parseInt(child)].attr[attribute];
-      }
-    } else if (child) {
-      if (pathIsRootElement) {
-        actualValue = actualMsgAsXmlDocument.children[parseInt(child)].val;
-      } else {
-        actualValue = actualMsgAsXmlDocument.descendantWithPath(path).children[parseInt(child)].val;
-      }
-    } else if (attribute) {
+    if (attribute) {
       if (pathIsRootElement) {
         actualValue = actualMsgAsXmlDocument.attr[attribute];
       } else {
@@ -33,7 +20,7 @@ var getValueAtPath = function getValueAtPath(actualMsgAsXmlDocument, expectedMsg
         actualValue = actualMsgAsXmlDocument.valueWithPath(path);
       }
     }
-  } else {
+  } else if (_.isUndefined(expectedMsgComponent.parentPath)) {
     // TODO: no support for child (and child/attribute combo) in the repeating group yet
     var pathToElementEnclosingRepeatingGroup = expectedMsgComponent.repeatingGroup.path;
     var repeatingElement = expectedMsgComponent.repeatingGroup.repeater;
@@ -55,6 +42,23 @@ var getValueAtPath = function getValueAtPath(actualMsgAsXmlDocument, expectedMsg
       actualValue = actualMsgAsXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children[matchingGroups[version - 1]].descendantWithPath(pathToElementFromRepeatingElement).attr[attribute];
     } else {
       actualValue = actualMsgAsXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children[matchingGroups[version - 1]].valueWithPath(pathToElementFromRepeatingElement);
+    }
+  } else {
+    var expectedPosition = expectedMsgComponent.elementPosition - 1,
+    pathToParentElement = expectedMsgComponent.parentPath;
+
+    if (attribute) {
+      if (pathIsRootElement) {
+        actualValue = actualMsgAsXmlDocument.children[expectedPosition].attr[attribute];
+      } else {
+        actualValue = actualMsgAsXmlDocument.descendantWithPath(pathToParentElement).children[expectedPosition].attr[attribute];
+      }
+    } else {
+      if (pathIsRootElement) {
+        actualValue = actualMsgAsXmlDocument.children[expectedPosition].val;
+      } else {
+        actualValue = actualMsgAsXmlDocument.descendantWithPath(pathToParentElement).children[expectedPosition].val;
+      }
     }
   }
   return actualValue;

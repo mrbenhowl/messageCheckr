@@ -175,21 +175,24 @@ The following is a list of all possible types that you can use to construct an `
 - **{path: 'path.to.element', equals: operator - see section Operators}**
 - **{path: 'path.to.element', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}**
 - **{path: 'path.to.element', contains: 'string' or integer}**
-
 - **{path: 'path.to.element', attribute: 'attribute name', equals: operator - see section Operators}**
 - **{path: 'path.to.element', attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}**
 - **{path: 'path.to.element', attribute: 'attribute name', contains: 'string' or integer}**
-
 - **{path: 'path.to.element', pathShouldNotExist: true}**
+
+- **{parentPath: 'path to parent of child element', elementName: 'name of element', elementPosition: integer > 0, equals: operator - see section Operators}
+- **{parentPath: 'path to parent of child element', elementName: 'name of element', elementPosition: integer > 0, equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}
+- **{parentPath: 'path to parent of child element', elementName: 'name of element', elementPosition: integer > 0, contains: 'string' or integer}
+- **{parentPath: 'path to parent of child element', elementName: 'name of element', elementPosition: integer > 0, attribute: 'attribute name', equals: operator - see section Operators}
+- **{parentPath: 'path to parent of child element', elementName: 'name of element', elementPosition: integer > 0, attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}
+- **{parentPath: 'path to parent of child element', elementName: 'name of element', elementPosition: integer > 0, attribute: 'attribute name', contains: 'string' or integer}
 
 - **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', equals: operator - see section Operators}**
 - **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}**
 - **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', contains: 'string' or integer}**
-
 - **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', equals: operator - see section Operators}**
 - **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}**
 - **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', contains: 'string' or integer}**
-
 - **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', pathShouldNotExist: true}**
 
 ### {path: 'path.to.element', equals: operator - see section Operators}
@@ -337,6 +340,127 @@ Example:
 
     var expectedMessage = [
         {path: 'elementTwo', pathShouldNotExist: true}
+    ];
+
+### {parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, equals: operator - see section Operators}
+
+Example:
+
+    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <testRootElement xmlns="http://www.testing.com/integration/event">
+       <elementOne>hello</elementOne>
+       <elementTwo>its</elementTwo>
+       <elementOne>me</elementOne>
+       <elementTwo>ben</elementTwo>
+    </testRootElement>
+
+    var expectedMessage = [
+        {parentPath: 'testRootElement', element: 'elementOne', elementPosition: 3,  equals: 'me'}
+    ];
+
+    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+       <testRootElement xmlns="http://www.testing.com/integration/event">
+          <anotherElement>
+             <elementOne>hello</elementOne>
+             <elementTwo>its</elementTwo>
+             <elementOne>me</elementOne>
+             <elementTwo>ben</elementTwo>
+          <anotherElement>
+       </testRootElement>
+
+    var expectedMessage = [
+        {parentPath: 'anotherElement', element: 'elementOne', elementPosition: 3,  equals: 'me'}
+    ];
+
+### {parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}
+
+Example:
+
+    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <testRootElement xmlns="http://www.testing.com/integration/event">
+       <elementOne>YYYY-MM-DDT18:39:00.896+11:00</elementOne>
+       <elementTwo>YYYY-MM-DDT18:39:00.896+11:00</elementTwo>
+       <elementOne>DD-MM-YYYYT18:39:00.896+11:00</elementOne>
+       <elementTwo>YYYY-MM-DDT18:39:00.896+11:00</elementTwo>
+    </testRootElement>
+
+    var expectedMessage = [
+        {parentPath: 'testRootElement', element: 'elementOne', elementPosition: 3,  equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'DD-MM-YYYY'}
+    ];
+
+    // where DD-MM-YYYY is today's date
+    // local-timezone will be translated to the local date in the format specified in dateFormat. Specify utc-timezone if the date is UTC.
+
+The `dateFormat` uses [Moment.js](http://momentjs.com/docs/) tokens (more on this under Date Format).
+
+### {parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, contains: 'string' or integer}
+
+Example:
+
+    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <testRootElement xmlns="http://www.testing.com/integration/event">
+       <elementOne>hello</elementOne>
+       <elementTwo>its</elementTwo>
+       <elementOne>me</elementOne>
+       <elementTwo>ben</elementTwo>
+    </testRootElement>
+
+    var expectedMessage = [
+        {parentPath: 'testRootElement', element: 'elementOne', elementPosition: 3,  contains: 'me'},
+        {parentPath: 'testRootElement', element: 'elementTwo', elementPosition: 4,  contains: 'be'}
+    ];
+
+### {parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, attribute: 'attribute name', equals: operator - see section Operators}
+
+Example:
+
+    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <testRootElement xmlns="http://www.testing.com/integration/event">
+       <elementOne attribute1="123">not interested in this value</elementOne>
+       <elementTwo attribute1="1234">not interested in this value</elementTwo>
+       <elementOne attribute1="12345">not interested in this value</elementOne>
+       <elementTwo attribute1="123456">not interested in this value</elementTwo>
+    </testRootElement>
+
+    var expectedMessage = [
+        {parentPath: 'testRootElement', element: 'elementOne', elementPosition: 3, attribute: 'attribute1', equals: 12345}
+    ];
+
+### {parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}
+
+Example:
+
+    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <testRootElement xmlns="http://www.testing.com/integration/event">
+       <elementOne attribute1="YYYY-MM-DDT18:39:00.896+11:00">not interested in this value</elementOne>
+       <elementTwo attribute1="YYYY-MM-DDT18:39:00.896+11:00">not interested in this value</elementTwo>
+       <elementOne attribute1="DD-MM-YYYYT18:39:00.896+11:00">not interested in this value</elementOne>
+       <elementTwo attribute1="YYYY-MM-DDT18:39:00.896+11:00">not interested in this value</elementTwo>
+    </testRootElement>
+
+    var expectedMessage = [
+        {parentPath: 'testRootElement', element: 'elementOne', elementPosition: 3,  attribute: 'attribute1', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'DD-MM-YYYY'}
+    ];
+
+    // where DD-MM-YYYY is today's date
+    // local-timezone will be translated to the local date in the format specified in dateFormat. Specify utc-timezone if the date is UTC.
+
+The `dateFormat` uses [Moment.js](http://momentjs.com/docs/) tokens (more on this under Date Format).
+
+### {parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, attribute: 'attribute name', contains: 'string' or integer}
+
+Example:
+
+    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <testRootElement xmlns="http://www.testing.com/integration/event">
+       <elementOne attribute1="123">not interested in this value</elementOne>
+       <elementTwo attribute1="1234">not interested in this value</elementTwo>
+       <elementOne attribute1="12345">not interested in this value</elementOne>
+       <elementTwo attribute1="123456">not interested in this value</elementTwo>
+    </testRootElement>
+
+    var expectedMessage = [
+        {parentPath: 'testRootElement', element: 'elementOne', elementPosition: 3, attribute: 'attribute1', contains: 2345}
     ];
 
 ### {repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', equals: operator - see section Operators}
@@ -717,4 +841,3 @@ I am planning to work on the following tasks/features in the near future:
 * [Improve unit tests - more coverage (e.g. errors) and more stubbing](https://github.com/mrbenhowl/messageCheckr/issues/9)
 * [Add unit test code coverage reports](https://github.com/mrbenhowl/messageCheckr/issues/10)
 * [The ability to check <?xml version="1.0" encoding="UTF-8" standalone="yes"?> for JMS messages](https://github.com/mrbenhowl/messageCheckr/issues/12)
-* Noticed when a path does not exist we still try to check the value. If the path does not exit then don't check the value

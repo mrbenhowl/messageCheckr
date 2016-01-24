@@ -9,9 +9,9 @@ var _ = require('lodash'),
 var assertions = {
 
   checkExpectedMsgComponent: function checkExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgComponent, pathIsRootElement) {
-    this.checkPathForExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgComponent, pathIsRootElement);
+    var pathExists = this.checkPathForExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgComponent, pathIsRootElement);
 
-    if (_.isUndefined(expectedMsgComponent.pathShouldNotExist) || !expectedMsgComponent.pathShouldNotExist) {
+    if ((_.isUndefined(expectedMsgComponent.pathShouldNotExist) || !expectedMsgComponent.pathShouldNotExist) && pathExists) {
       var actualValue = getValueAtPath(actualMsgAsXmlDocument, expectedMsgComponent, pathIsRootElement);
       var expectedValue = expectedMsgComponent.equals;
       var containsExpectedValue = expectedMsgComponent.contains;
@@ -278,7 +278,7 @@ var assertions = {
 
     // TODO: move checking of attributes and children into separate function
 
-    if (_.isUndefined(expectedMsgComponent.repeatingGroup)) {
+    if (_.isUndefined(expectedMsgComponent.repeatingGroup) && _.isUndefined(expectedMsgComponent.parentPath)) {
       pathExists = pathIsRootElement ? actualMsgAsXmlDocument.name != undefined : actualMsgAsXmlDocument.descendantWithPath(path) != undefined;
 
       if (pathExists && (child) && attribute) {
@@ -311,14 +311,17 @@ var assertions = {
         }
       );
 
-    } else {
+    } else if (_.isUndefined(expectedMsgComponent.parentPath)) {
       // TODO: no support for child/attribute in the repeating group yet, including getFullPath
-      var pathToElementEnclosingRepeatingGroup = expectedMsgComponent.repeatingGroup.path;
-      var repeatingElement = expectedMsgComponent.repeatingGroup.repeater;
-      var pathToElementFromRepeatingElement = path;
-      var version = expectedMsgComponent.repeatingGroup.number;
+      // TODO: do you need to check pathIsRootElement
+      var pathToElementEnclosingRepeatingGroup, repeatingElement, pathToElementFromRepeatingElement, version, matchingGroups;
 
-      var matchingGroups = _(actualMsgAsXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children)
+      pathToElementEnclosingRepeatingGroup = expectedMsgComponent.repeatingGroup.path;
+      repeatingElement = expectedMsgComponent.repeatingGroup.repeater;
+      pathToElementFromRepeatingElement = path;
+      version = expectedMsgComponent.repeatingGroup.number;
+
+      matchingGroups = _(actualMsgAsXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children)
         .pluck('name')
         .map(function (el, index) {
           if (el === repeatingElement) return index;
@@ -340,7 +343,30 @@ var assertions = {
           description: 'Check for presence of the path: ' + getFullPath(expectedMsgComponent)
         }
       );
+    } else {
+      var pathToParentElement, countOfChildElements, elementNameAtSpecifiedPosition;
+      pathToParentElement = expectedMsgComponent.parentPath;
+      countOfChildElements = pathIsRootElement ? actualMsgAsXmlDocument.children.length : actualMsgAsXmlDocument.descendantWithPath(pathToParentElement).children.length;
+
+      if (countOfChildElements >= expectedMsgComponent.elementPosition){
+        var expectedPosition = expectedMsgComponent.elementPosition - 1;
+        elementNameAtSpecifiedPosition = pathIsRootElement ? actualMsgAsXmlDocument.children[expectedPosition].name : actualMsgAsXmlDocument.descendantWithPath(pathToParentElement).children[expectedPosition].name;
+        pathExists = elementNameAtSpecifiedPosition === expectedMsgComponent.element;
+      }else{
+        pathExists = false;
+      }
+
+      verificationResults.add(
+        {
+          pass: _.isUndefined(pathShouldNotExist) === pathExists,
+          path: getFullPath(expectedMsgComponent),
+          actual: pathExists,
+          expected: _.isUndefined(pathShouldNotExist),
+          description: 'Check for presence of the path: ' + getFullPath(expectedMsgComponent)
+        }
+      );
     }
+    return pathExists;
   }
 };
 

@@ -58,7 +58,32 @@ var validateExpectedMsg = function (expectedMsg) {
         if (_.isEqual(_.keys(el.repeatingGroup).sort(), repeatingGroupKeys)) {
           matchesAnExpectedPattern = true;
         }
+      } else if (_.isEqual(topLevelKeys, ['element', 'elementPosition', 'equals', 'parentPath'])) {
+        if (!Number.isInteger(el.elementPosition)) throw new Error('elementPosition should be an integer');
+        if (el.elementPosition < 1) throw new Error('elementPosition should be greater than 0');
+        matchesAnExpectedPattern = true;
+      } else if (_.isEqual(topLevelKeys, ['dateFormat', 'element', 'elementPosition', 'equals', 'parentPath'])) {
+        if (!Number.isInteger(el.elementPosition)) throw new Error('elementPosition should be an integer');
+        if (el.elementPosition < 1) throw new Error('elementPosition should be greater than 0');
+        matchesAnExpectedPattern = true;
+      } else if (_.isEqual(topLevelKeys, ['contains', 'element', 'elementPosition', 'parentPath'])) {
+        if (!Number.isInteger(el.elementPosition)) throw new Error('elementPosition should be an integer');
+        if (el.elementPosition < 1) throw new Error('elementPosition should be greater than 0');
+        matchesAnExpectedPattern = true;
+      } else if (_.isEqual(topLevelKeys, ['attribute', 'element', 'elementPosition', 'equals', 'parentPath'])) {
+        if (!Number.isInteger(el.elementPosition)) throw new Error('elementPosition should be an integer');
+        if (el.elementPosition < 1) throw new Error('elementPosition should be greater than 0');
+        matchesAnExpectedPattern = true;
+      } else if (_.isEqual(topLevelKeys, ['attribute', 'dateFormat', 'element', 'elementPosition', 'equals', 'parentPath'])) {
+        if (!Number.isInteger(el.elementPosition)) throw new Error('elementPosition should be an integer');
+        if (el.elementPosition < 1) throw new Error('elementPosition should be greater than 0');
+        matchesAnExpectedPattern = true;
+      } else if (_.isEqual(topLevelKeys, ['attribute', 'contains', 'element', 'elementPosition', 'parentPath'])) {
+        if (!Number.isInteger(el.elementPosition)) throw new Error('elementPosition should be an integer');
+        if (el.elementPosition < 1) throw new Error('elementPosition should be greater than 0');
+        matchesAnExpectedPattern = true;
       }
+
       return !matchesAnExpectedPattern;
     })
     .value();

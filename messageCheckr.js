@@ -11,7 +11,8 @@ var _ = require('lodash'),
 function checkAllExpectedMsgComponents(actualMsgAsXmlDocument, expectedMsg, rootElement) {
   expectedMsg.forEach(function (expectedMsgComponent) {
     // TODO: what if the root element name matches a child element?
-    assertions.checkExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgComponent, rootElement === expectedMsgComponent.path)
+    var pathIsRootElement = expectedMsgComponent.path === rootElement || expectedMsgComponent.parentPath === rootElement;
+    assertions.checkExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgComponent, pathIsRootElement);
   });
 }
 
