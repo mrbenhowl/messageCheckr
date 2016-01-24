@@ -705,7 +705,7 @@ describe('readme tests', function () {
       assert.equal(result.allChecksPassed, true);
     });
 
-    it.only("{parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, attribute: 'attribute name', contains: 'string' or integer}", function () {
+    it("{parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, attribute: 'attribute name', contains: 'string' or integer}", function () {
 
       var actualMessage =
         `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
