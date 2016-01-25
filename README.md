@@ -834,7 +834,6 @@ TODO
 I am planning to work on the following tasks/features in the near future:
 
 * [I'm not happy with how you have to specify a repeating group, so this will probably be reworked in the future](https://github.com/mrbenhowl/messageCheckr/issues/3)
-* [The ability to check an element by position within another element rather than by name](https://github.com/mrbenhowl/messageCheckr/issues/4)
 * [Currently every time a path is specified the existence is checked, which means if you need to perform more than one check on the same path the path is checked more than once, which is inefficient.](https://github.com/mrbenhowl/messageCheckr/issues/5)
 * [Change the structure of the output, so that the key is the path being checked. That key will point to an object containing all checks](https://github.com/mrbenhowl/messageCheckr/issues/5)
 * [Support for position delimited messages](https://github.com/mrbenhowl/messageCheckr/issues/6)
