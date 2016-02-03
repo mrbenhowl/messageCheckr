@@ -182,12 +182,12 @@ The following is a list of all possible types that you can use to construct an `
 - **{path: 'path.to.element', pathShouldNotExist: true}**
 
 ### Element by position
-- **{parentPath: 'path to parent of child element', elementName: 'name of element', elementPosition: integer > 0, equals: operator - see section Operators}**
-- **{parentPath: 'path to parent of child element', elementName: 'name of element', elementPosition: integer > 0, equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}**
-- **{parentPath: 'path to parent of child element', elementName: 'name of element', elementPosition: integer > 0, contains: 'string' or integer}**
-- **{parentPath: 'path to parent of child element', elementName: 'name of element', elementPosition: integer > 0, attribute: 'attribute name', equals: operator - see section Operators}**
-- **{parentPath: 'path to parent of child element', elementName: 'name of element', elementPosition: integer > 0, attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}**
-- **{parentPath: 'path to parent of child element', elementName: 'name of element', elementPosition: integer > 0, attribute: 'attribute name', contains: 'string' or integer}**
+- **{parentPath: 'path to parent of child element', element: 'name of element', elementPosition: integer > 0, equals: operator - see section Operators}**
+- **{parentPath: 'path to parent of child element', element: 'name of element', elementPosition: integer > 0, equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}**
+- **{parentPath: 'path to parent of child element', element: 'name of element', elementPosition: integer > 0, contains: 'string' or integer}**
+- **{parentPath: 'path to parent of child element', element: 'name of element', elementPosition: integer > 0, attribute: 'attribute name', equals: operator - see section Operators}**
+- **{parentPath: 'path to parent of child element', element: 'name of element', elementPosition: integer > 0, attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}**
+- **{parentPath: 'path to parent of child element', element: 'name of element', elementPosition: integer > 0, attribute: 'attribute name', contains: 'string' or integer}**
 
 ### Repeating groups of elements
 - **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', equals: operator - see section Operators}**
