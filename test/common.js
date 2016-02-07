@@ -9,4 +9,5 @@ chai.use(sinonChai);
 global.winston = require('winston');
 winston.level = 'info'; // options are 'info' or 'debug'
 global.rewire = require('rewire');
+global._ = require('lodash');
 global.messageCheckr = require('../messageCheckr.js');
