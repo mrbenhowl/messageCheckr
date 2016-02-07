@@ -109,27 +109,39 @@ describe.only('messageComponent()', function () {
     // POSITION
 
     it('should return {type: messageComponentType.POSITION, expected: {equals: "d"}} when "expectedMessageComponent" is {parentPath: "a", element: "b", elementPosition: "c", equals: "d"}', function () {
-      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: "c", equals: "d"}), {type: messageComponentType.POSITION, expected: {equals: "d"}});
+      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: 1, equals: "d"}), {type: messageComponentType.POSITION, expected: {equals: "d"}});
     });
 
     it('should return {type: messageComponentType.POSITION, expected: {equals: "d", dateFormat: "e"}} when "expectedMessageComponent" is {parentPath: "a", element: "b", elementPosition: "c", equals: "d", dateFormat: "e"}', function () {
-      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: "c", equals: "d", dateFormat: "e"}), {type: messageComponentType.POSITION, expected: {equals: "d", dateFormat: "e"}});
+      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: 1, equals: "d", dateFormat: "e"}), {type: messageComponentType.POSITION, expected: {equals: "d", dateFormat: "e"}});
     });
 
     it('should return {type: messageComponentType.POSITION, expected: {contains: "d"}} when "expectedMessageComponent" is {parentPath: "a", element: "b", elementPosition: "c", contains: "d"}', function () {
-      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: "c", contains: "d"}), {type: messageComponentType.POSITION, expected: {contains: "d"}});
+      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: 1, contains: "d"}), {type: messageComponentType.POSITION, expected: {contains: "d"}});
     });
 
     it('should return {type: messageComponentType.POSITION, expected: {attribute: "d", equals: "e"}} when "expectedMessageComponent" is {parentPath: "a", element: "b", elementPosition: "c", attribute: "d", equals: "e"}', function () {
-      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: "c", attribute: "d", equals: "e"}), {type: messageComponentType.POSITION, expected: {attribute: "d", equals: "e"}});
+      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: 1, attribute: "d", equals: "e"}), {type: messageComponentType.POSITION, expected: {attribute: "d", equals: "e"}});
     });
 
     it('should return {type: messageComponentType.POSITION, expected: {attribute: "d", equals: "e", dateFormat: "f"}} when "expectedMessageComponent" is {parentPath: "a", element: "b", elementPosition: "c", attribute: "d", equals: "e", dateFormat: "f"}', function () {
-      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: "c", attribute: "d", equals: "e", dateFormat: "f"}), {type: messageComponentType.POSITION, expected: {attribute: "d", equals: "e", dateFormat: "f"}});
+      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: 1, attribute: "d", equals: "e", dateFormat: "f"}), {type: messageComponentType.POSITION, expected: {attribute: "d", equals: "e", dateFormat: "f"}});
     });
 
     it('should return {type: messageComponentType.POSITION, expected: {attribute: "d", contains: "e"}} when "expectedMessageComponent" is {parentPath: "a", element: "b", elementPosition: "c", attribute: "d", contains: "e"}', function () {
-      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: "c", attribute: "d", contains: "e"}), {type: messageComponentType.POSITION, expected: {attribute: "d", contains: "e"}});
+      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: 1, attribute: "d", contains: "e"}), {type: messageComponentType.POSITION, expected: {attribute: "d", contains: "e"}});
+    });
+
+    it('should throw an error when "elementPosition" is NAN', function () {
+      assert.throw(() => {
+        validate({parentPath: "a", element: "b", elementPosition: "string", attribute: "d", contains: "e"})
+      }, 'elementPosition should be an integer');
+    });
+
+    it('should throw an error when "elementPosition" is 0', function () {
+      assert.throw(() => {
+        validate({parentPath: "a", element: "b", elementPosition: 0, attribute: "d", contains: "e"})
+      }, 'elementPosition should be greater than 0');
     });
 
     // PATTERN NOT RECOGNISED

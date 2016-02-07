@@ -83,6 +83,9 @@ function validate(expectedMessageComponent) {
       || _.isEqual(expectedMessageComponentKeys, ['attribute', 'element', 'elementPosition', 'equals', 'parentPath'])
       || _.isEqual(expectedMessageComponentKeys, ['attribute', 'dateFormat', 'element', 'elementPosition', 'equals', 'parentPath'])
       || _.isEqual(expectedMessageComponentKeys, ['attribute', 'contains', 'element', 'elementPosition', 'parentPath'])) {
+
+      if (!Number.isInteger(expectedMessageComponent.elementPosition)) throw new Error('elementPosition should be an integer');
+      if (expectedMessageComponent.elementPosition < 1) throw new Error('elementPosition should be greater than 0');
       type = messageComponentType.POSITION;
       expected = _.omit(_.clone(expectedMessageComponent), ['parentPath', 'element', 'elementPosition']);
     }
@@ -109,12 +112,12 @@ function validate(expectedMessageComponent) {
 
 function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocument) {
   // returns undefined if cannot find element, otherwise it returns xmlDoc type
-  var pathToElement, pathExists, pathIsRootElement;
+  var pathToElement;
 
   if (type === messageComponentType.STANDARD){
     var path = expectedMessageComponent.path,
       pathIsRootElement = expectedMessageComponent.path === actualMessageXmlDocument.name,
-      attribute = expectedMessageComponent.attribute;
+      attribute = expectedMessageComponent.attribute,
       pathExists = pathIsRootElement ? true : actualMessageXmlDocument.descendantWithPath(path) != undefined;
 
       if (pathExists){
@@ -130,15 +133,15 @@ function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocume
       }
 
   } else if (type === messageComponentType.POSITION){
-    pathIsRootElement = expectedMessageComponent.parentPath === actualMessageXmlDocument.name;
+    var parentPathIsRootElement = expectedMessageComponent.parentPath === actualMessageXmlDocument.name;
 
     var pathToParentElement, countOfChildElements, elementAtSpecifiedPosition;
     pathToParentElement = expectedMessageComponent.parentPath;
-    countOfChildElements = pathIsRootElement ? actualMessageXmlDocument.children.length : actualMessageXmlDocument.descendantWithPath(pathToParentElement).children.length;
+    countOfChildElements = parentPathIsRootElement ? actualMessageXmlDocument.children.length : actualMessageXmlDocument.descendantWithPath(pathToParentElement).children.length;
 
     if (countOfChildElements >= expectedMessageComponent.elementPosition){
       var expectedPosition = expectedMessageComponent.elementPosition - 1;
-      elementAtSpecifiedPosition = pathIsRootElement ? actualMessageXmlDocument.children[expectedPosition] : actualMessageXmlDocument.descendantWithPath(pathToParentElement).children[expectedPosition];
+      elementAtSpecifiedPosition = parentPathIsRootElement ? actualMessageXmlDocument.children[expectedPosition] : actualMessageXmlDocument.descendantWithPath(pathToParentElement).children[expectedPosition];
 
       if (elementAtSpecifiedPosition.name === expectedMessageComponent.element){
         pathToElement = elementAtSpecifiedPosition;
