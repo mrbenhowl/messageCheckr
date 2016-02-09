@@ -4,16 +4,14 @@ var rewire = require('rewire'),
   xmldoc = require('xmldoc');
 
 
-describe.only('messageComponent()', function () {
+describe('messageComponent()', function () {
 
   describe('validate()', function () {
 
     var validate = messageComponent.__get__('validate');
 
     it('should throw an error when the parameter "expectedMessageComponent" is null', function () {
-      assert.throw(() => {
-        validate(null)
-      }, 'The following expectedMessageComponent is not valid: null');
+      assert.throw(() => validate(null), 'The following expectedMessageComponent is not valid: null');
     });
 
     it('should throw an error when the parameter "expectedMessageComponent" is an Array', function () {
@@ -292,6 +290,70 @@ describe.only('messageComponent()', function () {
 
     describe('type is messageComponentType.POSITION', function () {
 
+      it('should return an object where parentPathIsRootElement = true and elementPosition/element match an element (only 1 element exists under parentPath)', function(){
+
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement testAttribute="test">12345</testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isDefined(getPathToElement({parentPath: "testRootElement", elementPosition: 1, element: "testElement", equals: "test"}, 'POSITION', actualMessageXmlDocument));
+      });
+
+      it('should return an object where parentPathIsRootElement = true and elementPosition/element/attribute match an element\'s attribute (only 1 element exists under parentPath)', function(){
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement testAttribute="test">12345</testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isDefined(getPathToElement({parentPath: "testRootElement", elementPosition: 1, element: "testElement", attribute: "xmlns", equals: "test"}, 'POSITION', actualMessageXmlDocument));
+      });
+
+      it.skip('should return an object where parentPathIsRootElement = true and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = 1)', function(){
+      });
+
+      it.skip('should return an object where parentPathIsRootElement = true and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = position of last element)', function(){
+      });
+
+
+      it.skip('should return undefined where parentPathIsRootElement = true and elementPosition does not match an element', function(){
+      });
+
+      it.skip('should return undefined where parentPathIsRootElement = true and element does not match the element at the position specified by elementPosition', function(){
+      });
+
+      it.skip('should return undefined where parentPathIsRootElement = true and no attributes exist for the element matched by elementPosition/element and an attribute is expected', function(){
+      });
+
+      it.skip('should return undefined where parentPathIsRootElement = true and the expected attribute does not exist for the element matched by elementPosition/element', function(){
+      });
+
+
+      it.skip('should return an object where parentPathIsRootElement = false and elementPosition/element match an element (only 1 element exists under parentPath)', function(){
+      });
+
+      it.skip('should return an object where parentPathIsRootElement = false and elementPosition/element/attribute match an element\'s attribute (only 1 element exists under parentPath)', function(){
+      });
+
+      it.skip('should return an object where parentPathIsRootElement = false and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = 1)', function(){
+      });
+
+      it.skip('should return an object where parentPathIsRootElement = false and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = position of last element)', function(){
+      });
+
+      it.skip('should return undefined where parentPathIsRootElement = false and elementPosition does not match an element', function(){
+      });
+
+      it.skip('should return undefined where parentPathIsRootElement = false and element does not match the element at the position specified by elementPosition', function(){
+      });
+
+      it.skip('should return undefined where parentPathIsRootElement = false and no attributes exist for the element matched by elementPosition/element and an attribute is expected', function(){
+      });
+
+      it.skip('should return undefined where parentPathIsRootElement = false and the expected attribute does not exist for the element matched by elementPosition/element', function(){
+      });
 
     });
   });
