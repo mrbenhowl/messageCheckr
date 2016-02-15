@@ -68,9 +68,24 @@ describe('jms - path not present checks', function () {
         </elementOne>
         </testRootElement>`;
 
-    it('should report a pass where path does not exist and the flag pathShouldNotExist is set to true', function () {
+    it('should report a pass where path does not exist and the flag pathShouldNotExist is set to true (element "path" does not exist)', function () {
       var expectedMessage = [
         {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', pathShouldNotExist: true}
+      ];
+
+      var result = messageCheckr({
+        type: 'jms',
+        actualMsg: actualMessage,
+        expectedMsg: expectedMessage,
+        expectedRootElement: 'testRootElement'
+      });
+
+      assert.equal(result.allChecksPassed, true);
+    });
+
+    it('should report a pass where path does not exist and the flag pathShouldNotExist is set to true ("number" does not exist)', function () {
+      var expectedMessage = [
+        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 3}, path: 'fieldOneOfRepeatingGroup', pathShouldNotExist: true}
       ];
 
       var result = messageCheckr({

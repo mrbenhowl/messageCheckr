@@ -332,7 +332,11 @@ var assertions = {
         })
         .value();
 
-      pathExists = actualMsgAsXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children[matchingGroups[version - 1]].descendantWithPath(pathToElementFromRepeatingElement) != undefined;
+      if (_.isUndefined(actualMsgAsXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children[matchingGroups[version - 1]])) {
+        pathExists = false;
+      } else {
+        pathExists = actualMsgAsXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children[matchingGroups[version - 1]].descendantWithPath(pathToElementFromRepeatingElement) != undefined;
+      }
 
       verificationResults.add(
         {
@@ -348,11 +352,11 @@ var assertions = {
       pathToParentElement = expectedMsgComponent.parentPath;
       countOfChildElements = pathIsRootElement ? actualMsgAsXmlDocument.children.length : actualMsgAsXmlDocument.descendantWithPath(pathToParentElement).children.length;
 
-      if (countOfChildElements >= expectedMsgComponent.elementPosition){
+      if (countOfChildElements >= expectedMsgComponent.elementPosition) {
         var expectedPosition = expectedMsgComponent.elementPosition - 1;
         elementNameAtSpecifiedPosition = pathIsRootElement ? actualMsgAsXmlDocument.children[expectedPosition].name : actualMsgAsXmlDocument.descendantWithPath(pathToParentElement).children[expectedPosition].name;
         pathExists = elementNameAtSpecifiedPosition === expectedMsgComponent.element;
-      }else{
+      } else {
         pathExists = false;
       }
 
