@@ -114,41 +114,47 @@ function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocume
   // returns undefined if cannot find element, otherwise it returns xmlDoc type
   var pathToElement;
 
-  if (type === messageComponentType.STANDARD){
+  if (type === messageComponentType.STANDARD) {
     var path = expectedMessageComponent.path,
       pathIsRootElement = expectedMessageComponent.path === actualMessageXmlDocument.name,
       attribute = expectedMessageComponent.attribute,
       pathExists = pathIsRootElement ? true : actualMessageXmlDocument.descendantWithPath(path) != undefined;
 
-      if (pathExists){
-        if (attribute && pathIsRootElement) {
-          pathToElement = _.has(actualMessageXmlDocument.attr, attribute) ? actualMessageXmlDocument : undefined;
-        } else if (attribute) {
-          pathToElement = _.has(actualMessageXmlDocument.descendantWithPath(path).attr, attribute) ? actualMessageXmlDocument.descendantWithPath(path) : undefined;
-        } else if (pathIsRootElement) {
-          pathToElement = actualMessageXmlDocument;
-        } else {
-          pathToElement = actualMessageXmlDocument.descendantWithPath(path);
-        }
-      }
-
-  } else if (type === messageComponentType.POSITION){
-    var parentPathIsRootElement = expectedMessageComponent.parentPath === actualMessageXmlDocument.name;
-
-    var pathToParentElement, countOfChildElements, elementAtSpecifiedPosition;
-    pathToParentElement = expectedMessageComponent.parentPath;
-    countOfChildElements = parentPathIsRootElement ? actualMessageXmlDocument.children.length : actualMessageXmlDocument.descendantWithPath(pathToParentElement).children.length;
-
-    if (countOfChildElements >= expectedMessageComponent.elementPosition){
-      var expectedPosition = expectedMessageComponent.elementPosition - 1;
-      elementAtSpecifiedPosition = parentPathIsRootElement ? actualMessageXmlDocument.children[expectedPosition] : actualMessageXmlDocument.descendantWithPath(pathToParentElement).children[expectedPosition];
-
-      if (elementAtSpecifiedPosition.name === expectedMessageComponent.element){
-        pathToElement = elementAtSpecifiedPosition;
+    if (pathExists) {
+      if (attribute && pathIsRootElement) {
+        pathToElement = _.has(actualMessageXmlDocument.attr, attribute) ? actualMessageXmlDocument : undefined;
+      } else if (attribute) {
+        pathToElement = _.has(actualMessageXmlDocument.descendantWithPath(path).attr, attribute) ? actualMessageXmlDocument.descendantWithPath(path) : undefined;
+      } else if (pathIsRootElement) {
+        pathToElement = actualMessageXmlDocument;
+      } else {
+        pathToElement = actualMessageXmlDocument.descendantWithPath(path);
       }
     }
 
-  } else if (type === messageComponentType.REPEATING_GROUP){
+  } else if (type === messageComponentType.POSITION) {
+    var parentPathIsRootElement = expectedMessageComponent.parentPath === actualMessageXmlDocument.name;
+
+    var pathToParentElement, countOfChildElements, elementAtSpecifiedPosition;
+    pathToParentElement = expectedMessageComponent.parentPath,
+    attribute = expectedMessageComponent.attribute,
+    countOfChildElements = parentPathIsRootElement ? actualMessageXmlDocument.children.length : actualMessageXmlDocument.descendantWithPath(pathToParentElement).children.length;
+
+    if (countOfChildElements >= expectedMessageComponent.elementPosition) {
+      var expectedPosition = expectedMessageComponent.elementPosition - 1;
+      elementAtSpecifiedPosition = parentPathIsRootElement ? actualMessageXmlDocument.children[expectedPosition] : actualMessageXmlDocument.descendantWithPath(pathToParentElement).children[expectedPosition];
+
+      if (elementAtSpecifiedPosition.name === expectedMessageComponent.element) {
+
+        if (_.has(expectedMessageComponent, 'attribute')) {
+          pathToElement = _.has(elementAtSpecifiedPosition.attr, attribute) ? elementAtSpecifiedPosition : undefined;
+        } else {
+          pathToElement = elementAtSpecifiedPosition;
+        }
+      }
+    }
+
+  } else if (type === messageComponentType.REPEATING_GROUP) {
 
     var pathToElementEnclosingRepeatingGroup, repeatingElement, pathToElementFromRepeatingElement, version, matchingGroups;
 
