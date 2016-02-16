@@ -288,7 +288,7 @@ describe('messageComponent()', function () {
 
     });
 
-    describe.only('type is messageComponentType.POSITION', function () {
+    describe('type is messageComponentType.POSITION', function () {
 
       it('should return an object where parentPathIsRootElement = true and elementPosition/element match an element (only 1 element exists under parentPath)', function () {
         var xml =
@@ -307,7 +307,7 @@ describe('messageComponent()', function () {
               <testElement testAttribute="test">12345</testElement>
             </testRootElement>`;
         var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
-        assert.isDefined(getPathToElement({parentPath: "testRootElement", elementPosition: 1, element: "testElement", attribute: "xmlns", equals: "test"}, 'POSITION', actualMessageXmlDocument));
+        assert.isDefined(getPathToElement({parentPath: "testRootElement", elementPosition: 1, element: "testElement", attribute: "testAttribute", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
       it('should return an object where parentPathIsRootElement = true and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = 1)', function () {
@@ -364,34 +364,115 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({parentPath: "testRootElement", elementPosition: 1, element: "testElement", attribute: "testAttribute", equals: "12345"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it.skip('should return undefined where parentPathIsRootElement = true and the expected attribute does not exist for the element matched by elementPosition/element', function () {
+      it('should return undefined where parentPathIsRootElement = true and the expected attribute does not exist for the element matched by elementPosition/element', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement estAttribute="hello">12345</testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isUndefined(getPathToElement({parentPath: "testRootElement", elementPosition: 1, element: "testElement", attribute: "testAttribute", equals: "hello"}, 'POSITION', actualMessageXmlDocument));
       });
 
-
-      it.skip('should return an object where parentPathIsRootElement = false and elementPosition/element match an element (only 1 element exists under parentPath)', function () {
+      it('should return an object where parentPathIsRootElement = false and elementPosition/element match an element (only 1 element exists under parentPath)', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement>test</subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isDefined(getPathToElement({parentPath: "testElement", elementPosition: 1, element: "subTestElement", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it.skip('should return an object where parentPathIsRootElement = false and elementPosition/element/attribute match an element\'s attribute (only 1 element exists under parentPath)', function () {
+      it('should return an object where parentPathIsRootElement = false and elementPosition/element/attribute match an element\'s attribute (only 1 element exists under parentPath)', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement testAttribute="12345">test</subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isDefined(getPathToElement({parentPath: "testElement", elementPosition: 1, element: "subTestElement", attribute: "testAttribute", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it.skip('should return an object where parentPathIsRootElement = false and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = 1)', function () {
+      it('should return an object where parentPathIsRootElement = false and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = 1)', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement1 testAttribute1="12345">test</subTestElement1>
+                <subTestElement2 testAttribute2="67890">it</subTestElement2>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isDefined(getPathToElement({parentPath: "testElement", elementPosition: 1, element: "subTestElement1", attribute: "testAttribute1", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it.skip('should return an object where parentPathIsRootElement = false and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = position of last element)', function () {
+      it('should return an object where parentPathIsRootElement = false and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = position of last element)', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement1 testAttribute1="12345">test</subTestElement1>
+                <subTestElement2 testAttribute2="67890">it</subTestElement2>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isDefined(getPathToElement({parentPath: "testElement", elementPosition: 2, element: "subTestElement2", attribute: "testAttribute2", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it.skip('should return undefined where parentPathIsRootElement = false and elementPosition does not match an element', function () {
+      it('should return undefined where parentPathIsRootElement = false and elementPosition does not match an element', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement1 testAttribute1="12345">test</subTestElement1>
+                <subTestElement2 testAttribute2="67890">it</subTestElement2>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isUndefined(getPathToElement({parentPath: "testElement", elementPosition: 3, element: "subTestElement2", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it.skip('should return undefined where parentPathIsRootElement = false and element does not match the element at the position specified by elementPosition', function () {
+      it('should return undefined where parentPathIsRootElement = false and element does not match the element at the position specified by elementPosition', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement testAttribute="12345">test</subTestElement>
+                <subTestElement testAttribute="12345">test</subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isUndefined(getPathToElement({parentPath: "testElement", elementPosition: 1, element: "subTestElement1", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it.skip('should return undefined where parentPathIsRootElement = false and no attributes exist for the element matched by elementPosition/element and an attribute is expected', function () {
+      it('should return undefined where parentPathIsRootElement = false and no attributes exist for the element matched by elementPosition/element and an attribute is expected', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement>test</subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isUndefined(getPathToElement({parentPath: "testElement", elementPosition: 1, element: "subTestElement", attribute: "testAttribute", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it.skip('should return undefined where parentPathIsRootElement = false and the expected attribute does not exist for the element matched by elementPosition/element', function () {
+      it('should return undefined where parentPathIsRootElement = false and the expected attribute does not exist for the element matched by elementPosition/element', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement testAttribute1="test">test</subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isUndefined(getPathToElement({parentPath: "testElement", elementPosition: 1, element: "subTestElement", attribute: "testAttribute", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
-
     });
   });
 });
