@@ -474,6 +474,16 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({parentPath: "testElement", elementPosition: 1, element: "subTestElement", attribute: "testAttribute", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
     });
+
+    describe('type is not expected messageComponentType', function () {
+      var xml =
+        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>12345</testElement>
+            </testRootElement>`;
+      var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+      assert.throw(() => getPathToElement({path: "testRootElement", attribute: "xmlns", equals: "test"}, 'UNEXPECTED', actualMessageXmlDocument), 'Unexpected messageComponentType');
+    });
   });
 });
 
