@@ -173,30 +173,38 @@ expectedMessage types
 The following is a list of all possible types that you can use to construct an `expectedMessage`
 
 ### Element by name
-- **{path: 'path.to.element', equals: operator - see section Operators}**
-- **{path: 'path.to.element', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}**
-- **{path: 'path.to.element', contains: 'string' or integer}**
-- **{path: 'path.to.element', attribute: 'attribute name', equals: operator - see section Operators}**
-- **{path: 'path.to.element', attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}**
-- **{path: 'path.to.element', attribute: 'attribute name', contains: 'string' or integer}**
-- **{path: 'path.to.element', pathShouldNotExist: true}**
+- **{path: 'path.to.element', \<options\>}**
+
+    - equals: operator - see section Operators
+    - equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'
+    - contains: 'string' or integer
+    - attribute: 'attribute name', equals: operator - see section Operators
+    - attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'
+    - attribute: 'attribute name', contains: 'string' or integer
+    - pathShouldNotExist: true
 
 ### Element by position
-- **{parentPath: 'path to parent of child element', element: 'name of element', elementPosition: integer > 0, equals: operator - see section Operators}**
-- **{parentPath: 'path to parent of child element', element: 'name of element', elementPosition: integer > 0, equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}**
-- **{parentPath: 'path to parent of child element', element: 'name of element', elementPosition: integer > 0, contains: 'string' or integer}**
-- **{parentPath: 'path to parent of child element', element: 'name of element', elementPosition: integer > 0, attribute: 'attribute name', equals: operator - see section Operators}**
-- **{parentPath: 'path to parent of child element', element: 'name of element', elementPosition: integer > 0, attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}**
-- **{parentPath: 'path to parent of child element', element: 'name of element', elementPosition: integer > 0, attribute: 'attribute name', contains: 'string' or integer}**
+- **{parentPath: 'path to parent of child element', element: 'name of element', elementPosition: integer > 0, \<options\>}**
+where \<options\> can be:
+
+    - equals: operator - see section Operators
+    - equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'
+    - contains: 'string' or integer
+    - attribute: 'attribute name', equals: operator - see section Operators
+    - attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'
+    - attribute: 'attribute name', contains: 'string' or integer
 
 ### Repeating groups of elements
-- **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', equals: operator - see section Operators}**
-- **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}**
-- **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', contains: 'string' or integer}**
-- **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', equals: operator - see section Operators}**
-- **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}**
-- **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', contains: 'string' or integer}**
-- **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', pathShouldNotExist: true}**
+- **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', \<options\>}**
+where \<options\> can be:
+
+    - equals: operator - see section Operators
+    - equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'
+    - contains: 'string' or integer
+    - attribute: 'attribute name', equals: operator - see section Operators
+    - attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'
+    - attribute: 'attribute name', contains: 'string' or integer
+    - pathShouldNotExist: true
 
 ### {path: 'path.to.element', equals: operator - see section Operators}
 
