@@ -173,7 +173,8 @@ expectedMessage types
 The following is a list of all possible types that you can use to construct an `expectedMessage`
 
 ### Element by name
-- **{path: 'path.to.element', \<options\>}**
+- **{path: 'path.to.element', OPTIONS}**
+where **OPTIONS** can be one of the following:
 
     - equals: operator - see section Operators
     - equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'
@@ -184,8 +185,8 @@ The following is a list of all possible types that you can use to construct an `
     - pathShouldNotExist: true
 
 ### Element by position
-- **{parentPath: 'path to parent of child element', element: 'name of element', elementPosition: integer > 0, \<options\>}**
-where \<options\> can be:
+- **{parentPath: 'path to parent of child element', element: 'name of element', elementPosition: integer > 0, OPTIONS}**
+where **OPTIONS** can be one of the following:
 
     - equals: operator - see section Operators
     - equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'
@@ -195,8 +196,8 @@ where \<options\> can be:
     - attribute: 'attribute name', contains: 'string' or integer
 
 ### Repeating groups of elements
-- **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', \<options\>}**
-where \<options\> can be:
+- **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', OPTIONS}**
+where **OPTIONS** can be one of the following:
 
     - equals: operator - see section Operators
     - equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'
