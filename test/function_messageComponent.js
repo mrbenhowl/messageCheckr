@@ -475,6 +475,83 @@ describe('messageComponent()', function () {
       });
     });
 
+    describe('type is messageComponentType.REPEATING_GROUP', function () {
+
+      it('should return undefined where pathIsRootElement = true and the repeater element does not exist', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement>test</subTestElement>
+              </testElement>
+              <testElement>
+                <subTestElement>test</subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testRootElement', repeater: 'testElement1', number: 1}, path: 'subTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
+      });
+
+      it('should return undefined where pathIsRootElement = true and the repeater\'s occurrence does not exist', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement>test</subTestElement>
+              </testElement>
+              <notTestElement>
+                <subTestElement>test</subTestElement>
+              </notTestElement>
+              <testElement>
+                <subTestElement>test</subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testRootElement', repeater: 'testElement', number: 3}, path: 'subTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
+      });
+
+      it.skip('should return undefined where pathIsRootElement = true and the outer path does not exist', function () {
+
+      });
+      it.skip('should return undefined where pathIsRootElement = true and the attribute does not exist', function () {
+      });
+
+      it('should return an object where pathIsRootElement = true and there is only 1 occurrence of the repeating element pattern', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <notTestElement>
+                <subTestElement>test</subTestElement>
+              </notTestElement>
+              <testElement>
+                <subTestElement>test</subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isDefined(getPathToElement({repeatingGroup: {path: 'testRootElement', repeater: 'testElement', number: 1}, path: 'subTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
+      });
+
+      it.skip('should return an object where pathIsRootElement = true and there are multiple occurrences of the repeating element pattern and occurrence points to the last repeating pattern', function () {
+      });
+
+      it.skip('should return undefined where pathIsRootElement = false and the inner path does not exist', function () {
+      });
+      it.skip('should return undefined where pathIsRootElement = false and the repeater element does not exist', function () {
+      });
+      it.skip('should return undefined where pathIsRootElement = false and the repeater\'s occurrence does not exist', function () {
+      });
+      it.skip('should return undefined where pathIsRootElement = false and the outer path does not exist', function () {
+      });
+      it.skip('should return undefined where pathIsRootElement = false and the attribute does not exist', function () {
+      });
+
+      it.skip('should return an object where pathIsRootElement = false and there is only 1 occurrence of the repeating element pattern', function () {
+      });
+      it.skip('should return an object where pathIsRootElement = false and there are multiple occurrences of the repeating element pattern and occurrence points to the last repeating pattern', function () {
+      });
+    });
+
+
     describe('type is not expected messageComponentType', function () {
       var xml =
         `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>

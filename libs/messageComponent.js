@@ -137,8 +137,8 @@ function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocume
 
     var pathToParentElement, countOfChildElements, elementAtSpecifiedPosition;
     pathToParentElement = expectedMessageComponent.parentPath,
-    attribute = expectedMessageComponent.attribute,
-    countOfChildElements = parentPathIsRootElement ? actualMessageXmlDocument.children.length : actualMessageXmlDocument.descendantWithPath(pathToParentElement).children.length;
+      attribute = expectedMessageComponent.attribute,
+      countOfChildElements = parentPathIsRootElement ? actualMessageXmlDocument.children.length : actualMessageXmlDocument.descendantWithPath(pathToParentElement).children.length;
 
     if (countOfChildElements >= expectedMessageComponent.elementPosition) {
       var expectedPosition = expectedMessageComponent.elementPosition - 1;
@@ -155,15 +155,15 @@ function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocume
     }
 
   } else if (type === messageComponentType.REPEATING_GROUP) {
-
-    var pathToElementEnclosingRepeatingGroup, repeatingElement, pathToElementFromRepeatingElement, version, matchingGroups;
+    var pathIsRootElement, pathToElementEnclosingRepeatingGroup, repeatingElement, pathToElementFromRepeatingElement, version, matchingGroups;
 
     pathToElementEnclosingRepeatingGroup = expectedMessageComponent.repeatingGroup.path;
     repeatingElement = expectedMessageComponent.repeatingGroup.repeater;
     pathToElementFromRepeatingElement = expectedMessageComponent.path;
     version = expectedMessageComponent.repeatingGroup.number;
+    pathIsRootElement = pathToElementEnclosingRepeatingGroup === actualMessageXmlDocument.name;
 
-    matchingGroups = _(actualMessageXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children)
+    matchingGroups = _(pathIsRootElement ? actualMessageXmlDocument.children : actualMessageXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children)
       .pluck('name')
       .map(function (el, index) {
         if (el === repeatingElement) return index;
@@ -174,7 +174,9 @@ function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocume
       })
       .value();
 
-    pathToElement = actualMessageXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children[matchingGroups[version - 1]].descendantWithPath(pathToElementFromRepeatingElement);
+    if (matchingGroups.length > 0 && version <= matchingGroups.length) {
+      pathToElement = pathIsRootElement ? actualMessageXmlDocument.children[matchingGroups[version-1]].descendantWithPath(pathToElementFromRepeatingElement) : actualMessageXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children[matchingGroups[version - 1]].descendantWithPath(pathToElementFromRepeatingElement);
+    }
 
   } else {
     throw new Error('Unexpected messageComponentType')
