@@ -510,10 +510,40 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testRootElement', repeater: 'testElement', number: 3}, path: 'subTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      it.skip('should return undefined where pathIsRootElement = true and the outer path does not exist', function () {
-
+      it('should return undefined where pathIsRootElement = true and the outer path does not exist', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement>test</subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testRootElement', repeater: 'testElement', number: 1}, path: 'notSubTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
-      it.skip('should return undefined where pathIsRootElement = true and the attribute does not exist', function () {
+
+      it('should return undefined where pathIsRootElement = true and the attribute does not exist and there are no attributes', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement>test</subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testRootElement', repeater: 'testElement', number: 1}, path: 'subTestElement', attribute: 'doesNotExist', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
+      });
+
+      it('should return undefined where pathIsRootElement = true and the attribute does not exist and there are other attributes', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement notLookingForThisAttribute="test">test</subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testRootElement', repeater: 'testElement', number: 1}, path: 'subTestElement', attribute: 'doesNotExist', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
       it('should return an object where pathIsRootElement = true and there is only 1 occurrence of the repeating element pattern', function () {
@@ -531,24 +561,159 @@ describe('messageComponent()', function () {
         assert.isDefined(getPathToElement({repeatingGroup: {path: 'testRootElement', repeater: 'testElement', number: 1}, path: 'subTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      it.skip('should return an object where pathIsRootElement = true and there are multiple occurrences of the repeating element pattern and occurrence points to the last repeating pattern', function () {
+      it('should return an object where pathIsRootElement = true and there are multiple occurrences of the repeating element pattern and occurrence points to the last repeating pattern', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement>test</subTestElement>
+              </testElement>
+              <notTestElement>
+                <subTestElement>test</subTestElement>
+              </notTestElement>
+              <testElement>
+                <subTestElement>test</subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isDefined(getPathToElement({repeatingGroup: {path: 'testRootElement', repeater: 'testElement', number: 2}, path: 'subTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      it.skip('should return undefined where pathIsRootElement = false and the inner path does not exist', function () {
-      });
-      it.skip('should return undefined where pathIsRootElement = false and the repeater element does not exist', function () {
-      });
-      it.skip('should return undefined where pathIsRootElement = false and the repeater\'s occurrence does not exist', function () {
-      });
-      it.skip('should return undefined where pathIsRootElement = false and the outer path does not exist', function () {
-      });
-      it.skip('should return undefined where pathIsRootElement = false and the attribute does not exist', function () {
+      it('should return undefined where pathIsRootElement = false and the inner path does not exist', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement>
+                  <subSubTestElement>test</subSubTestElement>
+                </subTestElement>
+                <subTestElement>
+                  <subSubTestElement>test</subSubTestElement>
+                </subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isUndefined(getPathToElement({repeatingGroup: {path: 'notTestElement', repeater: 'subTestElement', number: 1}, path: 'subSubTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      it.skip('should return an object where pathIsRootElement = false and there is only 1 occurrence of the repeating element pattern', function () {
+      it('should return undefined where pathIsRootElement = false and the repeater element does not exist', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement>
+                  <subSubTestElement>test</subSubTestElement>
+                </subTestElement>
+                <subTestElement>
+                  <subSubTestElement>test</subSubTestElement>
+                </subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'notSubTestElement', number: 1}, path: 'subSubTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
-      it.skip('should return an object where pathIsRootElement = false and there are multiple occurrences of the repeating element pattern and occurrence points to the last repeating pattern', function () {
+
+      it('should return undefined where pathIsRootElement = false and the repeater\'s occurrence does not exist', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement>
+                  <subSubTestElement>test</subSubTestElement>
+                </subTestElement>
+                <subTestElement>
+                  <subSubTestElement>test</subSubTestElement>
+                </subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'subTestElement', number: 3}, path: 'subSubTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
+
+      it('should return undefined where pathIsRootElement = false and the outer path does not exist', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement>
+                  <subSubTestElement>test</subSubTestElement>
+                </subTestElement>
+                <subTestElement>
+                  <subSubTestElement>test</subSubTestElement>
+                </subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'subTestElement', number: 1}, path: 'notSubSubTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
+      });
+
+      it('should return undefined where pathIsRootElement = false and the attribute does not exist and there are no attributes', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement>
+                  <subSubTestElement>test</subSubTestElement>
+                </subTestElement>
+                <subTestElement>
+                  <subSubTestElement>test</subSubTestElement>
+                </subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'subTestElement', number: 1}, path: 'subSubTestElement', attribute: 'doesNotExist', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
+      });
+
+      it('should return undefined where pathIsRootElement = false and the attribute does not exist and there are other attributes', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement>
+                  <subSubTestElement notLookingForThisAttribute="test">test</subSubTestElement>
+                </subTestElement>
+                <subTestElement>
+                  <subSubTestElement>test</subSubTestElement>
+                </subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'subTestElement', number: 1}, path: 'subSubTestElement', attribute: 'doesNotExist', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
+      });
+
+      it('should return an object where pathIsRootElement = false and there is only 1 occurrence of the repeating element pattern', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement>
+                  <subSubTestElement>test</subSubTestElement>
+                </subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isDefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'subTestElement', number: 1}, path: 'subSubTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
+      });
+
+      it('should return an object where pathIsRootElement = false and there are multiple occurrences of the repeating element pattern and occurrence points to the last repeating pattern', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement>
+                  <subSubTestElement>test</subSubTestElement>
+                </subTestElement>
+                <subTestElement>
+                  <subSubTestElement>test</subSubTestElement>
+                </subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isDefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'subTestElement', number: 2}, path: 'subSubTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
+      });
+
+      // attribute valid for both pathIsRoot and not
+
     });
 
 

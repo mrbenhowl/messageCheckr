@@ -162,6 +162,11 @@ function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocume
     pathToElementFromRepeatingElement = expectedMessageComponent.path;
     version = expectedMessageComponent.repeatingGroup.number;
     pathIsRootElement = pathToElementEnclosingRepeatingGroup === actualMessageXmlDocument.name;
+    attribute = expectedMessageComponent.attribute;
+
+    if (!pathIsRootElement && _.isUndefined(actualMessageXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup))){
+      return undefined;
+    }
 
     matchingGroups = _(pathIsRootElement ? actualMessageXmlDocument.children : actualMessageXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children)
       .pluck('name')
@@ -176,6 +181,11 @@ function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocume
 
     if (matchingGroups.length > 0 && version <= matchingGroups.length) {
       pathToElement = pathIsRootElement ? actualMessageXmlDocument.children[matchingGroups[version-1]].descendantWithPath(pathToElementFromRepeatingElement) : actualMessageXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children[matchingGroups[version - 1]].descendantWithPath(pathToElementFromRepeatingElement);
+      if (_.has(expectedMessageComponent, 'attribute')){
+        if(!_.has(pathToElement.attr, attribute)) {
+          return undefined;
+        }
+      }
     }
 
   } else {
