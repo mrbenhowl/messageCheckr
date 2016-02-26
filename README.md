@@ -852,3 +852,4 @@ I am planning to work on the following tasks/features in the near future:
 * [Improve unit tests - more coverage (e.g. errors) and more stubbing](https://github.com/mrbenhowl/messageCheckr/issues/9)
 * [Add unit test code coverage reports](https://github.com/mrbenhowl/messageCheckr/issues/10)
 * [The ability to check <?xml version="1.0" encoding="UTF-8" standalone="yes"?> for JMS messages](https://github.com/mrbenhowl/messageCheckr/issues/12)
+* I think you should have to specify the full path including parent
