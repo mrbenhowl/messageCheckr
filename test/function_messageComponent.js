@@ -187,7 +187,7 @@ describe('messageComponent()', function () {
 
     describe('type is messageComponentType.STANDARD', function () {
 
-      it('should return an object where pathIsRootElement = true and an "attribute" is supplied and the path/attribute exist', function () {
+      it('should return an object where "path" is the root element and an "attribute" is supplied and the path/attribute exist', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -197,7 +197,7 @@ describe('messageComponent()', function () {
         assert.isDefined(getPathToElement({path: "testRootElement", attribute: "xmlns", equals: "test"}, 'STANDARD', actualMessageXmlDocument));
       });
 
-      it('should return undefined where pathIsRootElement = true and an "attribute" is supplied and the attribute does NOT exist (other attributes exist)', function () {
+      it('should return undefined where "path" is the root element and an "attribute" is supplied and the attribute does NOT exist (other attributes exist)', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -207,7 +207,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({path: "testRootElement", attribute: "doesNotExist", equals: "test"}, 'STANDARD', actualMessageXmlDocument));
       });
 
-      it('should return undefined where pathIsRootElement = true and an "attribute" is supplied and the attribute does NOT exist (no other attributes exist)', function () {
+      it('should return undefined where "path" is the root element and an "attribute" is supplied and the attribute does NOT exist (no other attributes exist)', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement>
@@ -217,7 +217,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({path: "testRootElement", attribute: "doesNotExist", equals: "test"}, 'STANDARD', actualMessageXmlDocument));
       });
 
-      it('should return an object where pathIsRootElement = false and an "attribute" is supplied and the path/attribute exist', function () {
+      it('should return an object where path is not the root element and an "attribute" is supplied and the path/attribute exist', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -227,7 +227,7 @@ describe('messageComponent()', function () {
         assert.isDefined(getPathToElement({path: "testElement", attribute: "testAttribute", equals: "test"}, 'STANDARD', actualMessageXmlDocument));
       });
 
-      it('should return undefined where pathIsRootElement = false and an "attribute" is supplied and the attribute does NOT exist (other attributes exist)', function () {
+      it('should return undefined where path is not the root element and an "attribute" is supplied and the attribute does NOT exist (other attributes exist)', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -237,7 +237,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({path: "testElement", attribute: "doesNotExist", equals: "test"}, 'STANDARD', actualMessageXmlDocument));
       });
 
-      it('should return undefined where pathIsRootElement = false and an "attribute" is supplied and the attribute does NOT exist (no other attributes exist)', function () {
+      it('should return undefined where path is not the root element and an "attribute" is supplied and the attribute does NOT exist (no other attributes exist)', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -247,7 +247,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({path: "testElement", attribute: "doesNotExist", equals: "test"}, 'STANDARD', actualMessageXmlDocument));
       });
 
-      it('should return undefined where pathIsRootElement = false and an "attribute" is supplied and the path does NOT exist', function () {
+      it('should return undefined where path is not the root element and an "attribute" is supplied and the path does NOT exist', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -257,7 +257,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({path: "doesNotExist", attribute: "testAttribute", equals: "test"}, 'STANDARD', actualMessageXmlDocument));
       });
 
-      it('should return an object where pathIsRootElement = true and the path exists', function () {
+      it('should return an object where "path" is the root element and the path exists', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -266,7 +266,7 @@ describe('messageComponent()', function () {
         assert.isDefined(getPathToElement({path: "testRootElement", equals: "test"}, 'STANDARD', actualMessageXmlDocument));
       });
 
-      it('should return an object where pathIsRootElement = false and the path exists', function () {
+      it('should return an object where path is not the root element and the path exists', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -276,7 +276,7 @@ describe('messageComponent()', function () {
         assert.isDefined(getPathToElement({path: "testElement", equals: "test"}, 'STANDARD', actualMessageXmlDocument));
       });
 
-      it('should return undefined where pathIsRootElement = false and the path does NOT exists', function () {
+      it('should return undefined where path is not the root element and the path does NOT exists', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -290,7 +290,7 @@ describe('messageComponent()', function () {
 
     describe('type is messageComponentType.POSITION', function () {
 
-      it('should return an object where parentPathIsRootElement = true and elementPosition/element match an element (only 1 element exists under parentPath)', function () {
+      it('should return an object where "parentPath" is the root element and elementPosition/element match an element (only 1 element exists under parentPath)', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -300,7 +300,7 @@ describe('messageComponent()', function () {
         assert.isDefined(getPathToElement({parentPath: "testRootElement", elementPosition: 1, element: "testElement", equals: "12345"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it('should return an object where parentPathIsRootElement = true and elementPosition/element/attribute match an element\'s attribute (only 1 element exists under parentPath)', function () {
+      it('should return an object where "parentPath" is the root element and elementPosition/element/attribute match an element\'s attribute (only 1 element exists under parentPath)', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -310,7 +310,7 @@ describe('messageComponent()', function () {
         assert.isDefined(getPathToElement({parentPath: "testRootElement", elementPosition: 1, element: "testElement", attribute: "testAttribute", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it('should return an object where parentPathIsRootElement = true and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = 1)', function () {
+      it('should return an object where "parentPath" is the root element and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = 1)', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -322,7 +322,7 @@ describe('messageComponent()', function () {
         assert.isDefined(getPathToElement({parentPath: "testRootElement", elementPosition: 1, element: "testElement", equals: "1"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it('should return an object where parentPathIsRootElement = true and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = position of last element)', function () {
+      it('should return an object where "parentPath" is the root element and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = position of last element)', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -334,7 +334,7 @@ describe('messageComponent()', function () {
         assert.isDefined(getPathToElement({parentPath: "testRootElement", elementPosition: 3, element: "testElement", equals: "3"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it('should return undefined where parentPathIsRootElement = true and elementPosition does not match an element', function () {
+      it('should return undefined where "parentPath" is the root element and elementPosition does not match an element', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -344,7 +344,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({parentPath: "testRootElement", elementPosition: 2, element: "testElement", equals: "12345"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it('should return undefined where parentPathIsRootElement = true and element does not match the element at the position specified by elementPosition', function () {
+      it('should return undefined where "parentPath" is the root element and element does not match the element at the position specified by elementPosition', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -354,7 +354,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({parentPath: "testRootElement", elementPosition: 1, element: "testElement1", equals: "12345"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it('should return undefined where parentPathIsRootElement = true and no attributes exist for the element matched by elementPosition/element and an attribute is expected', function () {
+      it('should return undefined where "parentPath" is the root element and no attributes exist for the element matched by elementPosition/element and an attribute is expected', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -364,7 +364,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({parentPath: "testRootElement", elementPosition: 1, element: "testElement", attribute: "testAttribute", equals: "12345"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it('should return undefined where parentPathIsRootElement = true and the expected attribute does not exist for the element matched by elementPosition/element', function () {
+      it('should return undefined where "parentPath" is the root element and the expected attribute does not exist for the element matched by elementPosition/element', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -374,7 +374,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({parentPath: "testRootElement", elementPosition: 1, element: "testElement", attribute: "testAttribute", equals: "hello"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it('should return an object where parentPathIsRootElement = false and elementPosition/element match an element (only 1 element exists under parentPath)', function () {
+      it('should return an object where parentpath is not the root element and elementPosition/element match an element (only 1 element exists under parentPath)', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -386,7 +386,7 @@ describe('messageComponent()', function () {
         assert.isDefined(getPathToElement({parentPath: "testElement", elementPosition: 1, element: "subTestElement", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it('should return an object where parentPathIsRootElement = false and elementPosition/element/attribute match an element\'s attribute (only 1 element exists under parentPath)', function () {
+      it('should return an object where parentpath is not the root element and elementPosition/element/attribute match an element\'s attribute (only 1 element exists under parentPath)', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -398,7 +398,7 @@ describe('messageComponent()', function () {
         assert.isDefined(getPathToElement({parentPath: "testElement", elementPosition: 1, element: "subTestElement", attribute: "testAttribute", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it('should return an object where parentPathIsRootElement = false and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = 1)', function () {
+      it('should return an object where parentpath is not the root element and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = 1)', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -411,7 +411,7 @@ describe('messageComponent()', function () {
         assert.isDefined(getPathToElement({parentPath: "testElement", elementPosition: 1, element: "subTestElement1", attribute: "testAttribute1", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it('should return an object where parentPathIsRootElement = false and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = position of last element)', function () {
+      it('should return an object where parentpath is not the root element and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = position of last element)', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -424,7 +424,7 @@ describe('messageComponent()', function () {
         assert.isDefined(getPathToElement({parentPath: "testElement", elementPosition: 2, element: "subTestElement2", attribute: "testAttribute2", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it('should return undefined where parentPathIsRootElement = false and elementPosition does not match an element', function () {
+      it('should return undefined where parentpath is not the root element and elementPosition does not match an element', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -437,7 +437,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({parentPath: "testElement", elementPosition: 3, element: "subTestElement2", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it('should return undefined where parentPathIsRootElement = false and element does not match the element at the position specified by elementPosition', function () {
+      it('should return undefined where parentpath is not the root element and element does not match the element at the position specified by elementPosition', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -450,7 +450,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({parentPath: "testElement", elementPosition: 1, element: "subTestElement1", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it('should return undefined where parentPathIsRootElement = false and no attributes exist for the element matched by elementPosition/element and an attribute is expected', function () {
+      it('should return undefined where parentpath is not the root element and no attributes exist for the element matched by elementPosition/element and an attribute is expected', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -462,7 +462,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({parentPath: "testElement", elementPosition: 1, element: "subTestElement", attribute: "testAttribute", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
-      it('should return undefined where parentPathIsRootElement = false and the expected attribute does not exist for the element matched by elementPosition/element', function () {
+      it('should return undefined where parentpath is not the root element and the expected attribute does not exist for the element matched by elementPosition/element', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -477,7 +477,7 @@ describe('messageComponent()', function () {
 
     describe('type is messageComponentType.REPEATING_GROUP', function () {
 
-      it('should return undefined where pathIsRootElement = true and the repeater element does not exist', function () {
+      it('should return undefined where "path" is the root element and the repeater element does not exist', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -492,7 +492,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testRootElement', repeater: 'testElement1', number: 1}, path: 'subTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      it('should return undefined where pathIsRootElement = true and the repeater\'s occurrence does not exist', function () {
+      it('should return undefined where "path" is the root element and the repeater\'s occurrence does not exist', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -510,7 +510,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testRootElement', repeater: 'testElement', number: 3}, path: 'subTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      it('should return undefined where pathIsRootElement = true and the outer path does not exist', function () {
+      it('should return undefined where "path" is the root element and the outer path does not exist', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -522,7 +522,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testRootElement', repeater: 'testElement', number: 1}, path: 'notSubTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      it('should return undefined where pathIsRootElement = true and the attribute does not exist and there are no attributes', function () {
+      it('should return undefined where "path" is the root element and the attribute does not exist and there are no attributes', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -534,7 +534,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testRootElement', repeater: 'testElement', number: 1}, path: 'subTestElement', attribute: 'doesNotExist', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      it('should return undefined where pathIsRootElement = true and the attribute does not exist and there are other attributes', function () {
+      it('should return undefined where "path" is the root element and the attribute does not exist and there are other attributes', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -546,7 +546,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testRootElement', repeater: 'testElement', number: 1}, path: 'subTestElement', attribute: 'doesNotExist', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      it('should return an object where pathIsRootElement = true and there is only 1 occurrence of the repeating element pattern', function () {
+      it('should return an object where "path" is the root element and there is only 1 occurrence of the repeating element pattern', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -561,7 +561,7 @@ describe('messageComponent()', function () {
         assert.isDefined(getPathToElement({repeatingGroup: {path: 'testRootElement', repeater: 'testElement', number: 1}, path: 'subTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      it('should return an object where pathIsRootElement = true and there are multiple occurrences of the repeating element pattern and occurrence points to the last repeating pattern', function () {
+      it('should return an object where "path" is the root element and there are multiple occurrences of the repeating element pattern and occurrence points to the last repeating pattern', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -579,7 +579,22 @@ describe('messageComponent()', function () {
         assert.isDefined(getPathToElement({repeatingGroup: {path: 'testRootElement', repeater: 'testElement', number: 2}, path: 'subTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      it('should return undefined where pathIsRootElement = false and the inner path does not exist', function () {
+      it('should return an object where "path" is the root element and the attribute exists at the repeating pattern position specified', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                  <subTestElement testAttribute1="test">test</subTestElement>
+              </testElement>
+              <testElement>
+                  <subTestElement testAttribute2="test">test</subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isDefined(getPathToElement({repeatingGroup: {path: 'testRootElement', repeater: 'testElement', number: 1}, path: 'subTestElement', attribute: 'testAttribute1', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
+      });
+
+      it('should return undefined where "path" is not the root element and the inner path does not exist', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -596,7 +611,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({repeatingGroup: {path: 'notTestElement', repeater: 'subTestElement', number: 1}, path: 'subSubTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      it('should return undefined where pathIsRootElement = false and the repeater element does not exist', function () {
+      it('should return undefined where "path" is not the root element and the repeater element does not exist', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -613,7 +628,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'notSubTestElement', number: 1}, path: 'subSubTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      it('should return undefined where pathIsRootElement = false and the repeater\'s occurrence does not exist', function () {
+      it('should return undefined where "path" is not the root element and the repeater\'s occurrence does not exist', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -630,7 +645,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'subTestElement', number: 3}, path: 'subSubTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      it('should return undefined where pathIsRootElement = false and the outer path does not exist', function () {
+      it('should return undefined where "path" is not the root element and the outer path does not exist', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -647,7 +662,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'subTestElement', number: 1}, path: 'notSubSubTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      it('should return undefined where pathIsRootElement = false and the attribute does not exist and there are no attributes', function () {
+      it('should return undefined where "path" is not the root element and the attribute does not exist and there are no attributes', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -664,7 +679,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'subTestElement', number: 1}, path: 'subSubTestElement', attribute: 'doesNotExist', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      it('should return undefined where pathIsRootElement = false and the attribute does not exist and there are other attributes', function () {
+      it('should return undefined where "path" is not the root element and the attribute does not exist and there are other attributes', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -681,7 +696,7 @@ describe('messageComponent()', function () {
         assert.isUndefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'subTestElement', number: 1}, path: 'subSubTestElement', attribute: 'doesNotExist', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      it('should return an object where pathIsRootElement = false and there is only 1 occurrence of the repeating element pattern', function () {
+      it('should return an object where "path" is not the root element and there is only 1 occurrence of the repeating element pattern', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -695,7 +710,7 @@ describe('messageComponent()', function () {
         assert.isDefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'subTestElement', number: 1}, path: 'subSubTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      it('should return an object where pathIsRootElement = false and there are multiple occurrences of the repeating element pattern and occurrence points to the last repeating pattern', function () {
+      it('should return an object where "path" is not the root element and there are multiple occurrences of the repeating element pattern and occurrence points to the last repeating pattern', function () {
         var xml =
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -712,11 +727,24 @@ describe('messageComponent()', function () {
         assert.isDefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'subTestElement', number: 2}, path: 'subSubTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
-      // attribute valid for both pathIsRoot and not
-
+      it('should return an object where "path" is not the root element and the attribute exists at the repeating pattern position specified', function () {
+        var xml =
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <testRootElement xmlns="http://www.testing.com/integration/event">
+              <testElement>
+                <subTestElement>
+                  <subSubTestElement testAttribute1="test">test</subSubTestElement>
+                </subTestElement>
+                <subTestElement>
+                  <subSubTestElement testAttribute2="test">test</subSubTestElement>
+                </subTestElement>
+              </testElement>
+            </testRootElement>`;
+        var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
+        assert.isDefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'subTestElement', number: 1}, path: 'subSubTestElement', attribute: 'testAttribute1', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
+      });
     });
-
-
+    
     describe('type is not expected messageComponentType', function () {
       var xml =
         `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
