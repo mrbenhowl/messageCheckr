@@ -2,18 +2,18 @@ var messageComponentType = require('./messageComponentType');
 
 var messageComponent = function (expectedMessageComponent, actualMessageXmlDocument) {
 
-  var type, expected, actualValue, printablePath, pathToTarget, pathExists;
+  var type, expected, actualValue, printablePath, pathToElement, pathExists;
 
   var result = validate(expectedMessageComponent);
   type = result.type;
   expected = result.expected;
 
-  pathToTarget = getPathToElement(expectedMessageComponent, type, actualMessageXmlDocument);
-  pathExists = !_.isUndefined(pathToTarget);
+  pathToElement = getPathToElement(expectedMessageComponent, type, actualMessageXmlDocument);
+  pathExists = !_.isUndefined(pathToElement);
   printablePath = determinePrintablePath(expectedMessageComponent, type);
 
   if (pathExists) {
-    actualValue = getValueAtPath(pathToTarget, type);
+    actualValue = getValueAtPath(pathToElement, type);
   }
 
   return {
@@ -82,7 +82,8 @@ function validate(expectedMessageComponent) {
       || _.isEqual(expectedMessageComponentKeys, ['contains', 'element', 'elementPosition', 'parentPath'])
       || _.isEqual(expectedMessageComponentKeys, ['attribute', 'element', 'elementPosition', 'equals', 'parentPath'])
       || _.isEqual(expectedMessageComponentKeys, ['attribute', 'dateFormat', 'element', 'elementPosition', 'equals', 'parentPath'])
-      || _.isEqual(expectedMessageComponentKeys, ['attribute', 'contains', 'element', 'elementPosition', 'parentPath'])) {
+      || _.isEqual(expectedMessageComponentKeys, ['attribute', 'contains', 'element', 'elementPosition', 'parentPath'])
+      || _.isEqual(expectedMessageComponentKeys, ['element', 'elementPosition', 'parentPath', 'pathShouldNotExist'])) {
 
       if (!Number.isInteger(expectedMessageComponent.elementPosition)) throw new Error('elementPosition should be an integer');
       if (expectedMessageComponent.elementPosition < 1) throw new Error('elementPosition should be greater than 0');
@@ -199,6 +200,6 @@ function getValueAtPath(pathToTarget, type) {
   throw new Error('to be implemented');
 }
 
-function determinePrintablePath(expectedMessageComponent, type) {
-  throw new Error('to be implemented')
+function determinePrintablePath(expectedMessageComponent) {
+  return _.omit(expectedMessageComponent, ['equals', 'attribute', 'dateFormat', 'contains', 'pathShouldNotExist']);
 }

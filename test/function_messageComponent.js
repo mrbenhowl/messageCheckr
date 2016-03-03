@@ -6,6 +6,53 @@ var rewire = require('rewire'),
 
 describe('messageComponent()', function () {
 
+  describe('determinePrintablePath()', function(){
+
+    var determinePrintablePath = messageComponent.__get__('determinePrintablePath');
+
+    it('should remove attribute "pathShouldNotExist" from expectedMessageComponent', function(){
+      assert.deepEqual(determinePrintablePath({path: "a", pathShouldNotExist: "b"}), {path: "a"});
+      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", pathShouldNotExist: "e"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d"});
+      assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", pathShouldNotExist: "d"}), {parentPath: "a", element: "b", elementPosition: "c"});
+    });
+
+    it('should remove attribute "equals" from expectedMessageComponent', function(){
+      assert.deepEqual(determinePrintablePath({path: "a", equals: "b"}), {path: "a"});
+      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", equals: "e"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d"});
+      assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", equals: "d"}), {parentPath: "a", element: "b", elementPosition: "c"});
+    });
+
+    it('should remove attribute "contains" from expectedMessageComponent', function(){
+      assert.deepEqual(determinePrintablePath({path: "a", contains: "b"}), {path: "a"});
+      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", contains: "e"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d"});
+      assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", contains: "d"}), {parentPath: "a", element: "b", elementPosition: "c"});
+    });
+
+    it('should remove attributes "attribute" and "equals" from expectedMessageComponent', function(){
+      assert.deepEqual(determinePrintablePath({path: "a", attribute: "b", equals: "c"}), {path: "a"});
+      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e", equals: "f"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d"});
+      assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", attribute: "d", equals: "e"}), {parentPath: "a", element: "b", elementPosition: "c"});
+    });
+
+    it('should remove attributes "attribute" and "contains" from expectedMessageComponent', function(){
+      assert.deepEqual(determinePrintablePath({path: "a", attribute: "b", contains: "c"}), {path: "a"});
+      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e", contains: "f"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d"});
+      assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", attribute: "d", contains: "e"}), {parentPath: "a", element: "b", elementPosition: "c"});
+    });
+
+    it('should remove attributes "equals" and "dateFormat" from expectedMessageComponent', function(){
+      assert.deepEqual(determinePrintablePath({path: "a", equals: "b", dateFormat: "c"}), {path: "a"});
+      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", equals: "e", dateFormat: "f"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d"});
+      assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", equals: "d", dateFormat: "e"}), {parentPath: "a", element: "b", elementPosition: "c"});
+    });
+
+    it('should remove attributes "attribute", "equals" and "dateFormat" from expectedMessageComponent', function(){
+      assert.deepEqual(determinePrintablePath({path: "a", attribute: "b", equals: "c", dateFormat: "d"}), {path: "a"});
+      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e", equals: "f", dateFormat: "g"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d"});
+      assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", attribute: "d", equals: "e", dateFormat: "f"}), {parentPath: "a", element: "b", elementPosition: "c"});
+    });
+  });
+
   describe('validate()', function () {
 
     var validate = messageComponent.__get__('validate');
@@ -128,6 +175,10 @@ describe('messageComponent()', function () {
 
     it('should return {type: messageComponentType.POSITION, expected: {attribute: "d", contains: "e"}} when "expectedMessageComponent" is {parentPath: "a", element: "b", elementPosition: "c", attribute: "d", contains: "e"}', function () {
       assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: 1, attribute: "d", contains: "e"}), {type: messageComponentType.POSITION, expected: {attribute: "d", contains: "e"}});
+    });
+
+    it('should return {type: messageComponentType.POSITION, expected: {attribute: "d", contains: "e"}} when "expectedMessageComponent" is {parentPath: "a", element: "b", elementPosition: "c", pathShouldNotExist: "d"}', function () {
+      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: 1, pathShouldNotExist: "d"}), {type: messageComponentType.POSITION, expected: {pathShouldNotExist: "d"}});
     });
 
     it('should throw an error when "elementPosition" is NAN', function () {

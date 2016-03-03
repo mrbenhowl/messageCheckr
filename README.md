@@ -194,6 +194,7 @@ where **OPTIONS** can be one of the following:
     - attribute: 'attribute name', equals: operator - see section Operators
     - attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'
     - attribute: 'attribute name', contains: 'string' or integer
+    - pathShouldNotExist: true
 
 ### Repeating groups of elements
 - **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', OPTIONS}**
