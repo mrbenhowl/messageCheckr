@@ -13,7 +13,7 @@ var messageComponent = function (expectedMessageComponent, actualMessageXmlDocum
   printablePath = determinePrintablePath(expectedMessageComponent, type);
 
   if (pathExists) {
-    actualValue = getValueAtPath(pathToElement, type);
+    actualValue = getValueAtPath(pathToElement, expectedMessageComponent.attribute);
   }
 
   return {
@@ -196,8 +196,12 @@ function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocume
   return pathToElement;
 }
 
-function getValueAtPath(pathToTarget, type) {
-  throw new Error('to be implemented');
+function getValueAtPath(pathToElement, attribute) {
+  if (attribute){
+    return pathToElement.attr[attribute];
+  }else{
+    return pathToElement.val;
+  }
 }
 
 function determinePrintablePath(expectedMessageComponent) {
