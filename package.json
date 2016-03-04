@@ -33,8 +33,6 @@
     "chai-things": "0.2.0",
     "mocha": "2.3.3",
     "rewire": "2.3.4",
-    "sinon": "1.17.2",
-    "sinon-chai": "2.8.0",
     "winston": "1.1.0"
   }
 }
