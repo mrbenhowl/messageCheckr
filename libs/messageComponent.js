@@ -40,11 +40,6 @@ module.exports = messageComponent;
 
 function validate(expectedMessageComponent) {
 
-
-  //
-  //if (!Number.isInteger(el.elementPosition)) throw new Error('elementPosition should be an integer');
-  //if (el.elementPosition < 1) throw new Error('elementPosition should be greater than 0');
-
   if (_.isNull(expectedMessageComponent) ||
     _.isArray(expectedMessageComponent) ||
     _.isString(expectedMessageComponent) ||

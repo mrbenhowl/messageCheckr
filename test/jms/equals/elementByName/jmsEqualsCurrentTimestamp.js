@@ -2,7 +2,7 @@ var moment = require('moment');
 
 describe('jms - timestamp check', function () {
 
-  it('should throw an error where the dateFormat attribute is missing and equals attributes contains local-timezone', function () {
+  it('should throw an error where the dateFormat attribute is missing and equals attribute contains local-timezone', function () {
     var currentDateTimeLocal, actualMsg;
     currentDateTimeLocal = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ');
     actualMsg = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>

@@ -251,8 +251,6 @@ var assertions = {
   timestampCheck: function timestampCheck(path, actualValue, regexPattern, timezone, dateFormat) {
     var currentDate, regexObj;
 
-    //TODO: can the undefined check be done in validate
-
     if (_.isUndefined(dateFormat)) {
       throw new Error('Expected additional attribute \'dateFormat\' when local-timezone or utc-timezone is present in a regex literal for \'equals\'');
     }
@@ -262,7 +260,6 @@ var assertions = {
     } else if (timezone === 'utc-timezone') {
       currentDate = moment().utc().format(dateFormat);
     } else {
-      // TODO: no unit test yet
       throw new Error('A valid timezone has not been specified - valid values are \'local-timezone\' and \'utc-timezone\'');
     }
 
