@@ -20,12 +20,12 @@ describe('soap - equals value check', function() {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'hello',
       expected: 'hello',
       description: 'Check actual value hello is equal to hello',
       pass: true,
-      path: 'SOAP-ENV:Body.checkJustTheValue'
+      path: {path: 'SOAP-ENV:Body.checkJustTheValue'}
     });
   });
 });

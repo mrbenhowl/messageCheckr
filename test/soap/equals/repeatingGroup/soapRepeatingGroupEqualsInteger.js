@@ -32,38 +32,38 @@ describe('jms - repeating element equals integer', function() {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 10001,
       description: "Check actual value 10001 is equal to 10001",
       expected: 10001,
       pass: true,
-      path: 'SOAP-ENV:Body.thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 1'
+      path: {repeatingGroup: {path: 'SOAP-ENV:Body.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup'}
       
     });
 
-    assert.deepEqual(result.checks[4], {
+    assert.deepEqual(result.checks[2], {
       actual: 10003,
       description: "Check actual value 10003 is equal to 10003",
       expected: 10003,
       pass: true,
-      path: 'SOAP-ENV:Body.thingContainingRepeatingGroups.RepeatingGroup.fieldTwoOfRepeatingGroup number: 1'
+      path: {repeatingGroup: {path: 'SOAP-ENV:Body.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup'}
 
     });
 
-    assert.deepEqual(result.checks[6], {
+    assert.deepEqual(result.checks[3], {
       actual: 10002,
       description: "Check actual value 10002 is equal to 10002",
       expected: 10002,
       pass: true,
-      path: 'SOAP-ENV:Body.thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 2'
+      path: {repeatingGroup: {path: 'SOAP-ENV:Body.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup'}
     });
 
-    assert.deepEqual(result.checks[8], {
+    assert.deepEqual(result.checks[4], {
       actual: 10004,
       description: "Check actual value 10004 is equal to 10004",
       expected: 10004,
       pass: true,
-      path: 'SOAP-ENV:Body.thingContainingRepeatingGroups.RepeatingGroup.fieldTwoOfRepeatingGroup number: 2'
+      path: {repeatingGroup: {path: 'SOAP-ENV:Body.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup'}
     });
   });
 });

@@ -70,10 +70,10 @@ describe('jms - timestamp check', function () {
     });
 
     assert.equal(result.allChecksPassed, false);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: tomorrowDateTimeLocal,
       expected: dateRegexPattern + ' where local-timezone has the date format YYYY-MM-DD',
-      path: 'dateElement',
+      path: {path: 'dateElement'},
       description: 'Check actual value ' + tomorrowDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('local-timezone', currentDate),
       pass: false
     });
@@ -101,10 +101,10 @@ describe('jms - timestamp check', function () {
     });
 
     assert.equal(result.allChecksPassed, false);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: tomorrowDateTimeLocal,
       expected: dateRegexPattern + ' where utc-timezone has the date format YYYY-MM-DD',
-      path: 'dateElement',
+      path: {path: 'dateElement'},
       description: 'Check actual value ' + tomorrowDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('utc-timezone', currentDate),
       pass: false
     });
@@ -133,10 +133,10 @@ describe('jms - timestamp check', function () {
     });
 
     assert.equal(result.allChecksPassed, false);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: dateRegexPattern + ' where local-timezone has the date format YYYY-MM-DD',
-      path: 'dateElement',
+      path: {path: 'dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('local-timezone', currentDate),
       pass: false
     });
@@ -164,10 +164,10 @@ describe('jms - timestamp check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: dateRegexPattern + ' where local-timezone has the date format YYYY-MM-DD',
-      path: 'dateElement',
+      path: {path: 'dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('local-timezone', currentDate),
       pass: true
     });
@@ -195,10 +195,10 @@ describe('jms - timestamp check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: dateRegexPattern + ' where utc-timezone has the date format YYYY-MM-DD',
-      path: 'dateElement',
+      path: {path: 'dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('utc-timezone', currentDate),
       pass: true
     });
@@ -226,10 +226,10 @@ describe('jms - timestamp check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: dateRegexPattern + ' where local-timezone has the date format YY-MM-DD',
-      path: 'dateElement',
+      path: {path: 'dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('local-timezone', currentDate),
       pass: true
     });
@@ -257,10 +257,10 @@ describe('jms - timestamp check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: dateRegexPattern + ' where utc-timezone has the date format YY-MM-DD',
-      path: 'dateElement',
+      path: {path: 'dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('utc-timezone', currentDate),
       pass: true
     });
@@ -288,10 +288,10 @@ describe('jms - timestamp check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: dateRegexPattern + ' where local-timezone has the date format D-M-YYYY',
-      path: 'dateElement',
+      path: {path: 'dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('local-timezone', currentDate),
       pass: true
     });
@@ -319,10 +319,10 @@ describe('jms - timestamp check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: dateRegexPattern + ' where utc-timezone has the date format D-M-YYYY',
-      path: 'dateElement',
+      path: {path: 'dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('utc-timezone', currentDate),
       pass: true
     });
@@ -350,10 +350,10 @@ describe('jms - timestamp check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: dateRegexPattern + ' where local-timezone has the date format Do MMM YYYY',
-      path: 'dateElement',
+      path: {path: 'dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('local-timezone', currentDate),
       pass: true
     });
@@ -381,10 +381,10 @@ describe('jms - timestamp check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: dateRegexPattern + ' where utc-timezone has the date format Do MMM YYYY',
-      path: 'dateElement',
+      path: {path: 'dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('utc-timezone', currentDate),
       pass: true
     });
@@ -412,10 +412,10 @@ describe('jms - timestamp check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: dateRegexPattern + ' where local-timezone has the date format Mo/YYYY',
-      path: 'dateElement',
+      path: {path: 'dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + '/' + dateRegexPattern.toString().replace('local-timezone', currentDate).slice(1, -1).replace(/\//g, "\\/") + '/',
       pass: true
     });
@@ -443,10 +443,10 @@ describe('jms - timestamp check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: dateRegexPattern + ' where utc-timezone has the date format Mo/YYYY',
-      path: 'dateElement',
+      path: {path: 'dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + '/' + dateRegexPattern.toString().replace('utc-timezone', currentDate).slice(1, -1).replace(/\//g, "\\/") + '/',
       pass: true
     });
@@ -474,10 +474,10 @@ describe('jms - timestamp check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: dateRegexPattern + ' where local-timezone has the date format MMMM/YYYY',
-      path: 'dateElement',
+      path: {path: 'dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + '/' + dateRegexPattern.toString().replace('local-timezone', currentDate).slice(1, -1).replace(/\//g, "\\/") + '/',
       pass: true
     });
@@ -505,10 +505,10 @@ describe('jms - timestamp check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: dateRegexPattern + ' where utc-timezone has the date format MMMM/YYYY',
-      path: 'dateElement',
+      path: {path: 'dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + '/' + dateRegexPattern.toString().replace('utc-timezone', currentDate).slice(1, -1).replace(/\//g, "\\/") + '/',
       pass: true
     });

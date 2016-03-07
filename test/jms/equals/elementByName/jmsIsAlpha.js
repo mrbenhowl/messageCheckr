@@ -21,12 +21,12 @@ describe('jms - is alpha check', function() {
     });
 
     assert.equal(result.allChecksPassed, false);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: "1",
       description: "Check actual value 1 is alpha",
       expected: "{alpha}",
       pass: false,
-      path: "integerField"
+      path: {path: 'integerField'}
     });
   });
 
@@ -43,12 +43,12 @@ describe('jms - is alpha check', function() {
     });
 
     assert.equal(result.allChecksPassed, false);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: "ab1c",
       expected: "{alpha}",
       description: "Check actual value ab1c is alpha",
       pass: false,
-      path: "mixedNumberAndAlphabeticalField"
+      path: {path: 'mixedNumberAndAlphabeticalField'}
     });
   });
 
@@ -65,12 +65,12 @@ describe('jms - is alpha check', function() {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: "abc",
       expected: "{alpha}",
       description: "Check actual value abc is alpha",
       pass: true,
-      path: "lettersOnlyField"
+      path: {path: 'lettersOnlyField'}
     });
   });
 
@@ -87,12 +87,12 @@ describe('jms - is alpha check', function() {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: "z",
       expected: "{alpha}",
       description: "Check actual value z is alpha",
       pass: true,
-      path: "oneLetterField"
+      path: {path: 'oneLetterField'}
     });
   });
 });

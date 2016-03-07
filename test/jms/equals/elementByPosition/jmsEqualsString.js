@@ -19,12 +19,12 @@ describe('element by position / jms - equals value check', function () {
     });
 
     assert.equal(result.allChecksPassed, false);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'hello',
       expected: 'helloo',
       description: 'Check actual value hello is equal to helloo',
       pass: false,
-      path: 'testRootElement.checkJustTheValue (element position: 1)'
+      path: {parentPath: 'testRootElement', element: 'checkJustTheValue', elementPosition: 1}
     });
   });
 
@@ -41,12 +41,12 @@ describe('element by position / jms - equals value check', function () {
     });
 
     assert.equal(result.allChecksPassed, false);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: '',
       expected: 'something',
       description: 'Check actual value  is equal to something',
       pass: false,
-      path: 'testRootElement.emptyElement (element position: 2)'
+      path: {parentPath: 'testRootElement', element: 'emptyElement', elementPosition: 2}
     });
   });
 
@@ -63,12 +63,12 @@ describe('element by position / jms - equals value check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'hello',
       expected: 'hello',
       description: 'Check actual value hello is equal to hello',
       pass: true,
-      path: 'testRootElement.checkJustTheValue (element position: 1)'
+      path: {parentPath: 'testRootElement', element: 'checkJustTheValue', elementPosition: 1}
     });
   });
 
@@ -85,12 +85,12 @@ describe('element by position / jms - equals value check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: '',
       expected: '',
       description: 'Check actual value  is equal to ',
       pass: true,
-      path: 'testRootElement.emptyElement (element position: 2)'
+      path: {parentPath: 'testRootElement', element: 'emptyElement', elementPosition: 2}
     });
   });
 });

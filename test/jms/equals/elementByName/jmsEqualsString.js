@@ -19,12 +19,12 @@ describe('jms - equals value check', function () {
     });
 
     assert.equal(result.allChecksPassed, false);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'hello',
       expected: 'helloo',
       description: 'Check actual value hello is equal to helloo',
       pass: false,
-      path: 'checkJustTheValue'
+      path: {path: 'checkJustTheValue'}
     });
   });
 
@@ -41,12 +41,12 @@ describe('jms - equals value check', function () {
     });
 
     assert.equal(result.allChecksPassed, false);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: '',
       expected: 'something',
       description: 'Check actual value  is equal to something',
       pass: false,
-      path: 'emptyElement'
+      path: {path: 'emptyElement'}
     });
   });
 
@@ -63,12 +63,12 @@ describe('jms - equals value check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'hello',
       expected: 'hello',
       description: 'Check actual value hello is equal to hello',
       pass: true,
-      path: 'checkJustTheValue'
+      path: {path: 'checkJustTheValue'}
     });
   });
 
@@ -85,12 +85,12 @@ describe('jms - equals value check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: '',
       expected: '',
       description: 'Check actual value  is equal to ',
       pass: true,
-      path: 'emptyElement'
+      path: {path: 'emptyElement'}
     });
   });
 });

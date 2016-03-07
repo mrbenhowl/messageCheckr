@@ -6,73 +6,6 @@ describe('jms - path checks', function () {
     </subRootLevel>
   </testRootElement>`;
 
-  it('should report a path is present where the specified path does exist', function () {
-    var expectedMessage = [
-      {path: 'subRootLevel.field', equals: 'checkingPathIsPresent'}
-    ];
-
-    var result = messageCheckr({
-      type: 'jms',
-      actualMsg: actualMsg,
-      expectedMsg: expectedMessage,
-      expectedRootElement: 'testRootElement'
-    });
-
-    assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[1], {
-      actual: true,
-      expected: true,
-      path: 'subRootLevel.field',
-      description: 'Check existence of path: subRootLevel.field',
-      pass: true
-    });
-  });
-
-  it('should report a path to an attribute is present where the specified path does exist', function () {
-    //TODO: attribute path check could get a better message
-    var expectedMessage = [
-      {path: 'testRootElement', attribute: 'xmlns', equals: 'http://www.testing.com/integration/event'}
-    ];
-
-    var result = messageCheckr({
-      type: 'jms',
-      actualMsg: actualMsg,
-      expectedMsg: expectedMessage,
-      expectedRootElement: 'testRootElement'
-    });
-
-    assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[1], {
-      actual: true,
-      expected: true,
-      path: 'testRootElement (attribute: xmlns)',
-      description: 'Check existence of path: testRootElement (attribute: xmlns)',
-      pass: true
-    });
-  });
-
-  it('should report the root path is present where the expectedRootElement does exist', function () {
-    var expectedMessage = [
-      {path: 'subRootLevel.field', equals: 'checkingPathIsPresent'}
-    ];
-
-    var result = messageCheckr({
-      type: 'jms',
-      actualMsg: actualMsg,
-      expectedMsg: expectedMessage,
-      expectedRootElement: 'testRootElement'
-    });
-
-    assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[0], {
-      actual: "testRootElement",
-      expected: "testRootElement",
-      description: 'Check actual root element testRootElement is equal to expected root element testRootElement',
-      pass: true,
-      path: 'testRootElement'
-    });
-  });
-
   it('should report a path is not present where the specified path does not exist', function () {
     var expectedMessage = [
       {path: 'subRootLevel.fieldDoesNotExist', equals: 'checkingPathIsPresent'}
@@ -87,10 +20,8 @@ describe('jms - path checks', function () {
 
     assert.equal(result.allChecksPassed, false);
     assert.deepEqual(result.checks[1], {
-      actual: false,
-      expected: true,
-      path: 'subRootLevel.fieldDoesNotExist',
-      description: 'Check existence of path: subRootLevel.fieldDoesNotExist',
+      path: {path: 'subRootLevel.fieldDoesNotExist'},
+      description: 'Check path does exist',
       pass: false
     });
   });
@@ -110,10 +41,8 @@ describe('jms - path checks', function () {
 
     assert.equal(result.allChecksPassed, false);
     assert.deepEqual(result.checks[1], {
-      actual: false,
-      expected: true,
-      path: 'testRootElement (attribute: wrong)',
-      description: 'Check existence of path: testRootElement (attribute: wrong)',
+      path: {path: 'testRootElement', attribute: 'wrong'},
+      description: 'Check path does exist',
       pass: false
     });
   });

@@ -2,78 +2,89 @@ var _ = require('lodash'),
   moment = require('moment'),
   validator = require('validator'),
   verificationResults = require('./verificationResults'),
-  getFullPath = require('./getFullPath'),
   store = require('./store');
 
 var assertions = {
 
   verifyMessageComponent: function verifyMessageComponent(messageComponent) {
 
-    verificationResults.add(
-      {
-        pass: _.isUndefined(messageComponent.getExpected().pathShouldNotExist) === messageComponent.isPathPresent(),
-        path: getFullPath(messageComponent),
-        actual: messageComponent.isPathPresent(),
-        expected: _.isUndefined(messageComponent.getExpected().pathShouldNotExist),
-        description: 'Check existence of path: ' + getFullPath(messageComponent)
-      }
-    );
-
-    if (_.isUndefined(messageComponent.getExpected().pathShouldNotExist)){
-      if (_.has(messageComponent.getExpected(), 'equals')) {
-        var actualValue = messageComponent.getActualValue();
-        var expectedValue = messageComponent.getExpected().equals;
-
-        if (Number.isInteger(expectedValue)) {
-          verificationResults.add(
-            {
-              pass: parseInt(actualValue) === expectedValue,
-              path: getFullPath(messageComponent),
-              actual: parseInt(actualValue),
-              expected: expectedValue,
-              description: 'Check actual value ' + actualValue + ' is equal to ' + expectedValue
-            }
-          );
-        } else if (_.isRegExp(expectedValue)) {
-
-          if (expectedValue.toString().indexOf('local-timezone') != -1) {
-            this.timestampCheck(getFullPath(messageComponent), actualValue, expectedValue, 'local-timezone', messageComponent.getExpected().dateFormat);
-          } else if (expectedValue.toString().indexOf('utc-timezone') != -1) {
-            this.timestampCheck(getFullPath(messageComponent), actualValue, expectedValue, 'utc-timezone', messageComponent.getExpected().dateFormat);
-          } else {
-            this.regexCheck(getFullPath(messageComponent), actualValue, expectedValue);
-          }
-        } else if (expectedValue.match(/^\{store\(.*\)}$/) != null) {
-          var storeName = expectedValue.match(/\(([^)]+)\)/)[1];
-          if (!/^[a-zA-Z]+$/.test(storeName)) {
-            throw new Error('Store name \'' + storeName + '\' is only allowed to consist of characters.')
-          }
-          store.add(storeName, actualValue);
-        } else if (expectedValue.match(/^\{matches\([a-zA-Z]*\)}$/) != null) {
-          var storeName = expectedValue.match(/\(([^)]+)\)/)[1];
-          this.storeCheck(getFullPath(messageComponent), storeName, actualValue);
-        } else if (expectedValue.match(/^\{uuid}$/) != null) {
-          this.uuidCheck(getFullPath(messageComponent), actualValue);
-        } else if (expectedValue.match(/^\{alphanumeric}$/) != null) {
-          this.isAlphanumericCheck(getFullPath(messageComponent), actualValue);
-        } else if (expectedValue.match(/^\{alpha}$/) != null) {
-          this.isAlphaCheck(getFullPath(messageComponent), actualValue);
-        } else if (expectedValue.match(/^\{integer}$/) != null) {
-          this.isInteger(getFullPath(messageComponent), actualValue);
-        } else if (expectedValue.match(/^\{length\(<\d+\)\}$/) != null) {
-          this.lessThanLengthCheck(getFullPath(messageComponent), actualValue, parseInt(expectedValue.match(/\d+/)[0]));
-        } else if (expectedValue.match(/^\{length\(>\d+\)\}$/) != null) {
-          this.greaterThanLengthCheck(getFullPath(messageComponent), actualValue, parseInt(expectedValue.match(/\d+/)[0]));
-        } else if (expectedValue.match(/^\{length\(\d+\)\}$/) != null) {
-          this.equalLengthCheck(getFullPath(messageComponent), actualValue, parseInt(expectedValue.match(/\d+/)[0]));
-        } else {
-          this.equalsCheck(getFullPath(messageComponent), actualValue, expectedValue);
+    if (messageComponent.getExpected().pathShouldNotExist) {
+      verificationResults.add(
+        {
+          pass: !messageComponent.isPathPresent(),
+          path: messageComponent.getPrintablePath(),
+          description: 'Check path does not exist'
         }
+      );
+    } else {
 
-      } else if (_.has(messageComponent.getExpected(), 'contains')) {
-        this.containsCheck(getFullPath(messageComponent), messageComponent.getActualValue(), messageComponent.getExpected().contains);
+      if (!messageComponent.isPathPresent()) {
+        verificationResults.add(
+          {
+            pass: messageComponent.isPathPresent(),
+            path: messageComponent.getPrintablePath(),
+            description: 'Check path does exist'
+          }
+        );
       } else {
-        throw new Error('I have not accounted for something, whoops!');
+        var printablePath = messageComponent.getPrintablePath(),
+          actualValue = messageComponent.getActualValue();
+
+
+        if (_.has(messageComponent.getExpected(), 'equals')) {
+          var expectedValue = messageComponent.getExpected().equals;
+
+          if (Number.isInteger(expectedValue)) {
+            verificationResults.add(
+              {
+                pass: parseInt(actualValue) === expectedValue,
+                path: printablePath,
+                actual: parseInt(actualValue),
+                expected: expectedValue,
+                description: 'Check actual value ' + actualValue + ' is equal to ' + expectedValue
+              }
+            );
+          } else if (_.isRegExp(expectedValue)) {
+
+            if (expectedValue.toString().indexOf('local-timezone') != -1) {
+              this.timestampCheck(printablePath, actualValue, expectedValue, 'local-timezone', messageComponent.getExpected().dateFormat);
+            } else if (expectedValue.toString().indexOf('utc-timezone') != -1) {
+              this.timestampCheck(printablePath, actualValue, expectedValue, 'utc-timezone', messageComponent.getExpected().dateFormat);
+            } else {
+              this.regexCheck(printablePath, actualValue, expectedValue);
+            }
+          } else if (expectedValue.match(/^\{store\(.*\)}$/) != null) {
+            var storeName = expectedValue.match(/\(([^)]+)\)/)[1];
+            if (!/^[a-zA-Z]+$/.test(storeName)) {
+              throw new Error('Store name \'' + storeName + '\' is only allowed to consist of characters.')
+            }
+            store.add(storeName, actualValue);
+          } else if (expectedValue.match(/^\{matches\([a-zA-Z]*\)}$/) != null) {
+            var storeName = expectedValue.match(/\(([^)]+)\)/)[1];
+            this.storeCheck(printablePath, storeName, actualValue);
+          } else if (expectedValue.match(/^\{uuid}$/) != null) {
+            this.uuidCheck(printablePath, actualValue);
+          } else if (expectedValue.match(/^\{alphanumeric}$/) != null) {
+            this.isAlphanumericCheck(printablePath, actualValue);
+          } else if (expectedValue.match(/^\{alpha}$/) != null) {
+            this.isAlphaCheck(printablePath, actualValue);
+          } else if (expectedValue.match(/^\{integer}$/) != null) {
+            this.isInteger(printablePath, actualValue);
+          } else if (expectedValue.match(/^\{length\(<\d+\)\}$/) != null) {
+            this.lessThanLengthCheck(printablePath, actualValue, parseInt(expectedValue.match(/\d+/)[0]));
+          } else if (expectedValue.match(/^\{length\(>\d+\)\}$/) != null) {
+            this.greaterThanLengthCheck(printablePath, actualValue, parseInt(expectedValue.match(/\d+/)[0]));
+          } else if (expectedValue.match(/^\{length\(\d+\)\}$/) != null) {
+            this.equalLengthCheck(printablePath, actualValue, parseInt(expectedValue.match(/\d+/)[0]));
+          } else {
+            this.equalsCheck(printablePath, actualValue, expectedValue);
+          }
+
+        } else if (_.has(messageComponent.getExpected(), 'contains')) {
+          this.containsCheck(printablePath, messageComponent.getActualValue(), messageComponent.getExpected().contains);
+        } else {
+          throw new Error('I have not accounted for something, whoops!');
+        }
       }
     }
   },

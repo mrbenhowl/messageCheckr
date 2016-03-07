@@ -22,12 +22,12 @@ describe('soap - sub root level check', function() {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'checkMe',
       description: "Check actual value checkMe is equal to checkMe",
       expected: 'checkMe',
       pass: true,
-      path: 'SOAP-ENV:Body.subRootLevel.elementAtSubRootLevel'
+      path: {path: 'SOAP-ENV:Body.subRootLevel.elementAtSubRootLevel'}
     });
   });
 });

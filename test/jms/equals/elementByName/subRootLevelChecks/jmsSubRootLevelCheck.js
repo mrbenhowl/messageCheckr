@@ -20,12 +20,12 @@ describe('jms - sub root level check', function() {
     });
 
     assert.equal(result.allChecksPassed, false);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'checkMe',
       description: "Check actual value checkMe is equal to willNotMatch",
       expected: 'willNotMatch',
       pass: false,
-      path: 'subRootLevel.elementAtSubRootLevel'
+      path: {path: 'subRootLevel.elementAtSubRootLevel'},
     });
   });
 
@@ -42,12 +42,12 @@ describe('jms - sub root level check', function() {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'checkMe',
       description: "Check actual value checkMe is equal to checkMe",
       expected: 'checkMe',
       pass: true,
-      path: 'subRootLevel.elementAtSubRootLevel'
+      path: {path: 'subRootLevel.elementAtSubRootLevel'}
     });
   });
 });

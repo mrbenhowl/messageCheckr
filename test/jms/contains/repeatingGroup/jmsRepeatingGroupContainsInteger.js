@@ -31,34 +31,34 @@ describe('jms - repeating element contains integer', function () {
 
     assert.equal(result.allChecksPassed, false);
 
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: '10001',
       expected: 'contains: 10002',
-      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 1',
+      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup'},
       description: "Check actual value 10001 contains 10002",
       pass: false
     });
 
-    assert.deepEqual(result.checks[4], {
+    assert.deepEqual(result.checks[2], {
       actual: '10003',
       expected: 'contains: 10004',
-      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldTwoOfRepeatingGroup number: 1',
+      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup'},
       description: "Check actual value 10003 contains 10004",
       pass: false
     });
 
-    assert.deepEqual(result.checks[6], {
+    assert.deepEqual(result.checks[3], {
       actual: '10002',
       expected: 'contains: 10001',
-      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 2',
+      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup'},
       description: "Check actual value 10002 contains 10001",
       pass: false
     });
 
-    assert.deepEqual(result.checks[8], {
+    assert.deepEqual(result.checks[4], {
       actual: '10004',
       expected: 'contains: 10003',
-      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldTwoOfRepeatingGroup number: 2',
+      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup'},
       description: "Check actual value 10004 contains 10003",
       pass: false
     });
@@ -80,34 +80,34 @@ describe('jms - repeating element contains integer', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: '10001',
       expected: 'contains: 10001',
-      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 1',
+      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup'},
       description: "Check actual value 10001 contains 10001",
       pass: true
     });
 
-    assert.deepEqual(result.checks[4], {
+    assert.deepEqual(result.checks[2], {
       actual: '10003',
       expected: 'contains: 10003',
-      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldTwoOfRepeatingGroup number: 1',
+      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup'},
       description: "Check actual value 10003 contains 10003",
       pass: true
     });
 
-    assert.deepEqual(result.checks[6], {
+    assert.deepEqual(result.checks[3], {
       actual: '10002',
       expected: 'contains: 10002',
-      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 2',
+      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup'},
       description: "Check actual value 10002 contains 10002",
       pass: true
     });
 
-    assert.deepEqual(result.checks[8], {
+    assert.deepEqual(result.checks[4], {
       actual: '10004',
       expected: 'contains: 10004',
-      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldTwoOfRepeatingGroup number: 2',
+      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup'},
       description: "Check actual value 10004 contains 10004",
       pass: true
     });

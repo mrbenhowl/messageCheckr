@@ -19,10 +19,10 @@ describe('jms - UUID check', function () {
     });
 
     assert.equal(result.allChecksPassed, false);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'thisIsNotAValidUuid',
       expected: '{uuid}',
-      path: 'notUuidElement',
+      path: {path: 'notUuidElement'},
       description: 'Check actual value thisIsNotAValidUuid is a valid UUID',
       pass: false
     });
@@ -41,10 +41,10 @@ describe('jms - UUID check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: '49276fbd-d143-4fb4-9a00-6b60ae6b0c9e',
       expected: '{uuid}',
-      path: 'validUuidElement',
+      path: {path: 'validUuidElement'},
       description: 'Check actual value 49276fbd-d143-4fb4-9a00-6b60ae6b0c9e is a valid UUID',
       pass: true
     });

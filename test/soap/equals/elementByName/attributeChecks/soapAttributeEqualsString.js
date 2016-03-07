@@ -20,12 +20,12 @@ describe('soap - attribute value check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'http://schemas.xmlsoap.org/soap/envelope/',
       expected: 'http://schemas.xmlsoap.org/soap/envelope/',
       description: 'Check actual value http://schemas.xmlsoap.org/soap/envelope/ is equal to http://schemas.xmlsoap.org/soap/envelope/',
       pass: true,
-      path: 'SOAP-ENV:Envelope (attribute: xmlns:SOAP-ENV)'
+      path: {path: 'SOAP-ENV:Envelope', attribute: 'xmlns:SOAP-ENV'}
     });
   });
 
@@ -41,12 +41,12 @@ describe('soap - attribute value check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'testAttributeValueInsideSoapHeaderTag',
       expected: 'testAttributeValueInsideSoapHeaderTag',
       description: 'Check actual value testAttributeValueInsideSoapHeaderTag is equal to testAttributeValueInsideSoapHeaderTag',
       pass: true,
-      path: 'SOAP-ENV:Header (attribute: testAttribute)'
+      path: {path: 'SOAP-ENV:Header', attribute: 'testAttribute'}
     });
   });
 
@@ -62,12 +62,12 @@ describe('soap - attribute value check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'testAttributeValueInsideSoapBodyTag',
       expected: 'testAttributeValueInsideSoapBodyTag',
       description: 'Check actual value testAttributeValueInsideSoapBodyTag is equal to testAttributeValueInsideSoapBodyTag',
       pass: true,
-      path: 'SOAP-ENV:Body (attribute: testAttribute)'
+      path: {path: 'SOAP-ENV:Body', attribute: 'testAttribute'}
     });
   });
 
@@ -83,12 +83,12 @@ describe('soap - attribute value check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'testAttributeValue',
       expected: 'testAttributeValue',
       description: 'Check actual value testAttributeValue is equal to testAttributeValue',
       pass: true,
-      path: 'SOAP-ENV:Body.testAttributeElement (attribute: testAttribute)'
+      path: {path: 'SOAP-ENV:Body.testAttributeElement', attribute: 'testAttribute'}
     });
   });
 });

@@ -23,10 +23,10 @@ describe('jms - is integer check', function() {
     });
 
     assert.equal(result.allChecksPassed, false);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: "abc",
       expected: "{integer}",
-      path: "alphabeticalValue",
+      path: {path: 'alphabeticalValue'},
       description: "Check actual value abc is an integer",
       pass: false
     });
@@ -45,10 +45,10 @@ describe('jms - is integer check', function() {
     });
 
     assert.equal(result.allChecksPassed, false);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: "1.1",
       expected: "{integer}",
-      path: "floatValue",
+      path: {path: 'floatValue'},
       description: "Check actual value 1.1 is an integer",
       pass: false
     });
@@ -67,10 +67,10 @@ describe('jms - is integer check', function() {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: "1",
       expected: "{integer}",
-      path: "integerFieldWith1Digit",
+      path: {path: 'integerFieldWith1Digit'},
       description: "Check actual value 1 is an integer",
       pass: true
     });
@@ -89,10 +89,10 @@ describe('jms - is integer check', function() {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: "1.0",
       expected: "{integer}",
-      path: "integerFieldWith1DigitAndOnlyZeroAfterDecimalPlace",
+      path: {path: 'integerFieldWith1DigitAndOnlyZeroAfterDecimalPlace'},
       description: "Check actual value 1.0 is an integer",
       pass: true
     });
@@ -111,10 +111,10 @@ describe('jms - is integer check', function() {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: "12345",
       expected: "{integer}",
-      path: "integerFieldWithMoreThan1Digit",
+      path: {path: 'integerFieldWithMoreThan1Digit'},
       description: "Check actual value 12345 is an integer",
       pass: true
     });
@@ -133,10 +133,10 @@ describe('jms - is integer check', function() {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: "-1",
       expected: "{integer}",
-      path: "integerFieldWithMinusValue",
+      path: {path: 'integerFieldWithMinusValue'},
       description: "Check actual value -1 is an integer",
       pass: true
     });

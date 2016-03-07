@@ -7,7 +7,6 @@ describe('jms - path not present checks', function () {
   </testRootElement>`;
 
   it('should report a pass where path does not exist and the flag pathShouldNotExist is set to true', function () {
-    //TODO: message not suitable for pathShouldNotExist
     var expectedMessage = [
       {path: 'subRootLevel.fieldDoesNotExist', pathShouldNotExist: true}
     ];
@@ -21,16 +20,13 @@ describe('jms - path not present checks', function () {
 
     assert.equal(result.allChecksPassed, true);
     assert.deepEqual(result.checks[1], {
-      actual: false,
-      expected: false,
-      path: 'subRootLevel.fieldDoesNotExist',
-      description: 'Check existence of path: subRootLevel.fieldDoesNotExist',
+      path: {path: 'subRootLevel.fieldDoesNotExist'},
+      description: 'Check path does not exist',
       pass: true
     });
   });
 
   it('should report a fail where a path exists and the flag pathShouldNotExist is set to true', function () {
-    //TODO: message not suitable for pathShouldNotExist
     var expectedMessage = [
       {path: 'subRootLevel.field', pathShouldNotExist: true}
     ];
@@ -44,10 +40,8 @@ describe('jms - path not present checks', function () {
 
     assert.equal(result.allChecksPassed, false);
     assert.deepEqual(result.checks[1], {
-      actual: true,
-      expected: false,
-      path: 'subRootLevel.field',
-      description: 'Check existence of path: subRootLevel.field',
+      path: {path: 'subRootLevel.field'},
+      description: 'Check path does not exist',
       pass: false
     });
   });

@@ -18,12 +18,12 @@ describe('jms - contains integer check', function () {
     });
 
     assert.equal(result.allChecksPassed, false);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: '12345',
       description: 'Check actual value 12345 contains 123456',
       expected: 'contains: 123456',
       pass: false,
-      path: 'containsElement'
+      path: {path: 'containsElement'}
     });
   });
 
@@ -40,12 +40,12 @@ describe('jms - contains integer check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: '12345',
       description: 'Check actual value 12345 contains 1234',
       expected: 'contains: 1234',
       pass: true,
-      path: 'containsElement'
+      path: {path: 'containsElement'}
     });
   });
 
@@ -62,12 +62,12 @@ describe('jms - contains integer check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: '12345',
       description: 'Check actual value 12345 contains 12345',
       expected: 'contains: 12345',
       pass: true,
-      path: 'containsElement'
+      path: {path: 'containsElement'}
     });
   });
 });

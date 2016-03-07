@@ -16,12 +16,12 @@ describe('jms - contains attribute value check', function () {
     });
 
     assert.equal(result.allChecksPassed, false);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'http://www.testing.com/integration/event',
       expected: 'contains: testing/',
       description: 'Check actual value http://www.testing.com/integration/event contains testing/',
       pass: false,
-      path: 'testRootElement (attribute: xmlns)'
+      path: {path: 'testRootElement', attribute: 'xmlns'}
     });
   });
 
@@ -38,12 +38,12 @@ describe('jms - contains attribute value check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'http://www.testing.com/integration/event',
       expected: 'contains: testing',
       description: 'Check actual value http://www.testing.com/integration/event contains testing',
       pass: true,
-      path: 'testRootElement (attribute: xmlns)'
+      path: {path: 'testRootElement', attribute: 'xmlns'}
     });
   });
 
@@ -60,12 +60,12 @@ describe('jms - contains attribute value check', function () {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'http://www.testing.com/integration/event',
       expected: 'contains: http://www.testing.com/integration/event',
       description: 'Check actual value http://www.testing.com/integration/event contains http://www.testing.com/integration/event',
       pass: true,
-      path: 'testRootElement (attribute: xmlns)'
+      path: {path: 'testRootElement', attribute: 'xmlns'}
     });
   });
 });

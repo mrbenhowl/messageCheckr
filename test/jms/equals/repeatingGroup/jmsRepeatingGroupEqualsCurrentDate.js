@@ -36,20 +36,20 @@ describe('jms - repeating element equals current date', function() {
     });
 
     assert.equal(result.allChecksPassed, false);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       description: "Check actual value " + currentDateTimeLocal + " matches date/regex pattern " + currentLocalDateRegexPattern.toString().replace('local-timezone', currentLocalDate),
       expected: currentLocalDateRegexPattern + ' where local-timezone has the date format YYYY MM DD',
       pass: false,
-      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 1'
+      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup'}
     });
 
-    assert.deepEqual(result.checks[4], {
+    assert.deepEqual(result.checks[2], {
       actual: currentDateTimeUtc,
       description: "Check actual value " + currentDateTimeUtc + " matches date/regex pattern " + currentUtcDateRegexPattern.toString().replace('utc-timezone', currentUtcDate),
       expected: currentUtcDateRegexPattern + ' where utc-timezone has the date format DD MM YYYY',
       pass: false,
-      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 2'
+      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup'}
     });
   });
 
@@ -72,20 +72,20 @@ describe('jms - repeating element equals current date', function() {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       description: "Check actual value " + currentDateTimeLocal + " matches date/regex pattern " + currentLocalDateRegexPattern.toString().replace('local-timezone', currentLocalDate),
       expected: currentLocalDateRegexPattern + ' where local-timezone has the date format YYYY-MM-DD',
       pass: true,
-      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 1'
+      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup'}
     });
 
-    assert.deepEqual(result.checks[4], {
+    assert.deepEqual(result.checks[2], {
       actual: currentDateTimeUtc,
       description: "Check actual value " + currentDateTimeUtc + " matches date/regex pattern " + currentUtcDateRegexPattern.toString().replace('utc-timezone', currentUtcDate),
       expected: currentUtcDateRegexPattern + ' where utc-timezone has the date format DD-MM-YYYY',
       pass: true,
-      path: 'thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 2'
+      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup'}
     });
   });
 });

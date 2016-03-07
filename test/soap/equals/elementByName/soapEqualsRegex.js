@@ -23,10 +23,10 @@ describe('soap - regex check', function() {
       });
 
       assert.equal(result.allChecksPassed, true);
-      assert.deepEqual(result.checks[2], {
+      assert.deepEqual(result.checks[1], {
         actual: '2015-11-01T08:12:15.425+11:00',
         expected: regexPattern,
-        path: 'SOAP-ENV:Body.elementToCheckRegex',
+        path: {path: 'SOAP-ENV:Body.elementToCheckRegex'},
         description: 'Check actual value 2015-11-01T08:12:15.425+11:00 against regex ' + regexPattern,
         pass: true
       });

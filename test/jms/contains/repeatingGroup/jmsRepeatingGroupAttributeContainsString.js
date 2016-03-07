@@ -33,18 +33,18 @@ describe('jms - repeating element attribute contains string', function () {
 
       assert.equal(result.allChecksPassed, false);
 
-      assert.deepEqual(result.checks[2], {
+      assert.deepEqual(result.checks[1], {
         actual: 'toffee',
         expected: 'contains: toffeee',
-        path: 'elementOne.thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 1 (attribute: testAttribute1)',
+        path: {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'},
         description: "Check actual value toffee contains toffeee",
         pass: false
       });
 
-      assert.deepEqual(result.checks[4], {
+      assert.deepEqual(result.checks[2], {
         actual: 'tea',
         expected: 'contains: tee',
-        path: 'elementOne.thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 2 (attribute: testAttribute1)',
+        path: {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'},
         description: "Check actual value tea contains tee",
         pass: false
       });
@@ -64,18 +64,18 @@ describe('jms - repeating element attribute contains string', function () {
       });
 
       assert.equal(result.allChecksPassed, true);
-      assert.deepEqual(result.checks[2], {
+      assert.deepEqual(result.checks[1], {
         actual: 'toffee',
         expected: 'contains: toffee',
-        path: 'elementOne.thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 1 (attribute: testAttribute1)',
+        path: {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'},
         description: "Check actual value toffee contains toffee",
         pass: true
       });
 
-      assert.deepEqual(result.checks[4], {
+      assert.deepEqual(result.checks[2], {
         actual: 'tea',
         expected: 'contains: te',
-        path: 'elementOne.thingContainingRepeatingGroups.RepeatingGroup.fieldOneOfRepeatingGroup number: 2 (attribute: testAttribute1)',
+        path: {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'},
         description: "Check actual value tea contains te",
         pass: true
       });

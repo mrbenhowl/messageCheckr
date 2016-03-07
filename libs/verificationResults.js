@@ -17,11 +17,13 @@ var verificationResults = {
    * @param {string} checkDetails.description The type of check applied to the actual value
    */
   add: function add(checkDetails) {
-    var properties, expectedProperties;
-    properties = _.keys(checkDetails).sort();
-    expectedProperties = ['actual', 'description', 'expected', 'pass', 'path'];
+    //var properties, expectedProperties;
+    //properties = _.keys(checkDetails).sort();
+    //expectedProperties = ['actual', 'description', 'expected', 'pass', 'path'];
 
-    if (!_.isEqual(properties, expectedProperties)) throw new Error('Expected properties ' + JSON.stringify(expectedProperties) + ' but got ' + JSON.stringify(properties));
+    if (!_.has(checkDetails, 'pass')){'"pass" is mandatory.'}
+
+    //if (!_.isEqual(properties, expectedProperties)) throw new Error('Expected properties ' + JSON.stringify(expectedProperties) + ' but got ' + JSON.stringify(properties));
     if (!checkDetails.pass) allChecksPassed = false;
     checks.push(checkDetails);
   },

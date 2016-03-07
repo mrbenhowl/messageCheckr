@@ -20,10 +20,10 @@ describe('soap - length check', function() {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'thisIs22CharactersLong',
       expected: '{length(22)}',
-      path: 'SOAP-ENV:Body.elementToCheckLengthOf',
+      path: {path: 'SOAP-ENV:Body.elementToCheckLengthOf'},
       description: 'Check actual value thisIs22CharactersLong has a length equal to 22',
       pass: true
     });
@@ -41,10 +41,10 @@ describe('soap - length check', function() {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'thisIs22CharactersLong',
       expected: '{length(<23)}',
-      path: 'SOAP-ENV:Body.elementToCheckLengthOf',
+      path: {path: 'SOAP-ENV:Body.elementToCheckLengthOf'},
       description: 'Check actual value thisIs22CharactersLong has a length less than 23',
       pass: true
     });
@@ -63,10 +63,10 @@ describe('soap - length check', function() {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: 'thisIs22CharactersLong',
       expected: '{length(>21)}',
-      path: 'SOAP-ENV:Body.elementToCheckLengthOf',
+      path: {path: 'SOAP-ENV:Body.elementToCheckLengthOf'},
       description: 'Check actual value thisIs22CharactersLong has a length greater than 21',
       pass: true
     });

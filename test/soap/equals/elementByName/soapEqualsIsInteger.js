@@ -20,10 +20,10 @@ describe('soap - is integer check', function() {
     });
 
     assert.equal(result.allChecksPassed, true);
-    assert.deepEqual(result.checks[2], {
+    assert.deepEqual(result.checks[1], {
       actual: '12345',
       expected: '{integer}',
-      path: 'SOAP-ENV:Body.integerFieldWithMoreThan1Digit',
+      path: {path: 'SOAP-ENV:Body.integerFieldWithMoreThan1Digit'},
       description: "Check actual value 12345 is an integer",
       pass: true
     });
