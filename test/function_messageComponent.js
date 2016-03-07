@@ -774,36 +774,30 @@ describe('messageComponent()', function () {
       assert.deepEqual(determinePrintablePath({path: "a", equals: "b"}), {path: "a"});
       assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", equals: "e"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d"});
       assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", equals: "d"}), {parentPath: "a", element: "b", elementPosition: "c"});
+
+      assert.deepEqual(determinePrintablePath({path: "a", attribute: "b", equals: "c"}), {path: "a", attribute: "b"});
+      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e", equals: "f"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e"});
+      assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", attribute: "d", equals: "e"}), {parentPath: "a", element: "b", elementPosition: "c", attribute: "d"});
     });
 
     it('should remove attribute "contains" from expectedMessageComponent', function(){
       assert.deepEqual(determinePrintablePath({path: "a", contains: "b"}), {path: "a"});
       assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", contains: "e"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d"});
       assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", contains: "d"}), {parentPath: "a", element: "b", elementPosition: "c"});
-    });
 
-    it('should remove attributes "attribute" and "equals" from expectedMessageComponent', function(){
-      assert.deepEqual(determinePrintablePath({path: "a", attribute: "b", equals: "c"}), {path: "a"});
-      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e", equals: "f"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d"});
-      assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", attribute: "d", equals: "e"}), {parentPath: "a", element: "b", elementPosition: "c"});
-    });
-
-    it('should remove attributes "attribute" and "contains" from expectedMessageComponent', function(){
-      assert.deepEqual(determinePrintablePath({path: "a", attribute: "b", contains: "c"}), {path: "a"});
-      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e", contains: "f"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d"});
-      assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", attribute: "d", contains: "e"}), {parentPath: "a", element: "b", elementPosition: "c"});
+      assert.deepEqual(determinePrintablePath({path: "a", attribute: "b", contains: "c"}), {path: "a", attribute: "b"});
+      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e", contains: "f"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e"});
+      assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", attribute: "d", contains: "e"}), {parentPath: "a", element: "b", elementPosition: "c", attribute: "d"});
     });
 
     it('should remove attributes "equals" and "dateFormat" from expectedMessageComponent', function(){
       assert.deepEqual(determinePrintablePath({path: "a", equals: "b", dateFormat: "c"}), {path: "a"});
       assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", equals: "e", dateFormat: "f"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d"});
       assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", equals: "d", dateFormat: "e"}), {parentPath: "a", element: "b", elementPosition: "c"});
-    });
 
-    it('should remove attributes "attribute", "equals" and "dateFormat" from expectedMessageComponent', function(){
-      assert.deepEqual(determinePrintablePath({path: "a", attribute: "b", equals: "c", dateFormat: "d"}), {path: "a"});
-      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e", equals: "f", dateFormat: "g"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d"});
-      assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", attribute: "d", equals: "e", dateFormat: "f"}), {parentPath: "a", element: "b", elementPosition: "c"});
+      assert.deepEqual(determinePrintablePath({path: "a", attribute: "b", equals: "c", dateFormat: "d"}), {path: "a", attribute: "b"});
+      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e", equals: "f", dateFormat: "g"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e"});
+      assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", attribute: "d", equals: "e", dateFormat: "f"}), {parentPath: "a", element: "b", elementPosition: "c", attribute: "d"});
     });
   });
 

@@ -25,7 +25,7 @@ describe('jms - repeating element equals current date', function() {
 
     var expectedMessage = [
       {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: currentLocalDateRegexPattern, dateFormat: 'YYYY MM DD'},
-      {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', equals: currentUtcDateRegexPattern, dateFormat: 'DD MM YYYY'},
+      {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', equals: currentUtcDateRegexPattern, dateFormat: 'DD MM YYYY'}
     ];
 
     var result = messageCheckr({
@@ -61,7 +61,7 @@ describe('jms - repeating element equals current date', function() {
 
     var expectedMessage = [
       {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: currentLocalDateRegexPattern, dateFormat: 'YYYY-MM-DD'},
-      {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', equals: currentUtcDateRegexPattern, dateFormat: 'DD-MM-YYYY'},
+      {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', equals: currentUtcDateRegexPattern, dateFormat: 'DD-MM-YYYY'}
     ];
 
     var result = messageCheckr({

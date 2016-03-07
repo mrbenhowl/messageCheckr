@@ -10,7 +10,7 @@ var messageComponent = function (expectedMessageComponent, actualMessageXmlDocum
 
   pathToElement = getPathToElement(expectedMessageComponent, type, actualMessageXmlDocument);
   pathExists = !_.isUndefined(pathToElement);
-  printablePath = determinePrintablePath(expectedMessageComponent, type);
+  printablePath = determinePrintablePath(expectedMessageComponent);
 
   if (pathExists) {
     actualValue = getValueAtPath(pathToElement, expectedMessageComponent.attribute);
@@ -40,14 +40,10 @@ module.exports = messageComponent;
 
 function validate(expectedMessageComponent) {
 
-  // TODO: the original validateExpectedMsg operated above this function on the array of objects, ensure the following is covered elsewhere
-  /*if (!Array.isArray(expectedMsg)) {
-   throw new Error('expectedMsg should be an array');
-   }
 
-   if (expectedMsg.length === 0) {
-   throw new Error('expectedMsg is empty');
-   }*/
+  //
+  //if (!Number.isInteger(el.elementPosition)) throw new Error('elementPosition should be an integer');
+  //if (el.elementPosition < 1) throw new Error('elementPosition should be greater than 0');
 
   if (_.isNull(expectedMessageComponent) ||
     _.isArray(expectedMessageComponent) ||
@@ -205,5 +201,5 @@ function getValueAtPath(pathToElement, attribute) {
 }
 
 function determinePrintablePath(expectedMessageComponent) {
-  return _.omit(expectedMessageComponent, ['equals', 'attribute', 'dateFormat', 'contains', 'pathShouldNotExist']);
+  return _.omit(expectedMessageComponent, ['equals', 'dateFormat', 'contains', 'pathShouldNotExist']);
 }

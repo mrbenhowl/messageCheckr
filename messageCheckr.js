@@ -1,26 +1,16 @@
-var _ = require('lodash'),
-  convertToXmlDocumentType = require('./libs/convertToXmlDocumentType'),
+var convertToXmlDocumentType = require('./libs/convertToXmlDocumentType'),
   validateParams = require('./libs/validateParams.js'),
-  validateExpectedMsg = require('./libs/validateExpectedMsg'),
   cleanRawSoapMessage = require('./libs/cleanRawSoapMessage'),
   cleanRawXmlMessage = require('./libs/cleanRawXmlMessage'),
   verificationResults = require('./libs/verificationResults'),
   assertions = require('./libs/assertions'),
-  store = require('./libs/store');
-
-function checkAllExpectedMsgComponents(actualMsgAsXmlDocument, expectedMsg, rootElement) {
-  expectedMsg.forEach(function (expectedMsgComponent) {
-    // TODO: what if the root element name matches a child element?
-    var pathIsRootElement = expectedMsgComponent.path === rootElement || expectedMsgComponent.parentPath === rootElement;
-    assertions.checkExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgComponent, pathIsRootElement);
-  });
-}
+  store = require('./libs/store'),
+  messageComponent = require('./libs/messageComponent');
 
 var messageCheckr = function messageCheckr(params) {
   var type, actualMsg, expectedMsg, expectedRootElement, cleansedMessage, xmlDocument;
 
   validateParams(params);
-  validateExpectedMsg(params.expectedMsg);
   verificationResults.initialise();
   store.initialise();
 
@@ -33,17 +23,24 @@ var messageCheckr = function messageCheckr(params) {
     cleansedMessage = cleanRawSoapMessage(actualMsg);
     xmlDocument = convertToXmlDocumentType(cleansedMessage);
     assertions.checkRootElement(xmlDocument, 'SOAP-ENV:Envelope');
-    checkAllExpectedMsgComponents(xmlDocument, expectedMsg, 'SOAP-ENV:Envelope');
+    checkAllMessageComponents(xmlDocument, expectedMsg);
   } else if (type === 'jms') {
     cleansedMessage = cleanRawXmlMessage(actualMsg);
     xmlDocument = convertToXmlDocumentType(cleansedMessage);
     assertions.checkRootElement(xmlDocument, expectedRootElement);
-    checkAllExpectedMsgComponents(xmlDocument, expectedMsg, xmlDocument.name);
+    checkAllMessageComponents(xmlDocument, expectedMsg);
   } else {
     throw new Error('type ' + type + ' is not handled');
   }
 
   return ({allChecksPassed: verificationResults.getOverallResult(), checks: verificationResults.getAllChecks()});
 };
+
+function checkAllMessageComponents(actualMsgAsXmlDocument, expectedMsg) {
+  expectedMsg.forEach(function (expectedMsgComponent) {
+    var msgComponent = messageComponent(expectedMsgComponent, actualMsgAsXmlDocument);
+    assertions.verifyMessageComponent(msgComponent);
+  });
+}
 
 module.exports = messageCheckr;

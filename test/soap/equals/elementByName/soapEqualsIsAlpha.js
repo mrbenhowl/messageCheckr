@@ -17,7 +17,7 @@ describe('soap - is alpha check', function() {
     var result = messageCheckr({
       type: 'soap',
       actualMsg: actualMsg,
-      expectedMsg: expectedMessage,
+      expectedMsg: expectedMessage
     });
 
     assert.equal(result.allChecksPassed, true);

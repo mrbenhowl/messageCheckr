@@ -7,7 +7,7 @@ describe('soap - timestamp check', function () {
 
     currentDateTimeLocal = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ');
     currentDate = moment().format('YYYY-MM-DD');
-    var actualMsg =
+    actualMsg =
       `<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
       <soap-env:Header/>
       <soap-env:Body>

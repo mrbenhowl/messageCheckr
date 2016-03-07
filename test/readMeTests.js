@@ -375,7 +375,7 @@ describe('readme tests', function () {
 
       var expectedMessage = [
         {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'},
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'DD-MM-YYYY'},
+        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'DD-MM-YYYY'}
       ];
 
       var result = messageCheckr({
@@ -405,7 +405,7 @@ describe('readme tests', function () {
 
       var expectedMessage = [
         {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', contains: 100},
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', contains: 'howl'},
+        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', contains: 'howl'}
       ];
 
       var result = messageCheckr({

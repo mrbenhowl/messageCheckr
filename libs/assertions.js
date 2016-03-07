@@ -3,25 +3,32 @@ var _ = require('lodash'),
   validator = require('validator'),
   verificationResults = require('./verificationResults'),
   getFullPath = require('./getFullPath'),
-  getValueAtPath = require('./getValueAtPath'),
   store = require('./store');
 
 var assertions = {
 
-  checkExpectedMsgComponent: function checkExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgComponent, pathIsRootElement) {
-    var pathExists = this.checkPathForExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgComponent, pathIsRootElement);
+  verifyMessageComponent: function verifyMessageComponent(messageComponent) {
 
-    if ((_.isUndefined(expectedMsgComponent.pathShouldNotExist) || !expectedMsgComponent.pathShouldNotExist) && pathExists) {
-      var actualValue = getValueAtPath(actualMsgAsXmlDocument, expectedMsgComponent, pathIsRootElement);
-      var expectedValue = expectedMsgComponent.equals;
-      var containsExpectedValue = expectedMsgComponent.contains;
+    verificationResults.add(
+      {
+        pass: _.isUndefined(messageComponent.getExpected().pathShouldNotExist) === messageComponent.isPathPresent(),
+        path: getFullPath(messageComponent),
+        actual: messageComponent.isPathPresent(),
+        expected: _.isUndefined(messageComponent.getExpected().pathShouldNotExist),
+        description: 'Check existence of path: ' + getFullPath(messageComponent)
+      }
+    );
 
-      if (expectedValue != undefined) {
+    if (_.isUndefined(messageComponent.getExpected().pathShouldNotExist)){
+      if (_.has(messageComponent.getExpected(), 'equals')) {
+        var actualValue = messageComponent.getActualValue();
+        var expectedValue = messageComponent.getExpected().equals;
+
         if (Number.isInteger(expectedValue)) {
           verificationResults.add(
             {
               pass: parseInt(actualValue) === expectedValue,
-              path: getFullPath(expectedMsgComponent),
+              path: getFullPath(messageComponent),
               actual: parseInt(actualValue),
               expected: expectedValue,
               description: 'Check actual value ' + actualValue + ' is equal to ' + expectedValue
@@ -30,11 +37,11 @@ var assertions = {
         } else if (_.isRegExp(expectedValue)) {
 
           if (expectedValue.toString().indexOf('local-timezone') != -1) {
-            this.timestampCheck(getFullPath(expectedMsgComponent), actualValue, expectedValue, 'local-timezone', expectedMsgComponent.dateFormat);
+            this.timestampCheck(getFullPath(messageComponent), actualValue, expectedValue, 'local-timezone', messageComponent.getExpected().dateFormat);
           } else if (expectedValue.toString().indexOf('utc-timezone') != -1) {
-            this.timestampCheck(getFullPath(expectedMsgComponent), actualValue, expectedValue, 'utc-timezone', expectedMsgComponent.dateFormat);
+            this.timestampCheck(getFullPath(messageComponent), actualValue, expectedValue, 'utc-timezone', messageComponent.getExpected().dateFormat);
           } else {
-            this.regexCheck(getFullPath(expectedMsgComponent), actualValue, expectedValue);
+            this.regexCheck(getFullPath(messageComponent), actualValue, expectedValue);
           }
         } else if (expectedValue.match(/^\{store\(.*\)}$/) != null) {
           var storeName = expectedValue.match(/\(([^)]+)\)/)[1];
@@ -44,28 +51,29 @@ var assertions = {
           store.add(storeName, actualValue);
         } else if (expectedValue.match(/^\{matches\([a-zA-Z]*\)}$/) != null) {
           var storeName = expectedValue.match(/\(([^)]+)\)/)[1];
-          this.storeCheck(getFullPath(expectedMsgComponent), storeName, actualValue);
+          this.storeCheck(getFullPath(messageComponent), storeName, actualValue);
         } else if (expectedValue.match(/^\{uuid}$/) != null) {
-          this.uuidCheck(getFullPath(expectedMsgComponent), actualValue);
+          this.uuidCheck(getFullPath(messageComponent), actualValue);
         } else if (expectedValue.match(/^\{alphanumeric}$/) != null) {
-          this.isAlphanumericCheck(getFullPath(expectedMsgComponent), actualValue);
+          this.isAlphanumericCheck(getFullPath(messageComponent), actualValue);
         } else if (expectedValue.match(/^\{alpha}$/) != null) {
-          this.isAlphaCheck(getFullPath(expectedMsgComponent), actualValue);
+          this.isAlphaCheck(getFullPath(messageComponent), actualValue);
         } else if (expectedValue.match(/^\{integer}$/) != null) {
-          this.isInteger(getFullPath(expectedMsgComponent), actualValue);
+          this.isInteger(getFullPath(messageComponent), actualValue);
         } else if (expectedValue.match(/^\{length\(<\d+\)\}$/) != null) {
-          this.lessThanLengthCheck(getFullPath(expectedMsgComponent), actualValue, parseInt(expectedValue.match(/\d+/)[0]));
+          this.lessThanLengthCheck(getFullPath(messageComponent), actualValue, parseInt(expectedValue.match(/\d+/)[0]));
         } else if (expectedValue.match(/^\{length\(>\d+\)\}$/) != null) {
-          this.greaterThanLengthCheck(getFullPath(expectedMsgComponent), actualValue, parseInt(expectedValue.match(/\d+/)[0]));
+          this.greaterThanLengthCheck(getFullPath(messageComponent), actualValue, parseInt(expectedValue.match(/\d+/)[0]));
         } else if (expectedValue.match(/^\{length\(\d+\)\}$/) != null) {
-          this.equalLengthCheck(getFullPath(expectedMsgComponent), actualValue, parseInt(expectedValue.match(/\d+/)[0]));
+          this.equalLengthCheck(getFullPath(messageComponent), actualValue, parseInt(expectedValue.match(/\d+/)[0]));
         } else {
-          this.equalsCheck(getFullPath(expectedMsgComponent), actualValue, expectedValue);
+          this.equalsCheck(getFullPath(messageComponent), actualValue, expectedValue);
         }
-      }
 
-      if (containsExpectedValue != undefined) {
-        this.containsCheck(getFullPath(expectedMsgComponent), actualValue, containsExpectedValue);
+      } else if (_.has(messageComponent.getExpected(), 'contains')) {
+        this.containsCheck(getFullPath(messageComponent), messageComponent.getActualValue(), messageComponent.getExpected().contains);
+      } else {
+        throw new Error('I have not accounted for something, whoops!');
       }
     }
   },
@@ -243,6 +251,8 @@ var assertions = {
   timestampCheck: function timestampCheck(path, actualValue, regexPattern, timezone, dateFormat) {
     var currentDate, regexObj;
 
+    //TODO: can the undefined check be done in validate
+
     if (_.isUndefined(dateFormat)) {
       throw new Error('Expected additional attribute \'dateFormat\' when local-timezone or utc-timezone is present in a regex literal for \'equals\'');
     }
@@ -266,111 +276,6 @@ var assertions = {
         description: 'Check actual value ' + actualValue + ' matches date/regex pattern ' + regexObj
       }
     );
-  }
-  ,
-
-  checkPathForExpectedMsgComponent: function checkPathForExpectedMsgComponent(actualMsgAsXmlDocument, expectedMsgComponent, pathIsRootElement) {
-    var path = expectedMsgComponent.path,
-      child = expectedMsgComponent.child,
-      attribute = expectedMsgComponent.attribute,
-      pathShouldNotExist = expectedMsgComponent.pathShouldNotExist,
-      pathExists;
-
-    // TODO: move checking of attributes and children into separate function
-
-    if (_.isUndefined(expectedMsgComponent.repeatingGroup) && _.isUndefined(expectedMsgComponent.parentPath)) {
-      pathExists = pathIsRootElement ? actualMsgAsXmlDocument.name != undefined : actualMsgAsXmlDocument.descendantWithPath(path) != undefined;
-
-      if (pathExists && (child) && attribute) {
-        if (pathIsRootElement) {
-          pathExists = (actualMsgAsXmlDocument.children[parseInt(child)].name != undefined) && (actualMsgAsXmlDocument.children[parseInt(child)].attr[attribute] != undefined);
-        } else {
-          pathExists = (actualMsgAsXmlDocument.descendantWithPath(path).children[parseInt(child)].name != undefined) && (actualMsgAsXmlDocument.descendantWithPath(path).children[parseInt(child)].attr[attribute] != undefined);
-        }
-      } else if (pathExists && child) {
-        if (pathIsRootElement) {
-          pathExists = (actualMsgAsXmlDocument.children[parseInt(child)].name != undefined);
-        } else {
-          pathExists = (actualMsgAsXmlDocument.descendantWithPath(path).children[parseInt(child)].name != undefined);
-        }
-      } else if (pathExists && attribute) {
-        if (pathIsRootElement) {
-          pathExists = (actualMsgAsXmlDocument.attr[attribute] != undefined);
-        } else {
-          pathExists = (actualMsgAsXmlDocument.descendantWithPath(path).attr[attribute] != undefined);
-        }
-      }
-
-      verificationResults.add(
-        {
-          pass: _.isUndefined(pathShouldNotExist) === pathExists,
-          path: getFullPath(expectedMsgComponent),
-          actual: pathExists,
-          expected: _.isUndefined(pathShouldNotExist),
-          description: 'Check existence of path: ' + getFullPath(expectedMsgComponent)
-        }
-      );
-
-    } else if (_.isUndefined(expectedMsgComponent.parentPath)) {
-      // TODO: no support for child/attribute in the repeating group yet, including getFullPath
-      // TODO: do you need to check pathIsRootElement
-      var pathToElementEnclosingRepeatingGroup, repeatingElement, pathToElementFromRepeatingElement, version, matchingGroups;
-
-      pathToElementEnclosingRepeatingGroup = expectedMsgComponent.repeatingGroup.path;
-      repeatingElement = expectedMsgComponent.repeatingGroup.repeater;
-      pathToElementFromRepeatingElement = path;
-      version = expectedMsgComponent.repeatingGroup.number;
-
-      matchingGroups = _(actualMsgAsXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children)
-        .pluck('name')
-        .map(function (el, index) {
-          if (el === repeatingElement) return index;
-          return -1;
-        })
-        .filter(function (el) {
-          return el != -1;
-        })
-        .value();
-
-      if (_.isUndefined(actualMsgAsXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children[matchingGroups[version - 1]])) {
-        pathExists = false;
-      } else {
-        pathExists = actualMsgAsXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children[matchingGroups[version - 1]].descendantWithPath(pathToElementFromRepeatingElement) != undefined;
-      }
-
-      verificationResults.add(
-        {
-          pass: _.isUndefined(pathShouldNotExist) === pathExists,
-          path: getFullPath(expectedMsgComponent),
-          actual: pathExists,
-          expected: _.isUndefined(pathShouldNotExist),
-          description: 'Check for presence of the path: ' + getFullPath(expectedMsgComponent)
-        }
-      );
-    } else {
-      var pathToParentElement, countOfChildElements, elementNameAtSpecifiedPosition;
-      pathToParentElement = expectedMsgComponent.parentPath;
-      countOfChildElements = pathIsRootElement ? actualMsgAsXmlDocument.children.length : actualMsgAsXmlDocument.descendantWithPath(pathToParentElement).children.length;
-
-      if (countOfChildElements >= expectedMsgComponent.elementPosition) {
-        var expectedPosition = expectedMsgComponent.elementPosition - 1;
-        elementNameAtSpecifiedPosition = pathIsRootElement ? actualMsgAsXmlDocument.children[expectedPosition].name : actualMsgAsXmlDocument.descendantWithPath(pathToParentElement).children[expectedPosition].name;
-        pathExists = elementNameAtSpecifiedPosition === expectedMsgComponent.element;
-      } else {
-        pathExists = false;
-      }
-
-      verificationResults.add(
-        {
-          pass: _.isUndefined(pathShouldNotExist) === pathExists,
-          path: getFullPath(expectedMsgComponent),
-          actual: pathExists,
-          expected: _.isUndefined(pathShouldNotExist),
-          description: 'Check for presence of the path: ' + getFullPath(expectedMsgComponent)
-        }
-      );
-    }
-    return pathExists;
   }
 };
 

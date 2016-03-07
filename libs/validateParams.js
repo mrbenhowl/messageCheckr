@@ -17,6 +17,14 @@ var validateParams = function (params) {
   if (!_.has(params, 'expectedRootElement') && params.type === 'jms') {
     throw new Error('messageCheckr requires the property "expectedRootElement" as part of the "params" argument');
   }
+
+  if (!Array.isArray(params.expectedMsg)) {
+    throw new Error('expectedMsg should be an array');
+  }
+
+  if (params.expectedMsg.length === 0) {
+    throw new Error('expectedMsg is empty');
+  }
 };
 
 module.exports = validateParams;
