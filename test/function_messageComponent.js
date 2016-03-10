@@ -58,16 +58,16 @@ describe('messageComponent()', function () {
       assert.deepEqual(validate({path: "a", contains: "b"}), {type: messageComponentType.STANDARD, expected: {contains: "b"}});
     });
 
-    it('should return {type: messageComponentType.STANDARD, expected: {attribute: "b", equals: "c"}} when "expectedMessageComponent" is {path: "a", attribute: "b", equals: "c"}', function () {
-      assert.deepEqual(validate({path: "a", attribute: "b", equals: "c"}), {type: messageComponentType.STANDARD, expected: {attribute: "b", equals: "c"}});
+    it('should return {type: messageComponentType.STANDARD, expected: {equals: "c"}} when "expectedMessageComponent" is {path: "a", attribute: "b", equals: "c"}', function () {
+      assert.deepEqual(validate({path: "a", attribute: "b", equals: "c"}), {type: messageComponentType.STANDARD, expected: {equals: "c"}});
     });
 
-    it('should return {type: messageComponentType.STANDARD, expected: {attribute: "b", equals: "c", dateFormat: "d"}} when "expectedMessageComponent" is {path: "a", attribute: "b", equals: "c", dateFormat: "d"}', function () {
-      assert.deepEqual(validate({path: "a", attribute: "b", equals: "c", dateFormat: "d"}), {type: messageComponentType.STANDARD, expected: {attribute: "b", equals: "c", dateFormat: "d"}});
+    it('should return {type: messageComponentType.STANDARD, expected: {equals: "c", dateFormat: "d"}} when "expectedMessageComponent" is {path: "a", attribute: "b", equals: "c", dateFormat: "d"}', function () {
+      assert.deepEqual(validate({path: "a", attribute: "b", equals: "c", dateFormat: "d"}), {type: messageComponentType.STANDARD, expected: {equals: "c", dateFormat: "d"}});
     });
 
-    it('should return {type: messageComponentType.STANDARD, expected: {attribute: "b", contains: "c"}} when "expectedMessageComponent" is {path: "a", attribute: "b", contains: "c"}', function () {
-      assert.deepEqual(validate({path: "a", attribute: "b", contains: "c"}), {type: messageComponentType.STANDARD, expected: {attribute: "b", contains: "c"}});
+    it('should return {type: messageComponentType.STANDARD, expected: {contains: "c"}} when "expectedMessageComponent" is {path: "a", attribute: "b", contains: "c"}', function () {
+      assert.deepEqual(validate({path: "a", attribute: "b", contains: "c"}), {type: messageComponentType.STANDARD, expected: {contains: "c"}});
     });
 
     it('should return {type: messageComponentType.STANDARD, expected: {pathShouldNotExist: "b"}} when "expectedMessageComponent" is {path: "a", pathShouldNotExist: "b"}', function () {
@@ -84,16 +84,16 @@ describe('messageComponent()', function () {
       assert.deepEqual(validate({repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d", equals: "e", dateFormat: "f"}), {type: messageComponentType.REPEATING_GROUP, expected: {equals: "e", dateFormat: "f"}});
     });
 
-    it('should return {type: messageComponentType.REPEATING_GROUP, expected: {attribute: "e", equals: "f"}} when "expectedMessageComponent" is {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e", equals: "f"}', function () {
-      assert.deepEqual(validate({repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d", attribute: "e", equals: "f"}), {type: messageComponentType.REPEATING_GROUP, expected: {attribute: "e", equals: "f"}});
+    it('should return {type: messageComponentType.REPEATING_GROUP, expected: {equals: "f"}} when "expectedMessageComponent" is {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e", equals: "f"}', function () {
+      assert.deepEqual(validate({repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d", attribute: "e", equals: "f"}), {type: messageComponentType.REPEATING_GROUP, expected: {equals: "f"}});
     });
 
-    it('should return {type: messageComponentType.REPEATING_GROUP, expected: {attribute: "e", equals: "f", dateFormat: "g"}} when "expectedMessageComponent" is {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e", equals: "f", dateFormat: "g"}', function () {
-      assert.deepEqual(validate({repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d", attribute: "e", equals: "f", dateFormat: "g"}), {type: messageComponentType.REPEATING_GROUP, expected: {attribute: "e", equals: "f", dateFormat: "g"}});
+    it('should return {type: messageComponentType.REPEATING_GROUP, expected: {equals: "f", dateFormat: "g"}} when "expectedMessageComponent" is {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e", equals: "f", dateFormat: "g"}', function () {
+      assert.deepEqual(validate({repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d", attribute: "e", equals: "f", dateFormat: "g"}), {type: messageComponentType.REPEATING_GROUP, expected: {equals: "f", dateFormat: "g"}});
     });
 
-    it('should return {type: messageComponentType.REPEATING_GROUP, expected: {attribute: "e", contains: "f"}} when "expectedMessageComponent" is {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e", contains: "f"}', function () {
-      assert.deepEqual(validate({repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d", attribute: "e", contains: "f"}), {type: messageComponentType.REPEATING_GROUP, expected: {attribute: "e", contains: "f"}});
+    it('should return {type: messageComponentType.REPEATING_GROUP, expected: {contains: "f"}} when "expectedMessageComponent" is {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e", contains: "f"}', function () {
+      assert.deepEqual(validate({repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d", attribute: "e", contains: "f"}), {type: messageComponentType.REPEATING_GROUP, expected: {contains: "f"}});
     });
 
     it('should return {type: messageComponentType.REPEATING_GROUP, expected: {contains: "e"}}} when "expectedMessageComponent" is {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", contains: "e"}', function () {
@@ -118,16 +118,16 @@ describe('messageComponent()', function () {
       assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: 1, contains: "d"}), {type: messageComponentType.POSITION, expected: {contains: "d"}});
     });
 
-    it('should return {type: messageComponentType.POSITION, expected: {attribute: "d", equals: "e"}} when "expectedMessageComponent" is {parentPath: "a", element: "b", elementPosition: "c", attribute: "d", equals: "e"}', function () {
-      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: 1, attribute: "d", equals: "e"}), {type: messageComponentType.POSITION, expected: {attribute: "d", equals: "e"}});
+    it('should return {type: messageComponentType.POSITION, expected: {equals: "e"}} when "expectedMessageComponent" is {parentPath: "a", element: "b", elementPosition: "c", attribute: "d", equals: "e"}', function () {
+      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: 1, attribute: "d", equals: "e"}), {type: messageComponentType.POSITION, expected: {equals: "e"}});
     });
 
-    it('should return {type: messageComponentType.POSITION, expected: {attribute: "d", equals: "e", dateFormat: "f"}} when "expectedMessageComponent" is {parentPath: "a", element: "b", elementPosition: "c", attribute: "d", equals: "e", dateFormat: "f"}', function () {
-      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: 1, attribute: "d", equals: "e", dateFormat: "f"}), {type: messageComponentType.POSITION, expected: {attribute: "d", equals: "e", dateFormat: "f"}});
+    it('should return {type: messageComponentType.POSITION, expected: {equals: "e", dateFormat: "f"}} when "expectedMessageComponent" is {parentPath: "a", element: "b", elementPosition: "c", attribute: "d", equals: "e", dateFormat: "f"}', function () {
+      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: 1, attribute: "d", equals: "e", dateFormat: "f"}), {type: messageComponentType.POSITION, expected: {equals: "e", dateFormat: "f"}});
     });
 
-    it('should return {type: messageComponentType.POSITION, expected: {attribute: "d", contains: "e"}} when "expectedMessageComponent" is {parentPath: "a", element: "b", elementPosition: "c", attribute: "d", contains: "e"}', function () {
-      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: 1, attribute: "d", contains: "e"}), {type: messageComponentType.POSITION, expected: {attribute: "d", contains: "e"}});
+    it('should return {type: messageComponentType.POSITION, expected: {contains: "e"}} when "expectedMessageComponent" is {parentPath: "a", element: "b", elementPosition: "c", attribute: "d", contains: "e"}', function () {
+      assert.deepEqual(validate({parentPath: "a", element: "b", elementPosition: 1, attribute: "d", contains: "e"}), {type: messageComponentType.POSITION, expected: {contains: "e"}});
     });
 
     it('should return {type: messageComponentType.POSITION, expected: {attribute: "d", contains: "e"}} when "expectedMessageComponent" is {parentPath: "a", element: "b", elementPosition: "c", pathShouldNotExist: "d"}', function () {

@@ -63,7 +63,7 @@ function validate(expectedMessageComponent) {
       || _.isEqual(expectedMessageComponentKeys, ['contains', 'path', 'repeatingGroup'])
       || _.isEqual(expectedMessageComponentKeys, ['path', 'pathShouldNotExist', 'repeatingGroup'])) {
       type = messageComponentType.REPEATING_GROUP;
-      expected = _.omit(_.clone(expectedMessageComponent), ['path', 'repeatingGroup']);
+      expected = _.omit(_.clone(expectedMessageComponent), ['path', 'repeatingGroup', 'attribute']);
     }
 
   } else if (_.has(expectedMessageComponent, 'parentPath')) {
@@ -79,7 +79,7 @@ function validate(expectedMessageComponent) {
       if (!Number.isInteger(expectedMessageComponent.elementPosition)) throw new Error('elementPosition should be an integer');
       if (expectedMessageComponent.elementPosition < 1) throw new Error('elementPosition should be greater than 0');
       type = messageComponentType.POSITION;
-      expected = _.omit(_.clone(expectedMessageComponent), ['parentPath', 'element', 'elementPosition']);
+      expected = _.omit(_.clone(expectedMessageComponent), ['parentPath', 'element', 'elementPosition', 'attribute']);
     }
 
   } else {
@@ -92,7 +92,7 @@ function validate(expectedMessageComponent) {
       || _.isEqual(expectedMessageComponentKeys, ['attribute', 'contains', 'path'])
       || _.isEqual(expectedMessageComponentKeys, ['path', 'pathShouldNotExist'])) {
       type = messageComponentType.STANDARD;
-      expected = _.omit(_.clone(expectedMessageComponent), ['path']);
+      expected = _.omit(_.clone(expectedMessageComponent), ['path', 'attribute']);
     }
   }
 

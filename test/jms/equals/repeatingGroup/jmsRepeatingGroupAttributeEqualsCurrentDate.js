@@ -39,17 +39,17 @@ describe('jms - repeating element attribute equals current date', function() {
     assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       description: "Check actual value " + currentDateTimeLocal + " matches date/regex pattern " + currentLocalDateRegexPattern.toString().replace('local-timezone', currentLocalDate),
-      expected: currentLocalDateRegexPattern + ' where local-timezone has the date format YYYY-MM-DD',
+      expected: {equals: currentLocalDateRegexPattern, dateFormat: 'YYYY-MM-DD'},
       pass: false,
-      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1'}
+      target: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1'}
     });
 
     assert.deepEqual(result.checks[2], {
       actual: currentDateTimeUtc,
       description: "Check actual value " + currentDateTimeUtc + " matches date/regex pattern " + currentUtcDateRegexPattern.toString().replace('utc-timezone', currentUtcDate),
-      expected: currentUtcDateRegexPattern + ' where utc-timezone has the date format DD MM-YYYY',
+      expected: {equals: currentUtcDateRegexPattern, dateFormat: 'DD MM-YYYY'},
       pass: false,
-      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1'}
+      target: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1'}
     });
   });
 
@@ -75,17 +75,17 @@ describe('jms - repeating element attribute equals current date', function() {
     assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       description: "Check actual value " + currentDateTimeLocal + " matches date/regex pattern " + currentLocalDateRegexPattern.toString().replace('local-timezone', currentLocalDate),
-      expected: currentLocalDateRegexPattern + ' where local-timezone has the date format YYYY-MM-DD',
+      expected: {equals: currentLocalDateRegexPattern, dateFormat: 'YYYY-MM-DD'},
       pass: true,
-      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1'}
+      target: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1'}
     });
 
     assert.deepEqual(result.checks[2], {
       actual: currentDateTimeUtc,
       description: "Check actual value " + currentDateTimeUtc + " matches date/regex pattern " + currentUtcDateRegexPattern.toString().replace('utc-timezone', currentUtcDate),
-      expected: currentUtcDateRegexPattern + ' where utc-timezone has the date format DD-MM-YYYY',
+      expected: {equals: currentUtcDateRegexPattern, dateFormat: 'DD-MM-YYYY'},
       pass: true,
-      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1'}
+      target: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1'}
     });
   });
 });

@@ -20,7 +20,7 @@ describe('jms - root element check', function () {
       description: 'Check actual root element testRootElement is equal to expected root element testRootElement_wrong',
       expected: 'testRootElement_wrong',
       pass: false,
-      path: 'testRootElement_wrong'
+      target: 'testRootElement_wrong'
     });
   });
 
@@ -42,7 +42,7 @@ describe('jms - root element check', function () {
       description: 'Check actual root element testRootElement is equal to expected root element testRootElement',
       expected: 'testRootElement',
       pass: true,
-      path: 'testRootElement'
+      target: 'testRootElement'
     });
   });
 

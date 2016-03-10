@@ -24,7 +24,7 @@ describe('soap - is alpha check', function() {
     assert.deepEqual(result.checks[1], {
       actual: 'abc',
       expected: '{alpha}',
-      path: {path: 'SOAP-ENV:Body.lettersOnlyField'},
+      target: {path: 'SOAP-ENV:Body.lettersOnlyField'},
       description: "Check actual value abc is alpha",
       pass: true
     });

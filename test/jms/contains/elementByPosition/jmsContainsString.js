@@ -21,9 +21,9 @@ describe('element by position / jms - contains string check', function () {
     assert.deepEqual(result.checks[1], {
       actual: 'noisehellonoise',
       description: 'Check actual value noisehellonoise contains yello',
-      expected: 'contains: yello',
+      expected: {contains: 'yello'},
       pass: false,
-      path: {parentPath: 'testRootElement', element: 'containsElement', elementPosition: 1}
+      target: {parentPath: 'testRootElement', element: 'containsElement', elementPosition: 1}
     });
   });
 
@@ -43,9 +43,9 @@ describe('element by position / jms - contains string check', function () {
     assert.deepEqual(result.checks[1], {
       actual: 'noisehellonoise',
       description: 'Check actual value noisehellonoise contains hello',
-      expected: 'contains: hello',
+      expected: {contains: 'hello'},
       pass: true,
-      path:  {parentPath: 'testRootElement', element: 'containsElement', elementPosition: 1}
+      target: {parentPath: 'testRootElement', element: 'containsElement', elementPosition: 1}
     });
   });
 
@@ -65,9 +65,9 @@ describe('element by position / jms - contains string check', function () {
     assert.deepEqual(result.checks[1], {
       actual: 'noisehellonoise',
       description: 'Check actual value noisehellonoise contains noisehellonoise',
-      expected: 'contains: noisehellonoise',
+      expected: {contains: 'noisehellonoise'},
       pass: true,
-      path: {parentPath: 'testRootElement', element: 'containsElement', elementPosition: 1}
+      target: {parentPath: 'testRootElement', element: 'containsElement', elementPosition: 1}
     });
   });
 });

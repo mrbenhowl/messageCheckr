@@ -23,9 +23,9 @@ describe('soap - integer value check', function() {
     assert.deepEqual(result.checks[1], {
       actual: 1,
       description: "Check actual value 1 is equal to 1",
-      expected: 1,
+      expected: {equals: 1},
       pass: true,
-      path: {path: 'SOAP-ENV:Body.integerFieldWith1Digit'}
+      target: {path: 'SOAP-ENV:Body.integerFieldWith1Digit'}
     });
   });
 });

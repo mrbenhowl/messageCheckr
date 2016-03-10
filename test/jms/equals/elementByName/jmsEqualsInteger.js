@@ -23,9 +23,9 @@ describe('jms - integer value check', function() {
     assert.deepEqual(result.checks[1], {
       actual: 1,
       description: "Check actual value 1 is equal to 2",
-      expected: 2,
+      expected: {equals: 2},
       pass: false,
-      path: {path: 'integerFieldWith1Digit'}
+      target: {path: 'integerFieldWith1Digit'}
     });
   });
 
@@ -45,9 +45,9 @@ describe('jms - integer value check', function() {
     assert.deepEqual(result.checks[1], {
       actual: NaN,
       description: "Check actual value abc is equal to 1",
-      expected: 1,
+      expected: {equals: 1},
       pass: false,
-      path: {path: 'alphabeticalValue'}
+      target: {path: 'alphabeticalValue'}
     });
   });
 
@@ -67,9 +67,9 @@ describe('jms - integer value check', function() {
     assert.deepEqual(result.checks[1], {
       actual: 1,
       description: "Check actual value 1 is equal to 1",
-      expected: 1,
+      expected: {equals: 1},
       pass: true,
-      path: {path: 'integerFieldWith1Digit'}
+      target: {path: 'integerFieldWith1Digit'}
     });
   });
 
@@ -89,9 +89,9 @@ describe('jms - integer value check', function() {
     assert.deepEqual(result.checks[1], {
       actual: 12345,
       description: "Check actual value 12345 is equal to 12345",
-      expected: 12345,
+      expected: {equals: 12345},
       pass: true,
-      path: {path: 'integerFieldWithMoreThan1Digit'}
+      target: {path: 'integerFieldWithMoreThan1Digit'}
     });
   });
 });

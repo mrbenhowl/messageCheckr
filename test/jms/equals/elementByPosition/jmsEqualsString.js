@@ -24,7 +24,7 @@ describe('element by position / jms - equals value check', function () {
       expected: 'helloo',
       description: 'Check actual value hello is equal to helloo',
       pass: false,
-      path: {parentPath: 'testRootElement', element: 'checkJustTheValue', elementPosition: 1}
+      target: {parentPath: 'testRootElement', element: 'checkJustTheValue', elementPosition: 1}
     });
   });
 
@@ -46,7 +46,7 @@ describe('element by position / jms - equals value check', function () {
       expected: 'something',
       description: 'Check actual value  is equal to something',
       pass: false,
-      path: {parentPath: 'testRootElement', element: 'emptyElement', elementPosition: 2}
+      target: {parentPath: 'testRootElement', element: 'emptyElement', elementPosition: 2}
     });
   });
 
@@ -68,7 +68,7 @@ describe('element by position / jms - equals value check', function () {
       expected: 'hello',
       description: 'Check actual value hello is equal to hello',
       pass: true,
-      path: {parentPath: 'testRootElement', element: 'checkJustTheValue', elementPosition: 1}
+      target: {parentPath: 'testRootElement', element: 'checkJustTheValue', elementPosition: 1}
     });
   });
 
@@ -90,7 +90,7 @@ describe('element by position / jms - equals value check', function () {
       expected: '',
       description: 'Check actual value  is equal to ',
       pass: true,
-      path: {parentPath: 'testRootElement', element: 'emptyElement', elementPosition: 2}
+      target: {parentPath: 'testRootElement', element: 'emptyElement', elementPosition: 2}
     });
   });
 });

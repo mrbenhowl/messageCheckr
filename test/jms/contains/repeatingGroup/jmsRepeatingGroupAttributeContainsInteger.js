@@ -35,16 +35,16 @@ describe('jms - repeating element attribute contains integer', function () {
 
       assert.deepEqual(result.checks[1], {
         actual: '123',
-        expected: 'contains: 1234',
-        path: {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2'},
+        expected: {contains: 1234},
+        target: {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2'},
         description: "Check actual value 123 contains 1234",
         pass: false
       });
 
       assert.deepEqual(result.checks[2], {
         actual: '123',
-        expected: 'contains: 124',
-        path: {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2'},
+        expected: {contains: 124},
+        target: {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2'},
         description: "Check actual value 123 contains 124",
         pass: false
       });
@@ -67,16 +67,16 @@ describe('jms - repeating element attribute contains integer', function () {
 
       assert.deepEqual(result.checks[1], {
         actual: '123',
-        expected: 'contains: 123',
-        path: {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2'},
+        expected: {contains: 123},
+        target: {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2'},
         description: "Check actual value 123 contains 123",
         pass: true
       });
 
       assert.deepEqual(result.checks[2], {
         actual: '123',
-        expected: 'contains: 12',
-        path: {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2'},
+        expected: {contains: 12},
+        target: {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2'},
         description: "Check actual value 123 contains 12",
         pass: true
       });

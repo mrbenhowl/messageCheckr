@@ -26,7 +26,7 @@ describe('jms - is alpha check', function() {
       description: "Check actual value 1 is alpha",
       expected: "{alpha}",
       pass: false,
-      path: {path: 'integerField'}
+      target: {path: 'integerField'}
     });
   });
 
@@ -48,7 +48,7 @@ describe('jms - is alpha check', function() {
       expected: "{alpha}",
       description: "Check actual value ab1c is alpha",
       pass: false,
-      path: {path: 'mixedNumberAndAlphabeticalField'}
+      target: {path: 'mixedNumberAndAlphabeticalField'}
     });
   });
 
@@ -70,7 +70,7 @@ describe('jms - is alpha check', function() {
       expected: "{alpha}",
       description: "Check actual value abc is alpha",
       pass: true,
-      path: {path: 'lettersOnlyField'}
+      target: {path: 'lettersOnlyField'}
     });
   });
 
@@ -92,7 +92,7 @@ describe('jms - is alpha check', function() {
       expected: "{alpha}",
       description: "Check actual value z is alpha",
       pass: true,
-      path: {path: 'oneLetterField'}
+      target: {path: 'oneLetterField'}
     });
   });
 });

@@ -23,7 +23,7 @@ describe('soap - root element check', function () {
       description: 'Check actual root element SOAP-ENV:Envelope1 is equal to expected root element SOAP-ENV:Envelope',
       expected: 'SOAP-ENV:Envelope',
       pass: false,
-      path: 'SOAP-ENV:Envelope'
+      target: 'SOAP-ENV:Envelope'
     });
   });
 });

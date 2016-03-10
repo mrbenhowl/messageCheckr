@@ -21,9 +21,9 @@ describe('jms - contains string check', function () {
     assert.deepEqual(result.checks[1], {
       actual: 'noisehellonoise',
       description: 'Check actual value noisehellonoise contains yello',
-      expected: 'contains: yello',
+      expected: {contains: 'yello'},
       pass: false,
-      path: {path: 'containsElement'}
+      target: {path: 'containsElement'}
     });
   });
 
@@ -43,9 +43,9 @@ describe('jms - contains string check', function () {
     assert.deepEqual(result.checks[1], {
       actual: 'noisehellonoise',
       description: 'Check actual value noisehellonoise contains hello',
-      expected: 'contains: hello',
+      expected: {contains: 'hello'},
       pass: true,
-      path: {path: 'containsElement'}
+      target: {path: 'containsElement'}
     });
   });
 
@@ -65,9 +65,9 @@ describe('jms - contains string check', function () {
     assert.deepEqual(result.checks[1], {
       actual: 'noisehellonoise',
       description: 'Check actual value noisehellonoise contains noisehellonoise',
-      expected: 'contains: noisehellonoise',
+      expected: {contains: 'noisehellonoise'},
       pass: true,
-      path:  {path: 'containsElement'}
+      target: {path: 'containsElement'}
     });
   });
 });

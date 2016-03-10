@@ -12,7 +12,7 @@ var assertions = {
       verificationResults.add(
         {
           pass: !messageComponent.isPathPresent(),
-          path: messageComponent.getPrintablePath(),
+          target: messageComponent.getPrintablePath(),
           description: 'Check path does not exist'
         }
       );
@@ -22,14 +22,13 @@ var assertions = {
         verificationResults.add(
           {
             pass: messageComponent.isPathPresent(),
-            path: messageComponent.getPrintablePath(),
+            target: messageComponent.getPrintablePath(),
             description: 'Check path does exist'
           }
         );
       } else {
         var printablePath = messageComponent.getPrintablePath(),
           actualValue = messageComponent.getActualValue();
-
 
         if (_.has(messageComponent.getExpected(), 'equals')) {
           var expectedValue = messageComponent.getExpected().equals;
@@ -38,20 +37,19 @@ var assertions = {
             verificationResults.add(
               {
                 pass: parseInt(actualValue) === expectedValue,
-                path: printablePath,
+                target: printablePath,
                 actual: parseInt(actualValue),
-                expected: expectedValue,
+                expected: messageComponent.getExpected(),
                 description: 'Check actual value ' + actualValue + ' is equal to ' + expectedValue
               }
             );
           } else if (_.isRegExp(expectedValue)) {
-
             if (expectedValue.toString().indexOf('local-timezone') != -1) {
-              this.timestampCheck(printablePath, actualValue, expectedValue, 'local-timezone', messageComponent.getExpected().dateFormat);
+              this.timestampCheck(printablePath, expectedValue, actualValue, 'local-timezone', messageComponent.getExpected().dateFormat, messageComponent.getExpected());
             } else if (expectedValue.toString().indexOf('utc-timezone') != -1) {
-              this.timestampCheck(printablePath, actualValue, expectedValue, 'utc-timezone', messageComponent.getExpected().dateFormat);
+              this.timestampCheck(printablePath, expectedValue, actualValue, 'utc-timezone', messageComponent.getExpected().dateFormat, messageComponent.getExpected());
             } else {
-              this.regexCheck(printablePath, actualValue, expectedValue);
+              this.regexCheck(printablePath, actualValue, expectedValue, messageComponent.getExpected());
             }
           } else if (expectedValue.match(/^\{store\(.*\)}$/) != null) {
             var storeName = expectedValue.match(/\(([^)]+)\)/)[1];
@@ -61,7 +59,7 @@ var assertions = {
             store.add(storeName, actualValue);
           } else if (expectedValue.match(/^\{matches\([a-zA-Z]*\)}$/) != null) {
             var storeName = expectedValue.match(/\(([^)]+)\)/)[1];
-            this.storeCheck(printablePath, storeName, actualValue);
+            this.storeCheck(printablePath, storeName, actualValue, messageComponent.getExpected());
           } else if (expectedValue.match(/^\{uuid}$/) != null) {
             this.uuidCheck(printablePath, actualValue);
           } else if (expectedValue.match(/^\{alphanumeric}$/) != null) {
@@ -81,7 +79,7 @@ var assertions = {
           }
 
         } else if (_.has(messageComponent.getExpected(), 'contains')) {
-          this.containsCheck(printablePath, messageComponent.getActualValue(), messageComponent.getExpected().contains);
+          this.containsCheck(printablePath, messageComponent.getActualValue(), messageComponent.getExpected().contains, messageComponent.getExpected());
         } else {
           throw new Error('I have not accounted for something, whoops!');
         }
@@ -93,7 +91,7 @@ var assertions = {
     verificationResults.add(
       {
         pass: xmlDocument.name === expectedRootElement,
-        path: expectedRootElement,
+        target: expectedRootElement,
         actual: xmlDocument.name,
         expected: expectedRootElement,
         description: 'Check actual root element ' + xmlDocument.name + ' is equal to expected root element ' + expectedRootElement
@@ -105,7 +103,7 @@ var assertions = {
     verificationResults.add(
       {
         pass: actualValue === expectedValue,
-        path: path,
+        target: path,
         actual: actualValue,
         expected: expectedValue,
         description: 'Check actual value ' + actualValue + ' is equal to ' + expectedValue
@@ -113,13 +111,13 @@ var assertions = {
     );
   },
 
-  containsCheck: function containsCheck(path, actualValue, containsExpectedValue) {
+  containsCheck: function containsCheck(path, actualValue, containsExpectedValue, expected) {
     verificationResults.add(
       {
         pass: actualValue.indexOf(containsExpectedValue) != -1,
-        path: path,
+        target: path,
         actual: actualValue,
-        expected: 'contains: ' + containsExpectedValue,
+        expected: expected,
         description: 'Check actual value ' + actualValue + ' contains ' + containsExpectedValue
       }
     );
@@ -129,7 +127,7 @@ var assertions = {
     verificationResults.add(
       {
         pass: validator.isUUID(actualValue),
-        path: path,
+        target: path,
         actual: actualValue,
         expected: '{uuid}',
         description: 'Check actual value ' + actualValue + ' is a valid UUID'
@@ -137,15 +135,15 @@ var assertions = {
     );
   },
 
-  storeCheck: function storeCheck(path, storeName, actualValue) {
+  storeCheck: function storeCheck(path, storeName, actualValue, expected) {
     var valuePreviouslyStored = store.get(storeName);
 
     verificationResults.add(
       {
         pass: valuePreviouslyStored === actualValue,
-        path: path,
+        target: path,
         actual: actualValue,
-        expected: valuePreviouslyStored,
+        expected: expected,
         description: 'Check actual value ' + actualValue + ' matches value ' + valuePreviouslyStored + ' in {store(' + storeName + ')}'
       }
     );
@@ -155,7 +153,7 @@ var assertions = {
     verificationResults.add(
       {
         pass: validator.isAlphanumeric(actualValue),
-        path: path,
+        target: path,
         actual: actualValue,
         expected: '{alphanumeric}',
         description: 'Check actual value ' + actualValue + ' is alphanumeric'
@@ -168,7 +166,7 @@ var assertions = {
     verificationResults.add(
       {
         pass: validator.isAlpha(actualValue),
-        path: path,
+        target: path,
         actual: actualValue,
         expected: '{alpha}',
         description: 'Check actual value ' + actualValue + ' is alpha'
@@ -184,7 +182,7 @@ var assertions = {
       verificationResults.add(
         {
           pass: false,
-          path: path,
+          target: path,
           actual: actualValue,
           expected: '{integer}',
           description: descriptionOfCheck
@@ -194,7 +192,7 @@ var assertions = {
       verificationResults.add(
         {
           pass: Number.isInteger(Number.parseFloat(actualValue)),
-          path: path,
+          target: path,
           actual: actualValue,
           expected: '{integer}',
           description: descriptionOfCheck
@@ -209,7 +207,7 @@ var assertions = {
     verificationResults.add(
       {
         pass: lessThanExpected,
-        path: path,
+        target: path,
         actual: actualValue,
         expected: '{length(<' + expectedLength + ')}',
         description: 'Check actual value ' + actualValue + ' has a length less than ' + expectedLength
@@ -223,7 +221,7 @@ var assertions = {
     verificationResults.add(
       {
         pass: greaterThanExpected,
-        path: path,
+        target: path,
         actual: actualValue,
         expected: '{length(>' + expectedLength + ')}',
         description: 'Check actual value ' + actualValue + ' has a length greater than ' + expectedLength
@@ -237,7 +235,7 @@ var assertions = {
     verificationResults.add(
       {
         pass: equal,
-        path: path,
+        target: path,
         actual: actualValue,
         expected: '{length(' + expectedLength + ')}',
         description: 'Check actual value ' + actualValue + ' has a length equal to ' + expectedLength
@@ -246,20 +244,20 @@ var assertions = {
   }
   ,
 
-  regexCheck: function regexCheck(path, actualValue, regexPattern) {
+  regexCheck: function regexCheck(path, actualValue, regexPattern, expected) {
     verificationResults.add(
       {
         pass: regexPattern.test(actualValue),
-        path: path,
+        target: path,
         actual: actualValue,
-        expected: regexPattern,
+        expected: expected,
         description: 'Check actual value ' + actualValue + ' against regex ' + regexPattern.toString()
       }
     );
   }
   ,
 
-  timestampCheck: function timestampCheck(path, actualValue, regexPattern, timezone, dateFormat) {
+  timestampCheck: function timestampCheck(path, regexPattern, actualValue, timezone, dateFormat, expected) {
     var currentDate, regexObj;
 
     if (_.isUndefined(dateFormat)) {
@@ -278,9 +276,9 @@ var assertions = {
     verificationResults.add(
       {
         pass: regexObj.test(actualValue),
-        path: path,
+        target: path,
         actual: actualValue,
-        expected: regexPattern + ' where ' + timezone + ' has the date format ' + dateFormat,
+        expected: expected,
         description: 'Check actual value ' + actualValue + ' matches date/regex pattern ' + regexObj
       }
     );

@@ -25,7 +25,7 @@ describe('jms - sub root level check', function() {
       description: "Check actual value checkMe is equal to willNotMatch",
       expected: 'willNotMatch',
       pass: false,
-      path: {path: 'subRootLevel.elementAtSubRootLevel'},
+      target: {path: 'subRootLevel.elementAtSubRootLevel'},
     });
   });
 
@@ -47,7 +47,7 @@ describe('jms - sub root level check', function() {
       description: "Check actual value checkMe is equal to checkMe",
       expected: 'checkMe',
       pass: true,
-      path: {path: 'subRootLevel.elementAtSubRootLevel'}
+      target: {path: 'subRootLevel.elementAtSubRootLevel'}
     });
   });
 });

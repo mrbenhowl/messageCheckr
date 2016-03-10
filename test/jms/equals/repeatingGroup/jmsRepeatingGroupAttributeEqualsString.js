@@ -36,7 +36,7 @@ describe('jms - repeating element attribute equals', function () {
       description: "Check actual value hello is equal to hellop",
       expected: 'hellop',
       pass: false,
-      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'}
+      target: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'}
     });
 
     assert.deepEqual(result.checks[2], {
@@ -44,7 +44,7 @@ describe('jms - repeating element attribute equals', function () {
       description: "Check actual value its is equal to bits",
       expected: 'bits',
       pass: false,
-      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute1'}
+      target: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute1'}
     });
 
     assert.deepEqual(result.checks[3], {
@@ -52,7 +52,7 @@ describe('jms - repeating element attribute equals', function () {
       description: "Check actual value me is equal to sme",
       expected: 'sme',
       pass: false,
-      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'}
+      target: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'}
     });
 
     assert.deepEqual(result.checks[4], {
@@ -60,7 +60,7 @@ describe('jms - repeating element attribute equals', function () {
       description: "Check actual value ben is equal to benn",
       expected: 'benn',
       pass: false,
-      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute1'}
+      target: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute1'}
     });
   });
 
@@ -84,7 +84,7 @@ describe('jms - repeating element attribute equals', function () {
       description: "Check actual value hello is equal to hello",
       expected: 'hello',
       pass: true,
-      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'}
+      target: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'}
     });
 
     assert.deepEqual(result.checks[2], {
@@ -92,7 +92,7 @@ describe('jms - repeating element attribute equals', function () {
       description: "Check actual value its is equal to its",
       expected: 'its',
       pass: true,
-      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute1'}
+      target: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute1'}
     });
 
     assert.deepEqual(result.checks[3], {
@@ -100,7 +100,7 @@ describe('jms - repeating element attribute equals', function () {
       description: "Check actual value me is equal to me",
       expected: 'me',
       pass: true,
-      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'}
+      target: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'}
     });
 
     assert.deepEqual(result.checks[4], {
@@ -108,7 +108,7 @@ describe('jms - repeating element attribute equals', function () {
       description: "Check actual value ben is equal to ben",
       expected: 'ben',
       pass: true,
-      path: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute1'}
+      target: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute1'}
     });
   });
 });

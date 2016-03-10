@@ -27,7 +27,7 @@ describe('soap - sub root level check', function() {
       description: "Check actual value checkMe is equal to checkMe",
       expected: 'checkMe',
       pass: true,
-      path: {path: 'SOAP-ENV:Body.subRootLevel.elementAtSubRootLevel'}
+      target: {path: 'SOAP-ENV:Body.subRootLevel.elementAtSubRootLevel'}
     });
   });
 });

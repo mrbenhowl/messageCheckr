@@ -25,8 +25,8 @@ describe('jms - regex check', function () {
       assert.equal(result.allChecksPassed, false);
       assert.deepEqual(result.checks[1], {
         actual: '2015-11-01T08:12:15.425+11:00',
-        expected: regexPattern,
-        path: {path: 'elementToCheckRegex'},
+        expected: {equals: regexPattern},
+        target: {path: 'elementToCheckRegex'},
         description: 'Check actual value 2015-11-01T08:12:15.425+11:00 against regex ' + regexPattern,
         pass: false
       });
@@ -50,8 +50,8 @@ describe('jms - regex check', function () {
       assert.equal(result.allChecksPassed, true);
       assert.deepEqual(result.checks[1], {
         actual: '2015-11-01T08:12:15.425+11:00',
-        expected: regexPattern,
-        path: {path: 'elementToCheckRegex'},
+        expected: {equals: regexPattern},
+        target: {path: 'elementToCheckRegex'},
         description: 'Check actual value 2015-11-01T08:12:15.425+11:00 against regex ' + regexPattern,
         pass: true
       });
@@ -78,8 +78,8 @@ describe('jms - regex check', function () {
       assert.equal(result.allChecksPassed, false);
       assert.deepEqual(result.checks[1], {
         actual: '2015-11-01T08:12:15.425+11:00',
-        expected: regexPattern,
-        path: {path: 'elementToCheckRegex'},
+        expected: {equals: regexPattern},
+        target: {path: 'elementToCheckRegex'},
         description: 'Check actual value 2015-11-01T08:12:15.425+11:00 against regex ' + regexPattern,
         pass: false
       });
@@ -103,8 +103,8 @@ describe('jms - regex check', function () {
       assert.equal(result.allChecksPassed, true);
       assert.deepEqual(result.checks[1], {
         actual: '2015-11-01T08:12:15.425+11:00',
-        expected: regexPattern,
-        path: {path: 'elementToCheckRegex'},
+        expected: {equals: regexPattern},
+        target: {path: 'elementToCheckRegex'},
         description: 'Check actual value 2015-11-01T08:12:15.425+11:00 against regex ' + regexPattern,
         pass: true
       });
@@ -131,8 +131,8 @@ describe('jms - regex check', function () {
       assert.equal(result.allChecksPassed, false);
       assert.deepEqual(result.checks[1], {
         actual: '2015-11-01T08:12:15.425+11:00',
-        expected: regexPattern,
-        path: {path: 'elementToCheckRegex'},
+        expected: {equals: regexPattern},
+        target: {path: 'elementToCheckRegex'},
         description: 'Check actual value 2015-11-01T08:12:15.425+11:00 against regex ' + regexPattern,
         pass: false
       });
@@ -156,8 +156,8 @@ describe('jms - regex check', function () {
       assert.equal(result.allChecksPassed, true);
       assert.deepEqual(result.checks[1], {
         actual: '2015-11-01T08:12:15.425+11:00',
-        expected: regexPattern,
-        path: {path: 'elementToCheckRegex'},
+        expected: {equals: regexPattern},
+        target: {path: 'elementToCheckRegex'},
         description: 'Check actual value 2015-11-01T08:12:15.425+11:00 against regex ' + regexPattern,
         pass: true
       });
@@ -184,8 +184,8 @@ describe('jms - regex check', function () {
       assert.equal(result.allChecksPassed, false);
       assert.deepEqual(result.checks[1], {
         actual: '2015-11-01T08:12:15.425+11:00',
-        expected: regexPattern,
-        path: {path: 'elementToCheckRegex'},
+        expected: {equals: regexPattern},
+        target: {path: 'elementToCheckRegex'},
         description: 'Check actual value 2015-11-01T08:12:15.425+11:00 against regex ' + regexPattern,
         pass: false
       });
@@ -209,8 +209,8 @@ describe('jms - regex check', function () {
       assert.equal(result.allChecksPassed, true);
       assert.deepEqual(result.checks[1], {
         actual: '2015-11-01T08:12:15.425+11:00',
-        expected: regexPattern,
-        path: {path: 'elementToCheckRegex'},
+        expected: {equals: regexPattern},
+        target: {path: 'elementToCheckRegex'},
         description: 'Check actual value 2015-11-01T08:12:15.425+11:00 against regex ' + regexPattern,
         pass: true
       });

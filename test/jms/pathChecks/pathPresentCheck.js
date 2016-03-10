@@ -20,7 +20,7 @@ describe('jms - path checks', function () {
 
     assert.equal(result.allChecksPassed, false);
     assert.deepEqual(result.checks[1], {
-      path: {path: 'subRootLevel.fieldDoesNotExist'},
+      target: {path: 'subRootLevel.fieldDoesNotExist'},
       description: 'Check path does exist',
       pass: false
     });
@@ -41,7 +41,7 @@ describe('jms - path checks', function () {
 
     assert.equal(result.allChecksPassed, false);
     assert.deepEqual(result.checks[1], {
-      path: {path: 'testRootElement', attribute: 'wrong'},
+      target: {path: 'testRootElement', attribute: 'wrong'},
       description: 'Check path does exist',
       pass: false
     });
@@ -65,7 +65,7 @@ describe('jms - path checks', function () {
       expected: "testRootElementDoesNotExist",
       description: 'Check actual root element testRootElement is equal to expected root element testRootElementDoesNotExist',
       pass: false,
-      path: 'testRootElementDoesNotExist'
+      target:'testRootElementDoesNotExist'
     });
   });
 });

@@ -26,7 +26,7 @@ describe('jms - is integer check', function() {
     assert.deepEqual(result.checks[1], {
       actual: "abc",
       expected: "{integer}",
-      path: {path: 'alphabeticalValue'},
+      target: {path: 'alphabeticalValue'},
       description: "Check actual value abc is an integer",
       pass: false
     });
@@ -48,7 +48,7 @@ describe('jms - is integer check', function() {
     assert.deepEqual(result.checks[1], {
       actual: "1.1",
       expected: "{integer}",
-      path: {path: 'floatValue'},
+      target: {path: 'floatValue'},
       description: "Check actual value 1.1 is an integer",
       pass: false
     });
@@ -70,7 +70,7 @@ describe('jms - is integer check', function() {
     assert.deepEqual(result.checks[1], {
       actual: "1",
       expected: "{integer}",
-      path: {path: 'integerFieldWith1Digit'},
+      target: {path: 'integerFieldWith1Digit'},
       description: "Check actual value 1 is an integer",
       pass: true
     });
@@ -92,7 +92,7 @@ describe('jms - is integer check', function() {
     assert.deepEqual(result.checks[1], {
       actual: "1.0",
       expected: "{integer}",
-      path: {path: 'integerFieldWith1DigitAndOnlyZeroAfterDecimalPlace'},
+      target: {path: 'integerFieldWith1DigitAndOnlyZeroAfterDecimalPlace'},
       description: "Check actual value 1.0 is an integer",
       pass: true
     });
@@ -114,7 +114,7 @@ describe('jms - is integer check', function() {
     assert.deepEqual(result.checks[1], {
       actual: "12345",
       expected: "{integer}",
-      path: {path: 'integerFieldWithMoreThan1Digit'},
+      target: {path: 'integerFieldWithMoreThan1Digit'},
       description: "Check actual value 12345 is an integer",
       pass: true
     });
@@ -136,7 +136,7 @@ describe('jms - is integer check', function() {
     assert.deepEqual(result.checks[1], {
       actual: "-1",
       expected: "{integer}",
-      path: {path: 'integerFieldWithMinusValue'},
+      target: {path: 'integerFieldWithMinusValue'},
       description: "Check actual value -1 is an integer",
       pass: true
     });
