@@ -73,7 +73,7 @@ messageCheckr returns an object with the attribute `allChecksPassed` which will 
     assert.equal(result.allChecksPassed, true);
     // this is using chai.js, any assertion library can be used.
 
-The object returned by messageCheckr also has an attribute called `checks`, which in the case of above will contain:
+The object returned by messageCheckr also has an attribute called `checks`. In the case above the `checks` object will be empty because there are no failing checks. By default only failing checks are present. If you wish to see all checks provide the parameter `verbose` to messageCheckr(). If `verbose` was supplied (and set to true) checks would contain the following:
 
     [
       {
@@ -127,7 +127,11 @@ The object returned by messageCheckr also has an attribute called `checks`, whic
       }
     ]
 
-The attribute `checks` is an array of all checks that were specified in `expectedMessage`. For each check there will be 2 objects in the array, the first detailing the result of checking that the path existed, the second detailing the result of the check specified. Each object contains the attribute `passedCheck`, which is set to true if the test passed, otherwise false. In a future release the structure of `checks` will change so that there will only be one object for each path specified.
+
+In projects where I use messageCheckr I assert its result as follows, which will print out failing checks if there are any.
+
+    assert.equal(result.allChecksPassed, true, JSON.stringify(result));
+
 
 ###SOAP messages
 
@@ -843,14 +847,10 @@ TODO
 
 I am planning to work on the following tasks/features in the near future:
 
-* [I'm not happy with how you have to specify a repeating group, so this will probably be reworked in the future](https://github.com/mrbenhowl/messageCheckr/issues/3)
-* [Currently every time a path is specified the existence is checked, which means if you need to perform more than one check on the same path the path is checked more than once, which is inefficient.](https://github.com/mrbenhowl/messageCheckr/issues/5)
-* [Change the structure of the output, so that the key is the path being checked. That key will point to an object containing all checks](https://github.com/mrbenhowl/messageCheckr/issues/5)
 * [Support for position delimited messages](https://github.com/mrbenhowl/messageCheckr/issues/6)
 * [The ability to check floating point numbers](https://github.com/mrbenhowl/messageCheckr/issues/7)
 * [Converter for Cucumber.js datatable to enable use in cucumber tests (separate repo)](https://github.com/mrbenhowl/messageCheckr/issues/8)
 * [Refactor - review any TODOs in the code](https://github.com/mrbenhowl/messageCheckr/issues/11)
-* [Improve unit tests - more coverage (e.g. errors) and more stubbing](https://github.com/mrbenhowl/messageCheckr/issues/9)
 * [Add unit test code coverage reports](https://github.com/mrbenhowl/messageCheckr/issues/10)
 * [The ability to check <?xml version="1.0" encoding="UTF-8" standalone="yes"?> for JMS messages](https://github.com/mrbenhowl/messageCheckr/issues/12)
 * I think you should have to specify the full path including parent
