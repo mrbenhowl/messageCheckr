@@ -32,7 +32,13 @@ var verificationResults = {
     return allChecksPassed;
   },
 
-  getAllChecks: function getAllChecks() {
+  getAllChecks: function getAllChecks(verbose) {
+    if (!verbose){
+
+      return checks.filter(function(el){
+        return el.pass === false;
+      });
+    }
     return checks;
   }
 };

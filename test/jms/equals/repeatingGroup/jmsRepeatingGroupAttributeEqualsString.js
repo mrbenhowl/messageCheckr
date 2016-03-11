@@ -24,6 +24,7 @@ describe('jms - repeating element attribute equals', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -74,6 +75,7 @@ describe('jms - repeating element attribute equals', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'

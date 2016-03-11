@@ -12,6 +12,7 @@ describe('jms - contains integer check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -34,6 +35,7 @@ describe('jms - contains integer check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -56,6 +58,7 @@ describe('jms - contains integer check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'

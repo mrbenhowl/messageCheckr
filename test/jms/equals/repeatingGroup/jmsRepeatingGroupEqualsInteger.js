@@ -1,4 +1,4 @@
-describe('jms - repeating element equals integer', function() {
+describe('jms - repeating element equals integer', function () {
 
   var actualMsg = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -14,7 +14,7 @@ describe('jms - repeating element equals integer', function() {
     </thingContainingRepeatingGroups>
   </testRootElement>`;
 
-  it('should report a mismatch where the actual repeating group element value does not match the expected value', function() {
+  it('should report a mismatch where the actual repeating group element value does not match the expected value', function () {
     var expectedMessage = [
       {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: 10002},
       {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', equals: 10004},
@@ -24,6 +24,7 @@ describe('jms - repeating element equals integer', function() {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -64,7 +65,7 @@ describe('jms - repeating element equals integer', function() {
     });
   });
 
-  it('should report a match where the actual repeating group element value does match the expected value', function() {
+  it('should report a match where the actual repeating group element value does match the expected value', function () {
     var expectedMessage = [
       {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: 10001},
       {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', equals: 10003},
@@ -74,6 +75,7 @@ describe('jms - repeating element equals integer', function() {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'

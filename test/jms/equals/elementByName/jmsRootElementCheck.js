@@ -9,6 +9,7 @@ describe('jms - root element check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement_wrong'
@@ -31,6 +32,7 @@ describe('jms - root element check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'

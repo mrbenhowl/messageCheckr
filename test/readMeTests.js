@@ -21,6 +21,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMsg,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -47,6 +48,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'soap',
+        verbose: true,
         actualMsg: actualMsg,
         expectedMsg: expectedMessage
       });
@@ -71,6 +73,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -84,6 +87,7 @@ describe('readme tests', function () {
 
       result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -105,6 +109,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -118,6 +123,7 @@ describe('readme tests', function () {
 
       result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -140,6 +146,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -153,6 +160,7 @@ describe('readme tests', function () {
 
       result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -174,6 +182,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -187,6 +196,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -200,6 +210,7 @@ describe('readme tests', function () {
 
       result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -222,6 +233,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -245,6 +257,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -266,6 +279,7 @@ describe('readme tests', function () {
 
       result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -289,6 +303,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -309,6 +324,7 @@ describe('readme tests', function () {
 
       result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -345,6 +361,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -380,6 +397,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -410,6 +428,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -440,6 +459,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -474,6 +494,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -510,6 +531,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -545,6 +567,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -569,6 +592,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -593,6 +617,7 @@ describe('readme tests', function () {
 
       result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -620,6 +645,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -646,6 +672,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -671,6 +698,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -697,6 +725,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -722,6 +751,7 @@ describe('readme tests', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'

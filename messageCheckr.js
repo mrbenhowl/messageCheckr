@@ -33,7 +33,7 @@ var messageCheckr = function messageCheckr(params) {
     throw new Error('type ' + type + ' is not handled');
   }
 
-  return ({allChecksPassed: verificationResults.getOverallResult(), checks: verificationResults.getAllChecks()});
+  return ({allChecksPassed: verificationResults.getOverallResult(), checks: verificationResults.getAllChecks(params.verbose)});
 };
 
 function checkAllMessageComponents(actualMsgAsXmlDocument, expectedMsg) {

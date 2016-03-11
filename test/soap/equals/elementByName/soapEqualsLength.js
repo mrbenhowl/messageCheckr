@@ -1,4 +1,4 @@
-describe('soap - length check', function() {
+describe('soap - length check', function () {
 
   var actualMsg =
     `<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
@@ -15,6 +15,7 @@ describe('soap - length check', function() {
 
     var result = messageCheckr({
       type: 'soap',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage
     });
@@ -36,6 +37,7 @@ describe('soap - length check', function() {
 
     var result = messageCheckr({
       type: 'soap',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage
     });
@@ -58,6 +60,7 @@ describe('soap - length check', function() {
 
     var result = messageCheckr({
       type: 'soap',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage
     });

@@ -17,6 +17,7 @@ describe('jms - regex check', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMsg,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -42,6 +43,7 @@ describe('jms - regex check', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMsg,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -70,6 +72,7 @@ describe('jms - regex check', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMsg,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -95,6 +98,7 @@ describe('jms - regex check', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMsg,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -123,6 +127,7 @@ describe('jms - regex check', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMsg,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -148,6 +153,7 @@ describe('jms - regex check', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMsg,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -176,6 +182,7 @@ describe('jms - regex check', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMsg,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -201,6 +208,7 @@ describe('jms - regex check', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMsg,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'

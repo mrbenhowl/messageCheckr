@@ -17,6 +17,7 @@ describe('validateParams()', function () {
     assert.throws(function () {
         validateParams({
           type: 'jms',
+          verbose: true,
           expectedMsg: 'test',
           expectedRootElement: 'test'
         })
@@ -28,6 +29,7 @@ describe('validateParams()', function () {
     assert.throws(function () {
         validateParams({
           type: 'jms',
+          verbose: true,
           actualMsg: 'test',
           expectedRootElement: 'test'
         })
@@ -39,6 +41,7 @@ describe('validateParams()', function () {
     assert.throws(function () {
         validateParams({
           type: 'jms',
+          verbose: true,
           actualMsg: 'test',
           expectedMsg: 'test'
         })
@@ -50,6 +53,7 @@ describe('validateParams()', function () {
     assert.doesNotThrow(function () {
         validateParams({
           type: 'soap',
+          verbose: true,
           actualMsg: 'test',
           expectedMsg: ['test']
         })
@@ -61,6 +65,7 @@ describe('validateParams()', function () {
     assert.doesNotThrow(function () {
       validateParams({
         type: 'jms',
+        verbose: true,
         actualMsg: 'test',
         expectedMsg: ['test'],
         expectedRootElement: 'test'
@@ -79,6 +84,7 @@ describe('validateParams()', function () {
     assert.throws(function () {
         messageCheckr({
           type: 'jms',
+          verbose: true,
           actualMsg: actualMsg,
           expectedRootElement: 'test'
         })
@@ -95,6 +101,7 @@ describe('validateParams()', function () {
     assert.throws(function () {
       validateParams({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMsg,
         expectedMsg: 1,
         expectedRootElement: 'test'
@@ -104,6 +111,7 @@ describe('validateParams()', function () {
     assert.throws(function () {
       validateParams({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMsg,
         expectedMsg: 'string',
         expectedRootElement: 'test'
@@ -114,6 +122,7 @@ describe('validateParams()', function () {
     assert.throws(function () {
       validateParams({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMsg,
         expectedMsg: expectedIsAnObject,
         expectedRootElement: 'test'
@@ -131,6 +140,7 @@ describe('validateParams()', function () {
     assert.throws(function () {
       validateParams({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMsg,
         expectedMsg: emptyArray,
         expectedRootElement: 'test'

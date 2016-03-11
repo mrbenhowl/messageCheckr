@@ -13,6 +13,7 @@ describe('jms - path checks', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -34,6 +35,7 @@ describe('jms - path checks', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -54,6 +56,7 @@ describe('jms - path checks', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElementDoesNotExist'
@@ -65,7 +68,7 @@ describe('jms - path checks', function () {
       expected: "testRootElementDoesNotExist",
       description: 'Check actual root element testRootElement is equal to expected root element testRootElementDoesNotExist',
       pass: false,
-      target:'testRootElementDoesNotExist'
+      target: 'testRootElementDoesNotExist'
     });
   });
 });

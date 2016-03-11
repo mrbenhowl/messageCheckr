@@ -1,4 +1,4 @@
-describe('jms - integer value check', function() {
+describe('jms - integer value check', function () {
 
   var actualMsg = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -7,13 +7,14 @@ describe('jms - integer value check', function() {
     <alphabeticalValue>abc</alphabeticalValue>
   </testRootElement>`;
 
-  it('should report a mismatch where actual integer value does not the expected integer value', function() {
+  it('should report a mismatch where actual integer value does not the expected integer value', function () {
     var expectedMessage = [
       {path: 'integerFieldWith1Digit', equals: 2}
     ];
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -29,13 +30,14 @@ describe('jms - integer value check', function() {
     });
   });
 
-  it('should report a mismatch where actual value is not an integer', function() {
+  it('should report a mismatch where actual value is not an integer', function () {
     var expectedMessage = [
       {path: 'alphabeticalValue', equals: 1}
     ];
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -58,6 +60,7 @@ describe('jms - integer value check', function() {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -80,6 +83,7 @@ describe('jms - integer value check', function() {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'

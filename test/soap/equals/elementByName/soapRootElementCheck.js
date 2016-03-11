@@ -13,6 +13,7 @@ describe('soap - root element check', function () {
 
     var result = messageCheckr({
       type: 'soap',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage
     });

@@ -13,6 +13,7 @@ describe('jms - path not present checks', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -33,6 +34,7 @@ describe('jms - path not present checks', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -46,7 +48,7 @@ describe('jms - path not present checks', function () {
     });
   });
 
-  describe('repeating group', function(){
+  describe('repeating group', function () {
     var actualMessage =
       `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
         <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -69,6 +71,7 @@ describe('jms - path not present checks', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -84,6 +87,7 @@ describe('jms - path not present checks', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'
@@ -99,6 +103,7 @@ describe('jms - path not present checks', function () {
 
       var result = messageCheckr({
         type: 'jms',
+        verbose: true,
         actualMsg: actualMessage,
         expectedMsg: expectedMessage,
         expectedRootElement: 'testRootElement'

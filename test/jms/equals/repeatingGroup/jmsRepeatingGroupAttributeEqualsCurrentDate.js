@@ -1,6 +1,6 @@
 var moment = require('moment');
 
-describe('jms - repeating element attribute equals current date', function() {
+describe('jms - repeating element attribute equals current date', function () {
   var currentDateTimeLocal, currentDateTimeUtc;
   currentDateTimeLocal = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ');
   currentDateTimeUtc = moment().utc().format('DD-MM-YYYYTHH:mm:ss.SSSZ');
@@ -9,17 +9,17 @@ describe('jms - repeating element attribute equals current date', function() {
   <testRootElement xmlns="http://www.testing.com/integration/event">
     <thingContainingRepeatingGroups>
         <RepeatingGroup>
-            <fieldOneOfRepeatingGroup attribute1="`+currentDateTimeLocal+`">not interested in this value</fieldOneOfRepeatingGroup>
+            <fieldOneOfRepeatingGroup attribute1="` + currentDateTimeLocal + `">not interested in this value</fieldOneOfRepeatingGroup>
         </RepeatingGroup>
         <RepeatingGroup>
-            <fieldOneOfRepeatingGroup attribute1="`+currentDateTimeUtc+`">not interested in this value</fieldOneOfRepeatingGroup>
+            <fieldOneOfRepeatingGroup attribute1="` + currentDateTimeUtc + `">not interested in this value</fieldOneOfRepeatingGroup>
         </RepeatingGroup>
     </thingContainingRepeatingGroups>
   </testRootElement>`;
 
-  it('should report a mismatch where the actual repeating group element value does not match the expected value', function() {
+  it('should report a mismatch where the actual repeating group element value does not match the expected value', function () {
     var currentLocalDateRegexPattern = /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d\d/; // expecting 1 more digit than what is present
-    var currentUtcDateRegexPattern  = /utc-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/;
+    var currentUtcDateRegexPattern = /utc-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/;
     var currentLocalDate = moment().format('YYYY-MM-DD');
     var currentUtcDate = moment().utc().format('DD MM-YYYY'); // a dash is missing between DD and MM
 
@@ -30,6 +30,7 @@ describe('jms - repeating element attribute equals current date', function() {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -53,9 +54,9 @@ describe('jms - repeating element attribute equals current date', function() {
     });
   });
 
-  it('should report a match where the actual repeating group element value does match the expected value', function() {
+  it('should report a match where the actual repeating group element value does match the expected value', function () {
     var currentLocalDateRegexPattern = /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/;
-    var currentUtcDateRegexPattern  = /utc-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/;
+    var currentUtcDateRegexPattern = /utc-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/;
     var currentLocalDate = moment().format('YYYY-MM-DD');
     var currentUtcDate = moment().utc().format('DD-MM-YYYY');
 
@@ -66,6 +67,7 @@ describe('jms - repeating element attribute equals current date', function() {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'

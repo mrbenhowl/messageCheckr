@@ -1,4 +1,4 @@
-describe('jms - is integer check', function() {
+describe('jms - is integer check', function () {
 
   var actualMsg = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -10,13 +10,14 @@ describe('jms - is integer check', function() {
     <floatValue>1.1</floatValue>
   </testRootElement>`;
 
-  it('should report a mismatch where the actual value is not an integer - it is alphabetical', function() {
+  it('should report a mismatch where the actual value is not an integer - it is alphabetical', function () {
     var expectedMessage = [
       {path: 'alphabeticalValue', equals: '{integer}'}
     ];
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -32,13 +33,14 @@ describe('jms - is integer check', function() {
     });
   });
 
-  it('should report a mismatch where the actual value is not an integer - it is a decimal/float', function() {
+  it('should report a mismatch where the actual value is not an integer - it is a decimal/float', function () {
     var expectedMessage = [
       {path: 'floatValue', equals: '{integer}'}
     ];
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -54,13 +56,14 @@ describe('jms - is integer check', function() {
     });
   });
 
-  it('should report a match where the actual value is an integer (1)', function() {
+  it('should report a match where the actual value is an integer (1)', function () {
     var expectedMessage = [
       {path: 'integerFieldWith1Digit', equals: '{integer}'}
     ];
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -76,13 +79,14 @@ describe('jms - is integer check', function() {
     });
   });
 
-  it('should report a match where the actual value is an integer (1.0)', function() {
+  it('should report a match where the actual value is an integer (1.0)', function () {
     var expectedMessage = [
       {path: 'integerFieldWith1DigitAndOnlyZeroAfterDecimalPlace', equals: '{integer}'}
     ];
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -98,13 +102,14 @@ describe('jms - is integer check', function() {
     });
   });
 
-  it('should report a match where the actual value is an integer (12345)', function() {
+  it('should report a match where the actual value is an integer (12345)', function () {
     var expectedMessage = [
       {path: 'integerFieldWithMoreThan1Digit', equals: '{integer}'}
     ];
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -120,13 +125,14 @@ describe('jms - is integer check', function() {
     });
   });
 
-  it('should report a match where the actual value is a negative integer (-1)', function() {
+  it('should report a match where the actual value is a negative integer (-1)', function () {
     var expectedMessage = [
       {path: 'integerFieldWithMinusValue', equals: '{integer}'}
     ];
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'

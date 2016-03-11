@@ -17,6 +17,7 @@ describe('jms - timestamp check', function () {
     assert.throws(function () {
         messageCheckr({
           type: 'jms',
+          verbose: true,
           actualMsg: actualMsg,
           expectedMsg: expectedMessageInvalidTimezone,
           expectedRootElement: 'testRootElement'
@@ -40,6 +41,7 @@ describe('jms - timestamp check', function () {
     assert.throws(function () {
         messageCheckr({
           type: 'jms',
+          verbose: true,
           actualMsg: actualMsg,
           expectedMsg: expectedMessageInvalidTimezone,
           expectedRootElement: 'testRootElement'
@@ -64,6 +66,7 @@ describe('jms - timestamp check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -95,6 +98,7 @@ describe('jms - timestamp check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -127,6 +131,7 @@ describe('jms - timestamp check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -158,6 +163,7 @@ describe('jms - timestamp check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -189,6 +195,7 @@ describe('jms - timestamp check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -220,6 +227,7 @@ describe('jms - timestamp check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -251,6 +259,7 @@ describe('jms - timestamp check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -282,6 +291,7 @@ describe('jms - timestamp check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -313,6 +323,7 @@ describe('jms - timestamp check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -344,6 +355,7 @@ describe('jms - timestamp check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -375,6 +387,7 @@ describe('jms - timestamp check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -406,6 +419,7 @@ describe('jms - timestamp check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -437,6 +451,7 @@ describe('jms - timestamp check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -468,6 +483,7 @@ describe('jms - timestamp check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -499,6 +515,7 @@ describe('jms - timestamp check', function () {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'

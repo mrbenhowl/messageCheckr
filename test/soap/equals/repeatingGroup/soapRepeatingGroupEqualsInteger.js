@@ -1,4 +1,4 @@
-describe('jms - repeating element equals integer', function() {
+describe('jms - repeating element equals integer', function () {
 
   var actualMsg =
     `<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
@@ -17,7 +17,7 @@ describe('jms - repeating element equals integer', function() {
       </soap-env:Body>
     </soap-env:Envelope>`;
 
-  it('should report a match where the actual repeating group element value does match the expected value', function() {
+  it('should report a match where the actual repeating group element value does match the expected value', function () {
     var expectedMessage = [
       {repeatingGroup: {path: 'SOAP-ENV:Body.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: 10001},
       {repeatingGroup: {path: 'SOAP-ENV:Body.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', equals: 10003},
@@ -27,6 +27,7 @@ describe('jms - repeating element equals integer', function() {
 
     var result = messageCheckr({
       type: 'soap',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage
     });
@@ -38,7 +39,7 @@ describe('jms - repeating element equals integer', function() {
       expected: {equals: 10001},
       pass: true,
       target: {repeatingGroup: {path: 'SOAP-ENV:Body.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup'}
-      
+
     });
 
     assert.deepEqual(result.checks[2], {

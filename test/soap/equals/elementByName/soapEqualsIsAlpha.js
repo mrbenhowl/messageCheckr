@@ -1,4 +1,4 @@
-describe('soap - is alpha check', function() {
+describe('soap - is alpha check', function () {
 
   var actualMsg =
     `<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
@@ -9,13 +9,14 @@ describe('soap - is alpha check', function() {
     </soap-env:Envelope>`;
 
 
-  it('should report a match where the actual value is alpha (more than 1 letter)', function() {
+  it('should report a match where the actual value is alpha (more than 1 letter)', function () {
     var expectedMessage = [
       {path: 'SOAP-ENV:Body.lettersOnlyField', equals: '{alpha}'}
     ];
 
     var result = messageCheckr({
       type: 'soap',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage
     });

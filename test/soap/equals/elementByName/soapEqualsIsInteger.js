@@ -1,4 +1,4 @@
-describe('soap - is integer check', function() {
+describe('soap - is integer check', function () {
 
   var actualMsg =
     `<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
@@ -8,13 +8,14 @@ describe('soap - is integer check', function() {
       </soap-env:Body>
     </soap-env:Envelope>`;
 
-  it('should report a match where the actual value is an integer (12345)', function() {
+  it('should report a match where the actual value is an integer (12345)', function () {
     var expectedMessage = [
       {path: 'SOAP-ENV:Body.integerFieldWithMoreThan1Digit', equals: '{integer}'}
     ];
 
     var result = messageCheckr({
       type: 'soap',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage
     });

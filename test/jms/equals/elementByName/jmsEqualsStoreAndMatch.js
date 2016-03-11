@@ -1,4 +1,4 @@
-describe('jms - store and match check', function() {
+describe('jms - store and match check', function () {
 
   var actualMsg = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -7,7 +7,7 @@ describe('jms - store and match check', function() {
     <uuidDifferentToAbove>49276fbd-d143-4fb4-9a00-6b60ae6b0d1f</uuidDifferentToAbove>
   </testRootElement>`;
 
-  it('should report a mismatch where {store} value does not the {matches} value', function() {
+  it('should report a mismatch where {store} value does not the {matches} value', function () {
     var expectedMessage = [
       {path: 'validUuidElement', equals: '{store(nameForGuidField)}'},
       {path: 'uuidDifferentToAbove', equals: '{matches(nameForGuidField)}'}
@@ -15,6 +15,7 @@ describe('jms - store and match check', function() {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -38,6 +39,7 @@ describe('jms - store and match check', function() {
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'

@@ -1,4 +1,4 @@
-describe('soap - sub root level check', function() {
+describe('soap - sub root level check', function () {
 
   var actualMsg =
     `<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
@@ -10,13 +10,14 @@ describe('soap - sub root level check', function() {
       </soap-env:Body>
     </soap-env:Envelope>`;
 
-  it('should report a match where the actual sub root level value does match the expected value', function() {
+  it('should report a match where the actual sub root level value does match the expected value', function () {
     var expectedMessage = [
       {path: 'SOAP-ENV:Body.subRootLevel.elementAtSubRootLevel', equals: 'checkMe'}
     ];
 
     var result = messageCheckr({
       type: 'soap',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage
     });

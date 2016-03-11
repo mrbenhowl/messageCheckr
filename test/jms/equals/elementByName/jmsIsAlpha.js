@@ -1,4 +1,4 @@
-describe('jms - is alpha check', function() {
+describe('jms - is alpha check', function () {
 
   var actualMsg = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -8,13 +8,14 @@ describe('jms - is alpha check', function() {
     <mixedNumberAndAlphabeticalField>ab1c</mixedNumberAndAlphabeticalField>
   </testRootElement>`;
 
-  it('should report a mismatch where the actual value is not just letters - it is an integer', function() {
+  it('should report a mismatch where the actual value is not just letters - it is an integer', function () {
     var expectedMessage = [
       {path: 'integerField', equals: '{alpha}'}
     ];
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -30,13 +31,14 @@ describe('jms - is alpha check', function() {
     });
   });
 
-  it('should report a mismatch where the actual value is not just letters - it is combination of letters and an integer', function() {
+  it('should report a mismatch where the actual value is not just letters - it is combination of letters and an integer', function () {
     var expectedMessage = [
       {path: 'mixedNumberAndAlphabeticalField', equals: '{alpha}'}
     ];
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -52,13 +54,14 @@ describe('jms - is alpha check', function() {
     });
   });
 
-  it('should report a match where the actual value is alpha (more than 1 letter)', function() {
+  it('should report a match where the actual value is alpha (more than 1 letter)', function () {
     var expectedMessage = [
       {path: 'lettersOnlyField', equals: '{alpha}'}
     ];
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'
@@ -74,13 +77,14 @@ describe('jms - is alpha check', function() {
     });
   });
 
-  it('should report a match where the actual value is alpha (1 letter)', function() {
+  it('should report a match where the actual value is alpha (1 letter)', function () {
     var expectedMessage = [
       {path: 'oneLetterField', equals: '{alpha}'}
     ];
 
     var result = messageCheckr({
       type: 'jms',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
       expectedRootElement: 'testRootElement'

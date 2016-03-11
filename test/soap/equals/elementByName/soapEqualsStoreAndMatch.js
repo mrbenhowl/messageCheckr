@@ -1,4 +1,4 @@
-describe('soap - store and match check', function() {
+describe('soap - store and match check', function () {
 
   var actualMsg =
     `<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
@@ -17,6 +17,7 @@ describe('soap - store and match check', function() {
 
     var result = messageCheckr({
       type: 'soap',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage
     });

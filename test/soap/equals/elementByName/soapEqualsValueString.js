@@ -1,4 +1,4 @@
-describe('soap - equals value check', function() {
+describe('soap - equals value check', function () {
 
   var actualMsg =
     `<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
@@ -15,6 +15,7 @@ describe('soap - equals value check', function() {
 
     var result = messageCheckr({
       type: 'soap',
+      verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage
     });

@@ -748,7 +748,7 @@ describe('messageComponent()', function () {
         assert.isDefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'subTestElement', number: 1}, path: 'subSubTestElement', attribute: 'testAttribute1', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
     });
-    
+
     describe('type is not expected messageComponentType', function () {
       var xml =
         `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -760,84 +760,84 @@ describe('messageComponent()', function () {
     });
   });
 
-  describe('determinePrintablePath()', function(){
+  describe('determinePrintablePath()', function () {
 
     var determinePrintablePath = messageComponent.__get__('determinePrintablePath');
 
-    it('should remove attribute "pathShouldNotExist" from expectedMessageComponent', function(){
+    it('should remove attribute "pathShouldNotExist" from expectedMessageComponent', function () {
       assert.deepEqual(determinePrintablePath({path: "a", pathShouldNotExist: "b"}), {path: "a"});
-      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", pathShouldNotExist: "e"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d"});
+      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d", pathShouldNotExist: "e"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d"});
       assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", pathShouldNotExist: "d"}), {parentPath: "a", element: "b", elementPosition: "c"});
     });
 
-    it('should remove attribute "equals" from expectedMessageComponent', function(){
+    it('should remove attribute "equals" from expectedMessageComponent', function () {
       assert.deepEqual(determinePrintablePath({path: "a", equals: "b"}), {path: "a"});
-      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", equals: "e"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d"});
+      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d", equals: "e"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d"});
       assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", equals: "d"}), {parentPath: "a", element: "b", elementPosition: "c"});
 
       assert.deepEqual(determinePrintablePath({path: "a", attribute: "b", equals: "c"}), {path: "a", attribute: "b"});
-      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e", equals: "f"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e"});
+      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d", attribute: "e", equals: "f"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d", attribute: "e"});
       assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", attribute: "d", equals: "e"}), {parentPath: "a", element: "b", elementPosition: "c", attribute: "d"});
     });
 
-    it('should remove attribute "contains" from expectedMessageComponent', function(){
+    it('should remove attribute "contains" from expectedMessageComponent', function () {
       assert.deepEqual(determinePrintablePath({path: "a", contains: "b"}), {path: "a"});
-      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", contains: "e"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d"});
+      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d", contains: "e"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d"});
       assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", contains: "d"}), {parentPath: "a", element: "b", elementPosition: "c"});
 
       assert.deepEqual(determinePrintablePath({path: "a", attribute: "b", contains: "c"}), {path: "a", attribute: "b"});
-      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e", contains: "f"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e"});
+      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d", attribute: "e", contains: "f"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d", attribute: "e"});
       assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", attribute: "d", contains: "e"}), {parentPath: "a", element: "b", elementPosition: "c", attribute: "d"});
     });
 
-    it('should remove attributes "equals" and "dateFormat" from expectedMessageComponent', function(){
+    it('should remove attributes "equals" and "dateFormat" from expectedMessageComponent', function () {
       assert.deepEqual(determinePrintablePath({path: "a", equals: "b", dateFormat: "c"}), {path: "a"});
-      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", equals: "e", dateFormat: "f"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d"});
+      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d", equals: "e", dateFormat: "f"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d"});
       assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", equals: "d", dateFormat: "e"}), {parentPath: "a", element: "b", elementPosition: "c"});
 
       assert.deepEqual(determinePrintablePath({path: "a", attribute: "b", equals: "c", dateFormat: "d"}), {path: "a", attribute: "b"});
-      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e", equals: "f", dateFormat: "g"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", attribute: "e"});
+      assert.deepEqual(determinePrintablePath({repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d", attribute: "e", equals: "f", dateFormat: "g"}), {repeatingGroup: {path: "a", repeater: "b", number: "c"}, path: "d", attribute: "e"});
       assert.deepEqual(determinePrintablePath({parentPath: "a", element: "b", elementPosition: "c", attribute: "d", equals: "e", dateFormat: "f"}), {parentPath: "a", element: "b", elementPosition: "c", attribute: "d"});
     });
   });
 
-  describe('getValueAtPath()', function(){
+  describe('getValueAtPath()', function () {
 
     var getValueAtPath = messageComponent.__get__('getValueAtPath');
 
-    it('should return the actual value at "pathToElement" where messageComponentType is STANDARD ("attribute" is undefined)' , function(){
+    it('should return the actual value at "pathToElement" where messageComponentType is STANDARD ("attribute" is undefined)', function () {
       var xmlDocument =
       {"name": "testElement", "attr": {"testAttribute": "test"}, "val": "12345", "children": [], "firstChild": null, "lastChild": null, "line": 2, "column": 48, "position": 183, "startTagPosition": 150};
       assert.equal(getValueAtPath(xmlDocument), '12345');
     });
 
-    it('should return the actual value for the "attribute" at "pathToElement" where messageComponentType is STANDARD' , function(){
+    it('should return the actual value for the "attribute" at "pathToElement" where messageComponentType is STANDARD', function () {
       var xmlDocument =
-      {"val":"\n              \n            ","name":"testRootElement","attr":{"xmlns":"http://www.testing.com/integration/event"},"children":[{"name":"testElement","attr":{},"val":"12345","children":[],"firstChild":null,"lastChild":null,"line":2,"column":27,"position":162,"startTagPosition":150}],"firstChild":{"name":"testElement","attr":{},"val":"12345","children":[],"firstChild":null,"lastChild":null,"line":2,"column":27,"position":162,"startTagPosition":150},"lastChild":{"name":"testElement","attr":{},"val":"12345","children":[],"firstChild":null,"lastChild":null,"line":2,"column":27,"position":162,"startTagPosition":150},"line":1,"column":78,"position":134,"startTagPosition":69};
+      {"val": "\n              \n            ", "name": "testRootElement", "attr": {"xmlns": "http://www.testing.com/integration/event"}, "children": [{"name": "testElement", "attr": {}, "val": "12345", "children": [], "firstChild": null, "lastChild": null, "line": 2, "column": 27, "position": 162, "startTagPosition": 150}], "firstChild": {"name": "testElement", "attr": {}, "val": "12345", "children": [], "firstChild": null, "lastChild": null, "line": 2, "column": 27, "position": 162, "startTagPosition": 150}, "lastChild": {"name": "testElement", "attr": {}, "val": "12345", "children": [], "firstChild": null, "lastChild": null, "line": 2, "column": 27, "position": 162, "startTagPosition": 150}, "line": 1, "column": 78, "position": 134, "startTagPosition": 69};
       assert.equal(getValueAtPath(xmlDocument, 'xmlns'), 'http://www.testing.com/integration/event');
     });
 
-    it('should return the actual value at "pathToElement" where messageComponentType is REPEATING_GROUP ("attribute" is undefined)' , function(){
+    it('should return the actual value at "pathToElement" where messageComponentType is REPEATING_GROUP ("attribute" is undefined)', function () {
       var xmlDocument =
-      {"name":"subTestElement","attr":{},"val":"test3","children":[],"firstChild":null,"lastChild":null,"line":9,"column":32,"position":425,"startTagPosition":410};
+      {"name": "subTestElement", "attr": {}, "val": "test3", "children": [], "firstChild": null, "lastChild": null, "line": 9, "column": 32, "position": 425, "startTagPosition": 410};
       assert.equal(getValueAtPath(xmlDocument), 'test3');
     });
 
-    it('should return the actual value for the "attribute" at "pathToElement" where messageComponentType is REPEATING_GROUP' , function(){
+    it('should return the actual value for the "attribute" at "pathToElement" where messageComponentType is REPEATING_GROUP', function () {
       var xmlDocument =
-      {"name":"subTestElement","attr":{"testAttribute1":"test1"},"val":"test","children":[],"firstChild":null,"lastChild":null,"line":3,"column":57,"position":220,"startTagPosition":182};
+      {"name": "subTestElement", "attr": {"testAttribute1": "test1"}, "val": "test", "children": [], "firstChild": null, "lastChild": null, "line": 3, "column": 57, "position": 220, "startTagPosition": 182};
       assert.equal(getValueAtPath(xmlDocument, 'testAttribute1'), 'test1');
     });
 
-    it('should return the actual value at "pathToElement" where messageComponentType is POSITION ("attribute" is undefined)' , function(){
+    it('should return the actual value at "pathToElement" where messageComponentType is POSITION ("attribute" is undefined)', function () {
       var xmlDocument =
-      {"name":"testElement","attr":{"testAttribute":"test"},"val":"12345","children":[],"firstChild":null,"lastChild":null,"line":2,"column":48,"position":183,"startTagPosition":150}
+      {"name": "testElement", "attr": {"testAttribute": "test"}, "val": "12345", "children": [], "firstChild": null, "lastChild": null, "line": 2, "column": 48, "position": 183, "startTagPosition": 150}
       assert.equal(getValueAtPath(xmlDocument), '12345');
     });
 
-    it('should return the actual value for the "attribute" at "pathToElement" where messageComponentType is POSITION' , function(){
+    it('should return the actual value for the "attribute" at "pathToElement" where messageComponentType is POSITION', function () {
       var xmlDocument =
-      {"name":"testElement","attr":{"testAttribute":"test"},"val":"12345","children":[],"firstChild":null,"lastChild":null,"line":2,"column":48,"position":183,"startTagPosition":150};
+      {"name": "testElement", "attr": {"testAttribute": "test"}, "val": "12345", "children": [], "firstChild": null, "lastChild": null, "line": 2, "column": 48, "position": 183, "startTagPosition": 150};
       assert.equal(getValueAtPath(xmlDocument, 'testAttribute'), 'test');
     });
   });
