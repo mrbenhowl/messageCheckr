@@ -825,4 +825,3 @@ I am planning to work on the following tasks/features in the near future:
 * [The ability to check floating point numbers](https://github.com/mrbenhowl/messageCheckr/issues/7)
 * [Refactor - review any TODOs in the code](https://github.com/mrbenhowl/messageCheckr/issues/11)
 * [Add unit test code coverage reports](https://github.com/mrbenhowl/messageCheckr/issues/10)
-* [The ability to check <?xml version="1.0" encoding="UTF-8" standalone="yes"?> for JMS messages](https://github.com/mrbenhowl/messageCheckr/issues/12)

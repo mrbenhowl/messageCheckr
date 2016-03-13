@@ -75,7 +75,7 @@ describe('jms - equals value check', function () {
     });
   });
 
-  it.only('should report a match where an attribute\'s actual value matches the expected value (actual value is blank)', function () {
+  it('should report a match where an attribute\'s actual value matches the expected value (actual value is blank)', function () {
     var expectedMessage = [
       {path: 'testRootElement.emptyElement', equals: ''}
     ];
