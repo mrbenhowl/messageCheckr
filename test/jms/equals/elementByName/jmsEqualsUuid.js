@@ -8,7 +8,7 @@ describe('jms - UUID check', function () {
 
   it('should report a mismatch where the actual element is not a UUID', function () {
     var expectedMessage = [
-      {path: 'notUuidElement', equals: '{uuid}'}
+      {path: 'testRootElement.notUuidElement', equals: '{uuid}'}
     ];
 
     var result = messageCheckr({
@@ -23,7 +23,7 @@ describe('jms - UUID check', function () {
     assert.deepEqual(result.checks[1], {
       actual: 'thisIsNotAValidUuid',
       expected: '{uuid}',
-      target: {path: 'notUuidElement'},
+      target: {path: 'testRootElement.notUuidElement'},
       description: 'Check actual value thisIsNotAValidUuid is a valid UUID',
       pass: false
     });
@@ -31,7 +31,7 @@ describe('jms - UUID check', function () {
 
   it('should report a match where the actual element is a valid UUID', function () {
     var expectedMessage = [
-      {path: 'validUuidElement', equals: '{uuid}'}
+      {path: 'testRootElement.validUuidElement', equals: '{uuid}'}
     ];
 
     var result = messageCheckr({
@@ -46,7 +46,7 @@ describe('jms - UUID check', function () {
     assert.deepEqual(result.checks[1], {
       actual: '49276fbd-d143-4fb4-9a00-6b60ae6b0c9e',
       expected: '{uuid}',
-      target: {path: 'validUuidElement'},
+      target: {path: 'testRootElement.validUuidElement'},
       description: 'Check actual value 49276fbd-d143-4fb4-9a00-6b60ae6b0c9e is a valid UUID',
       pass: true
     });

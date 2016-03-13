@@ -29,7 +29,7 @@ describe('jms - path not present checks', function () {
 
   it('should report a fail where a path exists and the flag pathShouldNotExist is set to true', function () {
     var expectedMessage = [
-      {path: 'subRootLevel.field', pathShouldNotExist: true}
+      {path: 'testRootElement.subRootLevel.field', pathShouldNotExist: true}
     ];
 
     var result = messageCheckr({
@@ -42,7 +42,7 @@ describe('jms - path not present checks', function () {
 
     assert.equal(result.allChecksPassed, false);
     assert.deepEqual(result.checks[1], {
-      target: {path: 'subRootLevel.field'},
+      target: {path: 'testRootElement.subRootLevel.field'},
       description: 'Check path does not exist',
       pass: false
     });
@@ -98,7 +98,7 @@ describe('jms - path not present checks', function () {
 
     it('should report a fail where a path exists and the flag pathShouldNotExist is set to true', function () {
       var expectedMessage = [
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', pathShouldNotExist: true}
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', pathShouldNotExist: true}
       ];
 
       var result = messageCheckr({
@@ -113,5 +113,3 @@ describe('jms - path not present checks', function () {
     });
   });
 });
-
-//TODO: child and attribute tests

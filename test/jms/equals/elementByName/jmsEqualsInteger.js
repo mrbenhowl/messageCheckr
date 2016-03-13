@@ -9,7 +9,7 @@ describe('jms - integer value check', function () {
 
   it('should report a mismatch where actual integer value does not the expected integer value', function () {
     var expectedMessage = [
-      {path: 'integerFieldWith1Digit', equals: 2}
+      {path: 'testRootElement.integerFieldWith1Digit', equals: 2}
     ];
 
     var result = messageCheckr({
@@ -26,13 +26,13 @@ describe('jms - integer value check', function () {
       description: "Check actual value 1 is equal to 2",
       expected: {equals: 2},
       pass: false,
-      target: {path: 'integerFieldWith1Digit'}
+      target: {path: 'testRootElement.integerFieldWith1Digit'}
     });
   });
 
   it('should report a mismatch where actual value is not an integer', function () {
     var expectedMessage = [
-      {path: 'alphabeticalValue', equals: 1}
+      {path: 'testRootElement.alphabeticalValue', equals: 1}
     ];
 
     var result = messageCheckr({
@@ -49,13 +49,13 @@ describe('jms - integer value check', function () {
       description: "Check actual value abc is equal to 1",
       expected: {equals: 1},
       pass: false,
-      target: {path: 'alphabeticalValue'}
+      target: {path: 'testRootElement.alphabeticalValue'}
     });
   });
 
   it('should report a match where the actual integer value matches the expected integer value - single digit', function () {
     var expectedMessage = [
-      {path: 'integerFieldWith1Digit', equals: 1}
+      {path: 'testRootElement.integerFieldWith1Digit', equals: 1}
     ];
 
     var result = messageCheckr({
@@ -72,13 +72,13 @@ describe('jms - integer value check', function () {
       description: "Check actual value 1 is equal to 1",
       expected: {equals: 1},
       pass: true,
-      target: {path: 'integerFieldWith1Digit'}
+      target: {path: 'testRootElement.integerFieldWith1Digit'}
     });
   });
 
   it('should report a match where the actual integer value matches the expected integer value - more than single digit', function () {
     var expectedMessage = [
-      {path: 'integerFieldWithMoreThan1Digit', equals: 12345}
+      {path: 'testRootElement.integerFieldWithMoreThan1Digit', equals: 12345}
     ];
 
     var result = messageCheckr({
@@ -95,7 +95,7 @@ describe('jms - integer value check', function () {
       description: "Check actual value 12345 is equal to 12345",
       expected: {equals: 12345},
       pass: true,
-      target: {path: 'integerFieldWithMoreThan1Digit'}
+      target: {path: 'testRootElement.integerFieldWithMoreThan1Digit'}
     });
   });
 });

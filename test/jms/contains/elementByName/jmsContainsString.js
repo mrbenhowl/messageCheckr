@@ -7,7 +7,7 @@ describe('jms - contains string check', function () {
 
   it('should report a mismatch where an element\'s actual value does not contain the expected value', function () {
     var expectedMessage = [
-      {path: 'containsElement', contains: 'yello'}
+      {path: 'testRootElement.containsElement', contains: 'yello'}
     ];
 
     var result = messageCheckr({
@@ -24,13 +24,13 @@ describe('jms - contains string check', function () {
       description: 'Check actual value noisehellonoise contains yello',
       expected: {contains: 'yello'},
       pass: false,
-      target: {path: 'containsElement'}
+      target: {path: 'testRootElement.containsElement'}
     });
   });
 
   it('should report a match where the expected value is contained within the element\'s actual value', function () {
     var expectedMessage = [
-      {path: 'containsElement', contains: 'hello'}
+      {path: 'testRootElement.containsElement', contains: 'hello'}
     ];
 
     var result = messageCheckr({
@@ -47,13 +47,13 @@ describe('jms - contains string check', function () {
       description: 'Check actual value noisehellonoise contains hello',
       expected: {contains: 'hello'},
       pass: true,
-      target: {path: 'containsElement'}
+      target: {path: 'testRootElement.containsElement'}
     });
   });
 
   it('should report a match where the expected value is equal to the element\'s actual value', function () {
     var expectedMessage = [
-      {path: 'containsElement', contains: 'noisehellonoise'}
+      {path: 'testRootElement.containsElement', contains: 'noisehellonoise'}
     ];
 
     var result = messageCheckr({
@@ -70,7 +70,7 @@ describe('jms - contains string check', function () {
       description: 'Check actual value noisehellonoise contains noisehellonoise',
       expected: {contains: 'noisehellonoise'},
       pass: true,
-      target: {path: 'containsElement'}
+      target: {path: 'testRootElement.containsElement'}
     });
   });
 });

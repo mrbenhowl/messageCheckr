@@ -9,8 +9,8 @@ describe('jms - store and match check', function () {
 
   it('should report a mismatch where {store} value does not the {matches} value', function () {
     var expectedMessage = [
-      {path: 'validUuidElement', equals: '{store(nameForGuidField)}'},
-      {path: 'uuidDifferentToAbove', equals: '{matches(nameForGuidField)}'}
+      {path: 'testRootElement.validUuidElement', equals: '{store(nameForGuidField)}'},
+      {path: 'testRootElement.uuidDifferentToAbove', equals: '{matches(nameForGuidField)}'}
     ];
 
     var result = messageCheckr({
@@ -27,14 +27,14 @@ describe('jms - store and match check', function () {
       description: "Check actual value 49276fbd-d143-4fb4-9a00-6b60ae6b0d1f matches value 49276fbd-d143-4fb4-9a00-6b60ae6b0c9e in {store(nameForGuidField)}",
       expected: {equals: '{matches(nameForGuidField)}'},
       pass: false,
-      target: {path: 'uuidDifferentToAbove'}
+      target: {path: 'testRootElement.uuidDifferentToAbove'}
     });
   });
 
   it('should report a match where the actual element is a valid UUID', function () {
     var expectedMessage = [
-      {path: 'validUuidElement', equals: '{store(nameForGuidFieldTwo)}'},
-      {path: 'duplicateOfUuidElementAbove', equals: '{matches(nameForGuidFieldTwo)}'}
+      {path: 'testRootElement.validUuidElement', equals: '{store(nameForGuidFieldTwo)}'},
+      {path: 'testRootElement.duplicateOfUuidElementAbove', equals: '{matches(nameForGuidFieldTwo)}'}
     ];
 
     var result = messageCheckr({
@@ -51,7 +51,7 @@ describe('jms - store and match check', function () {
       description: "Check actual value 49276fbd-d143-4fb4-9a00-6b60ae6b0c9e matches value 49276fbd-d143-4fb4-9a00-6b60ae6b0c9e in {store(nameForGuidFieldTwo)}",
       expected: {equals: '{matches(nameForGuidFieldTwo)}'},
       pass: true,
-      target: {path: 'duplicateOfUuidElementAbove'}
+      target: {path: 'testRootElement.duplicateOfUuidElementAbove'}
     });
   });
 });

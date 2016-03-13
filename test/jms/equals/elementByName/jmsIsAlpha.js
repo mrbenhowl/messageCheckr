@@ -10,7 +10,7 @@ describe('jms - is alpha check', function () {
 
   it('should report a mismatch where the actual value is not just letters - it is an integer', function () {
     var expectedMessage = [
-      {path: 'integerField', equals: '{alpha}'}
+      {path: 'testRootElement.integerField', equals: '{alpha}'}
     ];
 
     var result = messageCheckr({
@@ -27,13 +27,13 @@ describe('jms - is alpha check', function () {
       description: "Check actual value 1 is alpha",
       expected: "{alpha}",
       pass: false,
-      target: {path: 'integerField'}
+      target: {path: 'testRootElement.integerField'}
     });
   });
 
   it('should report a mismatch where the actual value is not just letters - it is combination of letters and an integer', function () {
     var expectedMessage = [
-      {path: 'mixedNumberAndAlphabeticalField', equals: '{alpha}'}
+      {path: 'testRootElement.mixedNumberAndAlphabeticalField', equals: '{alpha}'}
     ];
 
     var result = messageCheckr({
@@ -41,7 +41,7 @@ describe('jms - is alpha check', function () {
       verbose: true,
       actualMsg: actualMsg,
       expectedMsg: expectedMessage,
-      expectedRootElement: 'testRootElement'
+      expectedRootElement: 'testRootElement.testRootElement'
     });
 
     assert.equal(result.allChecksPassed, false);
@@ -50,13 +50,13 @@ describe('jms - is alpha check', function () {
       expected: "{alpha}",
       description: "Check actual value ab1c is alpha",
       pass: false,
-      target: {path: 'mixedNumberAndAlphabeticalField'}
+      target: {path: 'testRootElement.mixedNumberAndAlphabeticalField'}
     });
   });
 
   it('should report a match where the actual value is alpha (more than 1 letter)', function () {
     var expectedMessage = [
-      {path: 'lettersOnlyField', equals: '{alpha}'}
+      {path: 'testRootElement.lettersOnlyField', equals: '{alpha}'}
     ];
 
     var result = messageCheckr({
@@ -73,13 +73,13 @@ describe('jms - is alpha check', function () {
       expected: "{alpha}",
       description: "Check actual value abc is alpha",
       pass: true,
-      target: {path: 'lettersOnlyField'}
+      target: {path: 'testRootElement.lettersOnlyField'}
     });
   });
 
   it('should report a match where the actual value is alpha (1 letter)', function () {
     var expectedMessage = [
-      {path: 'oneLetterField', equals: '{alpha}'}
+      {path: 'testRootElement.oneLetterField', equals: '{alpha}'}
     ];
 
     var result = messageCheckr({
@@ -96,7 +96,7 @@ describe('jms - is alpha check', function () {
       expected: "{alpha}",
       description: "Check actual value z is alpha",
       pass: true,
-      target: {path: 'oneLetterField'}
+      target: {path: 'testRootElement.oneLetterField'}
     });
   });
 });

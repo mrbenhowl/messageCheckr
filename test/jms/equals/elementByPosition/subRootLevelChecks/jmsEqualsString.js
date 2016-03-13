@@ -1,14 +1,16 @@
-describe('jms - equals value check', function () {
+describe('element by position / jms - equals value check (sub root level)', function () {
 
   var actualMsg = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <testRootElement xmlns="http://www.testing.com/integration/event">
-    <checkJustTheValue>hello</checkJustTheValue>
-    <emptyElement></emptyElement>
+    <subRootElement>
+      <checkJustTheValue>hello</checkJustTheValue>
+      <emptyElement></emptyElement>
+    </subRootElement>
   </testRootElement>`;
 
   it('should report a mismatch where an element\'s actual value does not match the expected value', function () {
     var expectedMessage = [
-      {path: 'testRootElement.checkJustTheValue', equals: 'helloo'}
+      {parentPath: 'testRootElement.subRootElement', element: 'checkJustTheValue', elementPosition: 1, equals: 'helloo'}
     ];
 
     var result = messageCheckr({
@@ -25,13 +27,13 @@ describe('jms - equals value check', function () {
       expected: 'helloo',
       description: 'Check actual value hello is equal to helloo',
       pass: false,
-      target: {path: 'testRootElement.checkJustTheValue'}
+      target: {parentPath: 'testRootElement.subRootElement', element: 'checkJustTheValue', elementPosition: 1}
     });
   });
 
   it('should report a mismatch where an element\'s actual value does not match the expected value (actual value is blank)', function () {
     var expectedMessage = [
-      {path: 'testRootElement.emptyElement', equals: 'something'}
+      {parentPath: 'testRootElement.subRootElement', element: 'emptyElement', elementPosition: 2, equals: 'something'}
     ];
 
     var result = messageCheckr({
@@ -48,13 +50,13 @@ describe('jms - equals value check', function () {
       expected: 'something',
       description: 'Check actual value  is equal to something',
       pass: false,
-      target: {path: 'testRootElement.emptyElement'}
+      target: {parentPath: 'testRootElement.subRootElement', element: 'emptyElement', elementPosition: 2}
     });
   });
 
   it('should report a match where an attribute\'s actual value matches the expected value', function () {
     var expectedMessage = [
-      {path: 'testRootElement.checkJustTheValue', equals: 'hello'}
+      {parentPath: 'testRootElement.subRootElement', element: 'checkJustTheValue', elementPosition: 1, equals: 'hello'}
     ];
 
     var result = messageCheckr({
@@ -71,13 +73,13 @@ describe('jms - equals value check', function () {
       expected: 'hello',
       description: 'Check actual value hello is equal to hello',
       pass: true,
-      target: {path: 'testRootElement.checkJustTheValue'}
+      target: {parentPath: 'testRootElement.subRootElement', element: 'checkJustTheValue', elementPosition: 1}
     });
   });
 
-  it.only('should report a match where an attribute\'s actual value matches the expected value (actual value is blank)', function () {
+  it('should report a match where an attribute\'s actual value matches the expected value (actual value is blank)', function () {
     var expectedMessage = [
-      {path: 'testRootElement.emptyElement', equals: ''}
+      {parentPath: 'testRootElement.subRootElement', element: 'emptyElement', elementPosition: 2, equals: ''}
     ];
 
     var result = messageCheckr({
@@ -94,7 +96,7 @@ describe('jms - equals value check', function () {
       expected: '',
       description: 'Check actual value  is equal to ',
       pass: true,
-      target: {path: 'testRootElement.emptyElement'}
+      target: {parentPath: 'testRootElement.subRootElement', element: 'emptyElement', elementPosition: 2}
     });
   });
 });

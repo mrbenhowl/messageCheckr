@@ -11,7 +11,7 @@ describe('jms - timestamp check', function () {
       </testRootElement>`;
 
     var expectedMessageInvalidTimezone = [
-      {path: 'dateElement', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/}
+      {path: 'testRootElement.dateElement', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/}
     ];
 
     assert.throws(function () {
@@ -35,7 +35,7 @@ describe('jms - timestamp check', function () {
       </testRootElement>`;
 
     var expectedMessageInvalidTimezone = [
-      {path: 'dateElement', equals: /utc-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/}
+      {path: 'testRootElement.dateElement', equals: /utc-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/}
     ];
 
     assert.throws(function () {
@@ -61,7 +61,7 @@ describe('jms - timestamp check', function () {
       </testRootElement>`;
     dateRegexPattern = /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/;
     expectedMessage = [
-      {path: 'dateElement', equals: dateRegexPattern, dateFormat: 'YYYY-MM-DD'}
+      {path: 'testRootElement.dateElement', equals: dateRegexPattern, dateFormat: 'YYYY-MM-DD'}
     ];
 
     var result = messageCheckr({
@@ -76,7 +76,7 @@ describe('jms - timestamp check', function () {
     assert.deepEqual(result.checks[1], {
       actual: tomorrowDateTimeLocal,
       expected: {equals: dateRegexPattern, dateFormat: 'YYYY-MM-DD'},
-      target: {path: 'dateElement'},
+      target: {path: 'testRootElement.dateElement'},
       description: 'Check actual value ' + tomorrowDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('local-timezone', currentDate),
       pass: false
     });
@@ -93,7 +93,7 @@ describe('jms - timestamp check', function () {
       </testRootElement>`;
     dateRegexPattern = /utc-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/;
     expectedMessage = [
-      {path: 'dateElement', equals: dateRegexPattern, dateFormat: 'YYYY-MM-DD'}
+      {path: 'testRootElement.dateElement', equals: dateRegexPattern, dateFormat: 'YYYY-MM-DD'}
     ];
 
     var result = messageCheckr({
@@ -108,7 +108,7 @@ describe('jms - timestamp check', function () {
     assert.deepEqual(result.checks[1], {
       actual: tomorrowDateTimeLocal,
       expected: {equals: dateRegexPattern, dateFormat: 'YYYY-MM-DD'},
-      target: {path: 'dateElement'},
+      target: {path: 'testRootElement.dateElement'},
       description: 'Check actual value ' + tomorrowDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('utc-timezone', currentDate),
       pass: false
     });
@@ -126,7 +126,7 @@ describe('jms - timestamp check', function () {
     dateRegexPattern = /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d/;
 
     expectedMessage = [
-      {path: 'dateElement', equals: dateRegexPattern, dateFormat: 'YYYY-MM-DD'}
+      {path: 'testRootElement.dateElement', equals: dateRegexPattern, dateFormat: 'YYYY-MM-DD'}
     ];
 
     var result = messageCheckr({
@@ -141,7 +141,7 @@ describe('jms - timestamp check', function () {
     assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: {equals: dateRegexPattern, dateFormat: 'YYYY-MM-DD'},
-      target: {path: 'dateElement'},
+      target: {path: 'testRootElement.dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('local-timezone', currentDate),
       pass: false
     });
@@ -158,7 +158,7 @@ describe('jms - timestamp check', function () {
       </testRootElement>`;
     dateRegexPattern = /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/;
     expectedMessage = [
-      {path: 'dateElement', equals: dateRegexPattern, dateFormat: 'YYYY-MM-DD'}
+      {path: 'testRootElement.dateElement', equals: dateRegexPattern, dateFormat: 'YYYY-MM-DD'}
     ];
 
     var result = messageCheckr({
@@ -173,7 +173,7 @@ describe('jms - timestamp check', function () {
     assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: {equals: dateRegexPattern, dateFormat: 'YYYY-MM-DD'},
-      target: {path: 'dateElement'},
+      target: {path: 'testRootElement.dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('local-timezone', currentDate),
       pass: true
     });
@@ -190,7 +190,7 @@ describe('jms - timestamp check', function () {
       </testRootElement>`;
     dateRegexPattern = /^utc-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/;
     expectedMessage = [
-      {path: 'dateElement', equals: dateRegexPattern, dateFormat: 'YYYY-MM-DD'}
+      {path: 'testRootElement.dateElement', equals: dateRegexPattern, dateFormat: 'YYYY-MM-DD'}
     ];
 
     var result = messageCheckr({
@@ -205,7 +205,7 @@ describe('jms - timestamp check', function () {
     assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: {equals: dateRegexPattern, dateFormat: 'YYYY-MM-DD'},
-      target: {path: 'dateElement'},
+      target: {path: 'testRootElement.dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('utc-timezone', currentDate),
       pass: true
     });
@@ -222,7 +222,7 @@ describe('jms - timestamp check', function () {
       </testRootElement>`;
     dateRegexPattern = /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d$/;
     expectedMessage = [
-      {path: 'dateElement', equals: dateRegexPattern, dateFormat: 'YY-MM-DD'}
+      {path: 'testRootElement.dateElement', equals: dateRegexPattern, dateFormat: 'YY-MM-DD'}
     ];
 
     var result = messageCheckr({
@@ -237,7 +237,7 @@ describe('jms - timestamp check', function () {
     assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: {equals: dateRegexPattern, dateFormat: 'YY-MM-DD'},
-      target: {path: 'dateElement'},
+      target: {path: 'testRootElement.dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('local-timezone', currentDate),
       pass: true
     });
@@ -254,7 +254,7 @@ describe('jms - timestamp check', function () {
       </testRootElement>`;
     dateRegexPattern = /utc-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/;
     expectedMessage = [
-      {path: 'dateElement', equals: dateRegexPattern, dateFormat: 'YY-MM-DD'}
+      {path: 'testRootElement.dateElement', equals: dateRegexPattern, dateFormat: 'YY-MM-DD'}
     ];
 
     var result = messageCheckr({
@@ -269,7 +269,7 @@ describe('jms - timestamp check', function () {
     assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: {equals: dateRegexPattern, dateFormat: 'YY-MM-DD'},
-      target: {path: 'dateElement'},
+      target: {path: 'testRootElement.dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('utc-timezone', currentDate),
       pass: true
     });
@@ -286,7 +286,7 @@ describe('jms - timestamp check', function () {
       </testRootElement>`;
     dateRegexPattern = /local-timezoneT\d\d:\d\d:\d\d\+\d\d:\d\d/;
     expectedMessage = [
-      {path: 'dateElement', equals: dateRegexPattern, dateFormat: 'D-M-YYYY'}
+      {path: 'testRootElement.dateElement', equals: dateRegexPattern, dateFormat: 'D-M-YYYY'}
     ];
 
     var result = messageCheckr({
@@ -301,7 +301,7 @@ describe('jms - timestamp check', function () {
     assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: {equals: dateRegexPattern, dateFormat: 'D-M-YYYY'},
-      target: {path: 'dateElement'},
+      target: {path: 'testRootElement.dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('local-timezone', currentDate),
       pass: true
     });
@@ -318,7 +318,7 @@ describe('jms - timestamp check', function () {
       </testRootElement>`;
     dateRegexPattern = /utc-timezoneT\d\d:\d\d:\d\d\+\d\d:\d\d/;
     expectedMessage = [
-      {path: 'dateElement', equals: dateRegexPattern, dateFormat: 'D-M-YYYY'}
+      {path: 'testRootElement.dateElement', equals: dateRegexPattern, dateFormat: 'D-M-YYYY'}
     ];
 
     var result = messageCheckr({
@@ -333,7 +333,7 @@ describe('jms - timestamp check', function () {
     assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: {equals: dateRegexPattern, dateFormat: 'D-M-YYYY'},
-      target: {path: 'dateElement'},
+      target: {path: 'testRootElement.dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('utc-timezone', currentDate),
       pass: true
     });
@@ -350,7 +350,7 @@ describe('jms - timestamp check', function () {
       </testRootElement>`;
     dateRegexPattern = /\d\d:\d\d:\d\d\+\d\d:\d\d local-timezone/;
     expectedMessage = [
-      {path: 'dateElement', equals: dateRegexPattern, dateFormat: 'Do MMM YYYY'}
+      {path: 'testRootElement.dateElement', equals: dateRegexPattern, dateFormat: 'Do MMM YYYY'}
     ];
 
     var result = messageCheckr({
@@ -365,7 +365,7 @@ describe('jms - timestamp check', function () {
     assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: {equals: dateRegexPattern, dateFormat: 'Do MMM YYYY'},
-      target: {path: 'dateElement'},
+      target: {path: 'testRootElement.dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('local-timezone', currentDate),
       pass: true
     });
@@ -382,7 +382,7 @@ describe('jms - timestamp check', function () {
       </testRootElement>`;
     dateRegexPattern = /\d\d:\d\d:\d\d\+\d\d:\d\d utc-timezone/;
     expectedMessage = [
-      {path: 'dateElement', equals: dateRegexPattern, dateFormat: 'Do MMM YYYY'}
+      {path: 'testRootElement.dateElement', equals: dateRegexPattern, dateFormat: 'Do MMM YYYY'}
     ];
 
     var result = messageCheckr({
@@ -397,7 +397,7 @@ describe('jms - timestamp check', function () {
     assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: {equals: dateRegexPattern, dateFormat: 'Do MMM YYYY'},
-      target: {path: 'dateElement'},
+      target: {path: 'testRootElement.dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('utc-timezone', currentDate),
       pass: true
     });
@@ -414,7 +414,7 @@ describe('jms - timestamp check', function () {
       </testRootElement>`;
     dateRegexPattern = /local-timezone/;
     expectedMessage = [
-      {path: 'dateElement', equals: dateRegexPattern, dateFormat: 'Mo/YYYY'}
+      {path: 'testRootElement.dateElement', equals: dateRegexPattern, dateFormat: 'Mo/YYYY'}
     ];
 
     var result = messageCheckr({
@@ -429,7 +429,7 @@ describe('jms - timestamp check', function () {
     assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: {equals: dateRegexPattern, dateFormat: 'Mo/YYYY'},
-      target: {path: 'dateElement'},
+      target: {path: 'testRootElement.dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + '/' + dateRegexPattern.toString().replace('local-timezone', currentDate).slice(1, -1).replace(/\//g, "\\/") + '/',
       pass: true
     });
@@ -446,7 +446,7 @@ describe('jms - timestamp check', function () {
       </testRootElement>`;
     dateRegexPattern = /utc-timezone/;
     expectedMessage = [
-      {path: 'dateElement', equals: dateRegexPattern, dateFormat: 'Mo/YYYY'}
+      {path: 'testRootElement.dateElement', equals: dateRegexPattern, dateFormat: 'Mo/YYYY'}
     ];
 
     var result = messageCheckr({
@@ -461,7 +461,7 @@ describe('jms - timestamp check', function () {
     assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: {equals: dateRegexPattern, dateFormat: 'Mo/YYYY'},
-      target: {path: 'dateElement'},
+      target: {path: 'testRootElement.dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + '/' + dateRegexPattern.toString().replace('utc-timezone', currentDate).slice(1, -1).replace(/\//g, "\\/") + '/',
       pass: true
     });
@@ -478,7 +478,7 @@ describe('jms - timestamp check', function () {
       </testRootElement>`;
     dateRegexPattern = /local-timezone/;
     expectedMessage = [
-      {path: 'dateElement', equals: dateRegexPattern, dateFormat: 'MMMM/YYYY'}
+      {path: 'testRootElement.dateElement', equals: dateRegexPattern, dateFormat: 'MMMM/YYYY'}
     ];
 
     var result = messageCheckr({
@@ -493,7 +493,7 @@ describe('jms - timestamp check', function () {
     assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: {equals: dateRegexPattern, dateFormat: 'MMMM/YYYY'},
-      target: {path: 'dateElement'},
+      target: {path: 'testRootElement.dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + '/' + dateRegexPattern.toString().replace('local-timezone', currentDate).slice(1, -1).replace(/\//g, "\\/") + '/',
       pass: true
     });
@@ -510,7 +510,7 @@ describe('jms - timestamp check', function () {
       </testRootElement>`;
     dateRegexPattern = /utc-timezone/;
     expectedMessage = [
-      {path: 'dateElement', equals: dateRegexPattern, dateFormat: 'MMMM/YYYY'}
+      {path: 'testRootElement.dateElement', equals: dateRegexPattern, dateFormat: 'MMMM/YYYY'}
     ];
 
     var result = messageCheckr({
@@ -525,7 +525,7 @@ describe('jms - timestamp check', function () {
     assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: {equals: dateRegexPattern, dateFormat: 'MMMM/YYYY'},
-      target: {path: 'dateElement'},
+      target: {path: 'testRootElement.dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + '/' + dateRegexPattern.toString().replace('utc-timezone', currentDate).slice(1, -1).replace(/\//g, "\\/") + '/',
       pass: true
     });

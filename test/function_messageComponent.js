@@ -228,7 +228,7 @@ describe('messageComponent()', function () {
               <testElement testAttribute="test">12345</testElement>
             </testRootElement>`;
         var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
-        assert.isDefined(getPathToElement({path: "testElement", attribute: "testAttribute", equals: "test"}, 'STANDARD', actualMessageXmlDocument));
+        assert.isDefined(getPathToElement({path: "testRootElement.testElement", attribute: "testAttribute", equals: "test"}, 'STANDARD', actualMessageXmlDocument));
       });
 
       it('should return undefined where path is not the root element and an "attribute" is supplied and the attribute does NOT exist (other attributes exist)', function () {
@@ -277,7 +277,7 @@ describe('messageComponent()', function () {
               <testElement testAttribute="test">12345</testElement>
             </testRootElement>`;
         var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
-        assert.isDefined(getPathToElement({path: "testElement", equals: "test"}, 'STANDARD', actualMessageXmlDocument));
+        assert.isDefined(getPathToElement({path: "testRootElement.testElement", equals: "test"}, 'STANDARD', actualMessageXmlDocument));
       });
 
       it('should return undefined where path is not the root element and the path does NOT exists', function () {
@@ -387,7 +387,7 @@ describe('messageComponent()', function () {
               </testElement>
             </testRootElement>`;
         var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
-        assert.isDefined(getPathToElement({parentPath: "testElement", elementPosition: 1, element: "subTestElement", equals: "test"}, 'POSITION', actualMessageXmlDocument));
+        assert.isDefined(getPathToElement({parentPath: "testRootElement.testElement", elementPosition: 1, element: "subTestElement", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
       it('should return an object where parentpath is not the root element and elementPosition/element/attribute match an element\'s attribute (only 1 element exists under parentPath)', function () {
@@ -399,7 +399,7 @@ describe('messageComponent()', function () {
               </testElement>
             </testRootElement>`;
         var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
-        assert.isDefined(getPathToElement({parentPath: "testElement", elementPosition: 1, element: "subTestElement", attribute: "testAttribute", equals: "test"}, 'POSITION', actualMessageXmlDocument));
+        assert.isDefined(getPathToElement({parentPath: "testRootElement.testElement", elementPosition: 1, element: "subTestElement", attribute: "testAttribute", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
       it('should return an object where parentpath is not the root element and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = 1)', function () {
@@ -412,7 +412,7 @@ describe('messageComponent()', function () {
               </testElement>
             </testRootElement>`;
         var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
-        assert.isDefined(getPathToElement({parentPath: "testElement", elementPosition: 1, element: "subTestElement1", attribute: "testAttribute1", equals: "test"}, 'POSITION', actualMessageXmlDocument));
+        assert.isDefined(getPathToElement({parentPath: "testRootElement.testElement", elementPosition: 1, element: "subTestElement1", attribute: "testAttribute1", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
       it('should return an object where parentpath is not the root element and elementPosition/element match an element (multiple elements exist under parentPath and elementPosition = position of last element)', function () {
@@ -425,7 +425,7 @@ describe('messageComponent()', function () {
               </testElement>
             </testRootElement>`;
         var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
-        assert.isDefined(getPathToElement({parentPath: "testElement", elementPosition: 2, element: "subTestElement2", attribute: "testAttribute2", equals: "test"}, 'POSITION', actualMessageXmlDocument));
+        assert.isDefined(getPathToElement({parentPath: "testRootElement.testElement", elementPosition: 2, element: "subTestElement2", attribute: "testAttribute2", equals: "test"}, 'POSITION', actualMessageXmlDocument));
       });
 
       it('should return undefined where parentpath is not the root element and elementPosition does not match an element', function () {
@@ -711,7 +711,7 @@ describe('messageComponent()', function () {
               </testElement>
             </testRootElement>`;
         var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
-        assert.isDefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'subTestElement', number: 1}, path: 'subSubTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
+        assert.isDefined(getPathToElement({repeatingGroup: {path: 'testRootElement.testElement', repeater: 'subTestElement', number: 1}, path: 'subSubTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
       it('should return an object where "path" is not the root element and there are multiple occurrences of the repeating element pattern and occurrence points to the last repeating pattern', function () {
@@ -728,7 +728,7 @@ describe('messageComponent()', function () {
               </testElement>
             </testRootElement>`;
         var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
-        assert.isDefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'subTestElement', number: 2}, path: 'subSubTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
+        assert.isDefined(getPathToElement({repeatingGroup: {path: 'testRootElement.testElement', repeater: 'subTestElement', number: 2}, path: 'subSubTestElement', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
 
       it('should return an object where "path" is not the root element and the attribute exists at the repeating pattern position specified', function () {
@@ -745,7 +745,7 @@ describe('messageComponent()', function () {
               </testElement>
             </testRootElement>`;
         var actualMessageXmlDocument = new xmldoc.XmlDocument(xml);
-        assert.isDefined(getPathToElement({repeatingGroup: {path: 'testElement', repeater: 'subTestElement', number: 1}, path: 'subSubTestElement', attribute: 'testAttribute1', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
+        assert.isDefined(getPathToElement({repeatingGroup: {path: 'testRootElement.testElement', repeater: 'subTestElement', number: 1}, path: 'subSubTestElement', attribute: 'testAttribute1', equals: 'test'}, 'REPEATING_GROUP', actualMessageXmlDocument));
       });
     });
 

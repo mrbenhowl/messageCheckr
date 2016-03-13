@@ -12,10 +12,10 @@ describe('verbose mode', function () {
   var expectedMessage = [
     {path: 'testRootElement', attribute: 'xmlns', equals: 'http://www.testing.com/integration/event'},
     {path: 'testRootElement', attribute: 'xmlns', equals: 'does not equal this'},
-    {path: 'elementOne', equals: 'hello'},
-    {path: 'elementOne', equals: 'does not equal this'},
-    {path: 'anotherElement.elementTwo', equals: '{integer}'},
-    {path: 'anotherElement.elementTwo', equals: '{alpha}'}
+    {path: 'testRootElement.elementOne', equals: 'hello'},
+    {path: 'testRootElement.elementOne', equals: 'does not equal this'},
+    {path: 'testRootElement.anotherElement.elementTwo', equals: '{integer}'},
+    {path: 'testRootElement.anotherElement.elementTwo', equals: '{alpha}'}
   ];
 
   it('messageCheckr should output only failures when the verbose parameter is not supplied', function () {
@@ -37,14 +37,14 @@ describe('verbose mode', function () {
         },
         {
           "pass": false,
-          "target": {"path": "elementOne"},
+          "target": {"path": "testRootElement.elementOne"},
           "actual": "hello",
           "expected": "does not equal this",
           "description": "Check actual value hello is equal to does not equal this"
         },
         {
           "pass": false,
-          "target": {"path": "anotherElement.elementTwo"},
+          "target": {"path": "testRootElement.anotherElement.elementTwo"},
           "actual": "123",
           "expected": "{alpha}",
           "description": "Check actual value 123 is alpha"
@@ -72,14 +72,14 @@ describe('verbose mode', function () {
         },
         {
           "pass": false,
-          "target": {"path": "elementOne"},
+          "target": {"path": "testRootElement.elementOne"},
           "actual": "hello",
           "expected": "does not equal this",
           "description": "Check actual value hello is equal to does not equal this"
         },
         {
           "pass": false,
-          "target": {"path": "anotherElement.elementTwo"},
+          "target": {"path": "testRootElement.anotherElement.elementTwo"},
           "actual": "123",
           "expected": "{alpha}",
           "description": "Check actual value 123 is alpha"
@@ -122,28 +122,28 @@ describe('verbose mode', function () {
         },
         {
           "pass": true,
-          "target": {"path": "elementOne"},
+          "target": {"path": "testRootElement.elementOne"},
           "actual": "hello",
           "expected": "hello",
           "description": "Check actual value hello is equal to hello"
         },
         {
           "pass": false,
-          "target": {"path": "elementOne"},
+          "target": {"path": "testRootElement.elementOne"},
           "actual": "hello",
           "expected": "does not equal this",
           "description": "Check actual value hello is equal to does not equal this"
         },
         {
           "pass": true,
-          "target": {"path": "anotherElement.elementTwo"},
+          "target": {"path": "testRootElement.anotherElement.elementTwo"},
           "actual": "123",
           "expected": "{integer}",
           "description": "Check actual value 123 is an integer"
         },
         {
           "pass": false,
-          "target": {"path": "anotherElement.elementTwo"},
+          "target": {"path": "testRootElement.anotherElement.elementTwo"},
           "actual": "123",
           "expected": "{alpha}",
           "description": "Check actual value 123 is alpha"

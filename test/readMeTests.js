@@ -15,8 +15,8 @@ describe('readme tests', function () {
     it('should work', function () {
       var expectedMessage = [
         {path: 'testRootElement', attribute: 'xmlns', equals: 'http://www.testing.com/integration/event'},
-        {path: 'elementOne', equals: 'hello'},
-        {path: 'anotherElement.elementTwo', equals: '{integer}'}
+        {path: 'testRootElement.elementOne', equals: 'hello'},
+        {path: 'testRootElement.anotherElement.elementTwo', equals: '{integer}'}
       ];
 
       var result = messageCheckr({
@@ -43,7 +43,7 @@ describe('readme tests', function () {
     it('should work', function () {
       var expectedMessage = [
         {path: 'SOAP-ENV:Envelope', attribute: 'xmlns:SOAP-ENV', equals: 'http://schemas.xmlsoap.org/soap/envelope/'},
-        {path: 'SOAP-ENV:Body.elementOne', equals: 'hello'}
+        {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.elementOne', equals: 'hello'}
       ];
 
       var result = messageCheckr({
@@ -68,7 +68,7 @@ describe('readme tests', function () {
         </testRootElement>`;
 
       var expectedMessage = [
-        {path: 'elementOne', equals: 'hello'}
+        {path: 'testRootElement.elementOne', equals: 'hello'}
       ];
 
       var result = messageCheckr({
@@ -82,7 +82,7 @@ describe('readme tests', function () {
       assert.equal(result.allChecksPassed, true);
 
       var expectedMessage = [
-        {path: 'elementOne', equals: /^hel/}
+        {path: 'testRootElement.elementOne', equals: /^hel/}
       ];
 
       result = messageCheckr({
@@ -104,7 +104,7 @@ describe('readme tests', function () {
           </testRootElement>`;
 
       var expectedMessage = [
-        {path: 'elementOne', contains: 'howl'}
+        {path: 'testRootElement.elementOne', contains: 'howl'}
       ];
 
       var result = messageCheckr({
@@ -118,7 +118,7 @@ describe('readme tests', function () {
       assert.equal(result.allChecksPassed, true);
 
       var expectedMessage = [
-        {path: 'elementOne', contains: 3}
+        {path: 'testRootElement.elementOne', contains: 3}
       ];
 
       result = messageCheckr({
@@ -141,7 +141,7 @@ describe('readme tests', function () {
           </testRootElement>`;
 
       var expectedMessage = [
-        {path: 'elementOne', attribute: 'attribute1', contains: 'brilliant'}
+        {path: 'testRootElement.elementOne', attribute: 'attribute1', contains: 'brilliant'}
       ];
 
       var result = messageCheckr({
@@ -155,7 +155,7 @@ describe('readme tests', function () {
       assert.equal(result.allChecksPassed, true);
 
       var expectedMessage = [
-        {path: 'elementOne', attribute: 'attribute2', contains: 345}
+        {path: 'testRootElement.elementOne', attribute: 'attribute2', contains: 345}
       ];
 
       result = messageCheckr({
@@ -177,7 +177,7 @@ describe('readme tests', function () {
         </testRootElement>`;
 
       var expectedMessage = [
-        {path: 'elementOne', attribute: 'attribute1', equals: '{integer}'}
+        {path: 'testRootElement.elementOne', attribute: 'attribute1', equals: '{integer}'}
       ];
 
       var result = messageCheckr({
@@ -191,7 +191,7 @@ describe('readme tests', function () {
       assert.equal(result.allChecksPassed, true);
 
       expectedMessage = [
-        {path: 'elementOne', attribute: 'attribute1', equals: 123456}
+        {path: 'testRootElement.elementOne', attribute: 'attribute1', equals: 123456}
       ];
 
       var result = messageCheckr({
@@ -205,7 +205,7 @@ describe('readme tests', function () {
       assert.equal(result.allChecksPassed, true);
 
       expectedMessage = [
-        {path: 'elementOne', attribute: 'attribute1', equals: '123456'}
+        {path: 'testRootElement.elementOne', attribute: 'attribute1', equals: '123456'}
       ];
 
       result = messageCheckr({
@@ -228,7 +228,7 @@ describe('readme tests', function () {
          </testRootElement>`;
 
       var expectedMessage = [
-        {path: 'elementTwo', pathShouldNotExist: true}
+        {path: 'testRootElement.elementTwo', pathShouldNotExist: true}
       ];
 
       var result = messageCheckr({
@@ -252,7 +252,7 @@ describe('readme tests', function () {
         </testRootElement>`;
 
       var expectedMessage = [
-        {path: 'elementOne', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'}
+        {path: 'testRootElement.elementOne', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'}
       ];
 
       var result = messageCheckr({
@@ -274,7 +274,7 @@ describe('readme tests', function () {
           </testRootElement>`;
 
       expectedMessage = [
-        {path: 'elementOne', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'MMMM YYYY'}
+        {path: 'testRootElement.elementOne', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'MMMM YYYY'}
       ];
 
       result = messageCheckr({
@@ -298,7 +298,7 @@ describe('readme tests', function () {
         </testRootElement>`;
 
       var expectedMessage = [
-        {path: 'elementOne', attribute: 'attributeContainingDateTimestamp', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'}
+        {path: 'testRootElement.elementOne', attribute: 'attributeContainingDateTimestamp', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'}
       ];
 
       var result = messageCheckr({
@@ -319,7 +319,7 @@ describe('readme tests', function () {
         </testRootElement>`;
 
       expectedMessage = [
-        {path: 'elementOne', attribute: 'attributeContainingDateTimestamp', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'MMMM YYYY'}
+        {path: 'testRootElement.elementOne', attribute: 'attributeContainingDateTimestamp', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'MMMM YYYY'}
       ];
 
       result = messageCheckr({
@@ -353,10 +353,10 @@ describe('readme tests', function () {
           </testRootElement>`;
 
       var expectedMessage = [
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: 10001},
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', equals: 'hello'},
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', equals: '{integer}'},
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', equals: '{alpha}'}
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: 10001},
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', equals: 'hello'},
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', equals: '{integer}'},
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', equals: '{alpha}'}
       ];
 
       var result = messageCheckr({
@@ -391,8 +391,8 @@ describe('readme tests', function () {
         </testRootElement>`;
 
       var expectedMessage = [
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'},
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'DD-MM-YYYY'}
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'},
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'DD-MM-YYYY'}
       ];
 
       var result = messageCheckr({
@@ -422,8 +422,8 @@ describe('readme tests', function () {
         </testRootElement>`;
 
       var expectedMessage = [
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', contains: 100},
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', contains: 'howl'}
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', contains: 100},
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', contains: 'howl'}
       ];
 
       var result = messageCheckr({
@@ -454,7 +454,7 @@ describe('readme tests', function () {
         </testRootElement>`;
 
       var expectedMessage = [
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', pathShouldNotExist: true}
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', pathShouldNotExist: true}
       ];
 
       var result = messageCheckr({
@@ -486,10 +486,10 @@ describe('readme tests', function () {
         </testRootElement>`;
 
       var expectedMessage = [
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', equals: 'toffee'},
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2', equals: 'chocolate'},
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', equals: 'tea'},
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2', equals: 'coffee'}
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', equals: 'toffee'},
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2', equals: 'chocolate'},
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', equals: 'tea'},
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2', equals: 'coffee'}
       ];
 
       var result = messageCheckr({
@@ -523,10 +523,10 @@ describe('readme tests', function () {
         </testRootElement>`;
 
       var expectedMessage = [
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', contains: 'toffee'},
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2', contains: 123},
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', contains: 'ea'},
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2', contains: 2}
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', contains: 'toffee'},
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2', contains: 123},
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', contains: 'ea'},
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2', contains: 2}
       ];
 
       var result = messageCheckr({
@@ -561,8 +561,8 @@ describe('readme tests', function () {
       </testRootElement>`;
 
       var expectedMessage = [
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'},
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'DD-MM-YYYY'}
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'},
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'DD-MM-YYYY'}
       ];
 
       var result = messageCheckr({
@@ -612,7 +612,7 @@ describe('readme tests', function () {
         </testRootElement>`;
 
       expectedMessage = [
-        {parentPath: 'anotherElement', element: 'elementOne', elementPosition: 3, equals: 'me'}
+        {parentPath: 'testRootElement.anotherElement', element: 'elementOne', elementPosition: 3, equals: 'me'}
       ];
 
       result = messageCheckr({

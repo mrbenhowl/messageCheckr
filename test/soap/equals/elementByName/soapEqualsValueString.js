@@ -10,7 +10,7 @@ describe('soap - equals value check', function () {
 
   it('should report a match where an attribute\'s actual value matches the expected value', function () {
     var expectedMessage = [
-      {path: 'SOAP-ENV:Body.checkJustTheValue', equals: 'hello'}
+      {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.checkJustTheValue', equals: 'hello'}
     ];
 
     var result = messageCheckr({
@@ -26,7 +26,7 @@ describe('soap - equals value check', function () {
       expected: 'hello',
       description: 'Check actual value hello is equal to hello',
       pass: true,
-      target: {path: 'SOAP-ENV:Body.checkJustTheValue'}
+      target: {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.checkJustTheValue'}
     });
   });
 });

@@ -13,7 +13,7 @@ describe('soap - regex check', function () {
 
     regexPattern = /[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}\+[0-9]{2}:[0-9]{2}/;
     expectedMessage = [
-      {path: 'SOAP-ENV:Body.elementToCheckRegex', equals: regexPattern}
+      {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.elementToCheckRegex', equals: regexPattern}
     ];
 
     var result = messageCheckr({
@@ -27,7 +27,7 @@ describe('soap - regex check', function () {
     assert.deepEqual(result.checks[1], {
       actual: '2015-11-01T08:12:15.425+11:00',
       expected: {equals: regexPattern},
-      target: {path: 'SOAP-ENV:Body.elementToCheckRegex'},
+      target: {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.elementToCheckRegex'},
       description: 'Check actual value 2015-11-01T08:12:15.425+11:00 against regex ' + regexPattern,
       pass: true
     });

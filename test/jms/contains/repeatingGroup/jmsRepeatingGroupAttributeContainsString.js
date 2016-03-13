@@ -20,8 +20,8 @@ describe('jms - repeating element attribute contains string', function () {
 
   it('should report a mismatch where the actual repeating group element\'s attribute does not contain the expected value', function () {
     var expectedMessage = [
-      {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', contains: 'toffeee'},
-      {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', contains: 'tee'}
+      {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', contains: 'toffeee'},
+      {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', contains: 'tee'}
     ];
 
     var result = messageCheckr({
@@ -37,7 +37,7 @@ describe('jms - repeating element attribute contains string', function () {
     assert.deepEqual(result.checks[1], {
       actual: 'toffee',
       expected: {contains: 'toffeee'},
-      target: {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'},
+      target: {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'},
       description: "Check actual value toffee contains toffeee",
       pass: false
     });
@@ -45,7 +45,7 @@ describe('jms - repeating element attribute contains string', function () {
     assert.deepEqual(result.checks[2], {
       actual: 'tea',
       expected: {contains: 'tee'},
-      target: {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'},
+      target: {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'},
       description: "Check actual value tea contains tee",
       pass: false
     });
@@ -53,8 +53,8 @@ describe('jms - repeating element attribute contains string', function () {
 
   it('should report a match where the actual repeating group element\'s attribute value does contain the expected value', function () {
     var expectedMessage = [
-      {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', contains: 'toffee'},
-      {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', contains: 'te'}
+      {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', contains: 'toffee'},
+      {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', contains: 'te'}
     ];
 
     var result = messageCheckr({
@@ -69,7 +69,7 @@ describe('jms - repeating element attribute contains string', function () {
     assert.deepEqual(result.checks[1], {
       actual: 'toffee',
       expected: {contains: 'toffee'},
-      target: {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'},
+      target: {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'},
       description: "Check actual value toffee contains toffee",
       pass: true
     });
@@ -77,7 +77,7 @@ describe('jms - repeating element attribute contains string', function () {
     assert.deepEqual(result.checks[2], {
       actual: 'tea',
       expected: {contains: 'te'},
-      target: {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'},
+      target: {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1'},
       description: "Check actual value tea contains te",
       pass: true
     });

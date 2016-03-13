@@ -9,7 +9,7 @@ describe('jms - sub root level check', function () {
 
   it('should report a mismatch where the actual sub root level value does not the expected value', function () {
     var expectedMessage = [
-      {path: 'subRootLevel.elementAtSubRootLevel', equals: 'willNotMatch'}
+      {path: 'testRootElement.subRootLevel.elementAtSubRootLevel', equals: 'willNotMatch'}
     ];
 
     var result = messageCheckr({
@@ -26,13 +26,13 @@ describe('jms - sub root level check', function () {
       description: "Check actual value checkMe is equal to willNotMatch",
       expected: 'willNotMatch',
       pass: false,
-      target: {path: 'subRootLevel.elementAtSubRootLevel'},
+      target: {path: 'testRootElement.subRootLevel.elementAtSubRootLevel'}
     });
   });
 
   it('should report a match where the actual sub root level value does match the expected value', function () {
     var expectedMessage = [
-      {path: 'subRootLevel.elementAtSubRootLevel', equals: 'checkMe'}
+      {path: 'testRootElement.subRootLevel.elementAtSubRootLevel', equals: 'checkMe'}
     ];
 
     var result = messageCheckr({
@@ -49,7 +49,7 @@ describe('jms - sub root level check', function () {
       description: "Check actual value checkMe is equal to checkMe",
       expected: 'checkMe',
       pass: true,
-      target: {path: 'subRootLevel.elementAtSubRootLevel'}
+      target: {path: 'testRootElement.subRootLevel.elementAtSubRootLevel'}
     });
   });
 });

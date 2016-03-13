@@ -10,7 +10,7 @@ describe('soap - is integer check', function () {
 
   it('should report a match where the actual value is an integer (12345)', function () {
     var expectedMessage = [
-      {path: 'SOAP-ENV:Body.integerFieldWithMoreThan1Digit', equals: '{integer}'}
+      {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.integerFieldWithMoreThan1Digit', equals: '{integer}'}
     ];
 
     var result = messageCheckr({
@@ -24,7 +24,7 @@ describe('soap - is integer check', function () {
     assert.deepEqual(result.checks[1], {
       actual: '12345',
       expected: '{integer}',
-      target: {path: 'SOAP-ENV:Body.integerFieldWithMoreThan1Digit'},
+      target: {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.integerFieldWithMoreThan1Digit'},
       description: "Check actual value 12345 is an integer",
       pass: true
     });

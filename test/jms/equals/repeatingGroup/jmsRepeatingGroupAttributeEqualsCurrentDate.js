@@ -24,8 +24,8 @@ describe('jms - repeating element attribute equals current date', function () {
     var currentUtcDate = moment().utc().format('DD MM-YYYY'); // a dash is missing between DD and MM
 
     var expectedMessage = [
-      {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: currentLocalDateRegexPattern, dateFormat: 'YYYY-MM-DD'},
-      {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: currentUtcDateRegexPattern, dateFormat: 'DD MM-YYYY'}
+      {repeatingGroup: {path: 'testRootElement.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: currentLocalDateRegexPattern, dateFormat: 'YYYY-MM-DD'},
+      {repeatingGroup: {path: 'testRootElement.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: currentUtcDateRegexPattern, dateFormat: 'DD MM-YYYY'}
     ];
 
     var result = messageCheckr({
@@ -42,7 +42,7 @@ describe('jms - repeating element attribute equals current date', function () {
       description: "Check actual value " + currentDateTimeLocal + " matches date/regex pattern " + currentLocalDateRegexPattern.toString().replace('local-timezone', currentLocalDate),
       expected: {equals: currentLocalDateRegexPattern, dateFormat: 'YYYY-MM-DD'},
       pass: false,
-      target: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1'}
+      target: {repeatingGroup: {path: 'testRootElement.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1'}
     });
 
     assert.deepEqual(result.checks[2], {
@@ -50,7 +50,7 @@ describe('jms - repeating element attribute equals current date', function () {
       description: "Check actual value " + currentDateTimeUtc + " matches date/regex pattern " + currentUtcDateRegexPattern.toString().replace('utc-timezone', currentUtcDate),
       expected: {equals: currentUtcDateRegexPattern, dateFormat: 'DD MM-YYYY'},
       pass: false,
-      target: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1'}
+      target: {repeatingGroup: {path: 'testRootElement.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1'}
     });
   });
 
@@ -61,8 +61,8 @@ describe('jms - repeating element attribute equals current date', function () {
     var currentUtcDate = moment().utc().format('DD-MM-YYYY');
 
     var expectedMessage = [
-      {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: currentLocalDateRegexPattern, dateFormat: 'YYYY-MM-DD'},
-      {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: currentUtcDateRegexPattern, dateFormat: 'DD-MM-YYYY'}
+      {repeatingGroup: {path: 'testRootElement.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: currentLocalDateRegexPattern, dateFormat: 'YYYY-MM-DD'},
+      {repeatingGroup: {path: 'testRootElement.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: currentUtcDateRegexPattern, dateFormat: 'DD-MM-YYYY'}
     ];
 
     var result = messageCheckr({
@@ -79,7 +79,7 @@ describe('jms - repeating element attribute equals current date', function () {
       description: "Check actual value " + currentDateTimeLocal + " matches date/regex pattern " + currentLocalDateRegexPattern.toString().replace('local-timezone', currentLocalDate),
       expected: {equals: currentLocalDateRegexPattern, dateFormat: 'YYYY-MM-DD'},
       pass: true,
-      target: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1'}
+      target: {repeatingGroup: {path: 'testRootElement.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1'}
     });
 
     assert.deepEqual(result.checks[2], {
@@ -87,7 +87,7 @@ describe('jms - repeating element attribute equals current date', function () {
       description: "Check actual value " + currentDateTimeUtc + " matches date/regex pattern " + currentUtcDateRegexPattern.toString().replace('utc-timezone', currentUtcDate),
       expected: {equals: currentUtcDateRegexPattern, dateFormat: 'DD-MM-YYYY'},
       pass: true,
-      target: {repeatingGroup: {path: 'thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1'}
+      target: {repeatingGroup: {path: 'testRootElement.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1'}
     });
   });
 });

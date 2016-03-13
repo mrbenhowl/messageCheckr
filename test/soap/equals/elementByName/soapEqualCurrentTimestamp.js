@@ -17,7 +17,7 @@ describe('soap - timestamp check', function () {
 
     dateRegexPattern = /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/;
     expectedMessage = [
-      {path: 'SOAP-ENV:Body.dateElement', equals: dateRegexPattern, dateFormat: 'YYYY-MM-DD'}
+      {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.dateElement', equals: dateRegexPattern, dateFormat: 'YYYY-MM-DD'}
     ];
 
     var result = messageCheckr({
@@ -31,7 +31,7 @@ describe('soap - timestamp check', function () {
     assert.deepEqual(result.checks[1], {
       actual: currentDateTimeLocal,
       expected: {equals: dateRegexPattern, dateFormat: 'YYYY-MM-DD'},
-      target: {path: 'SOAP-ENV:Body.dateElement'},
+      target: {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.dateElement'},
       description: 'Check actual value ' + currentDateTimeLocal + ' matches date/regex pattern ' + dateRegexPattern.toString().replace('local-timezone', currentDate),
       pass: true
     });

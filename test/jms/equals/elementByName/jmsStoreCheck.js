@@ -9,8 +9,8 @@ describe('jms - store check', function () {
 
   it('should throw an error where a store (name) is used more than once', function () {
     var expectedMessage = [
-      {path: 'validUuidElement', equals: '{store(nameForGuidField)}'},
-      {path: 'uuidDifferentToAbove', equals: '{store(nameForGuidField)}'}
+      {path: 'testRootElement.validUuidElement', equals: '{store(nameForGuidField)}'},
+      {path: 'testRootElement.uuidDifferentToAbove', equals: '{store(nameForGuidField)}'}
     ];
 
     assert.throws(function () {
@@ -27,7 +27,7 @@ describe('jms - store check', function () {
 
   it('should throw an error where a store (name) includes a number', function () {
     var expectedMessage = [
-      {path: 'validUuidElement', equals: '{store(nameIncludingNumber1)}'}
+      {path: 'testRootElement.validUuidElement', equals: '{store(nameIncludingNumber1)}'}
     ];
 
     assert.throws(function () {
@@ -44,7 +44,7 @@ describe('jms - store check', function () {
 
   it('should throw an error where a store (name) includes a non alphabetical character', function () {
     var expectedMessage = [
-      {path: 'validUuidElement', equals: '{store(nameIncludingANonAlphabeticCharacter$)}'}
+      {path: 'testRootElement.validUuidElement', equals: '{store(nameIncludingANonAlphabeticCharacter$)}'}
     ];
 
     assert.throws(function () {

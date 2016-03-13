@@ -107,10 +107,23 @@ function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocume
   var pathToElement;
 
   if (type === messageComponentType.STANDARD) {
+
     var path = expectedMessageComponent.path,
       pathIsRootElement = expectedMessageComponent.path === actualMessageXmlDocument.name,
       attribute = expectedMessageComponent.attribute,
-      pathExists = pathIsRootElement ? true : actualMessageXmlDocument.descendantWithPath(path) != undefined;
+      pathExists;
+
+    if (pathIsRootElement) {
+      pathExists = true;
+    } else {
+
+      if (path.substring(0, actualMessageXmlDocument.name.length + 1).toLowerCase() != actualMessageXmlDocument.name.toLowerCase() + '.') {
+        pathExists = false;
+      } else {
+        path = path.substring(actualMessageXmlDocument.name.length + 1, path.length);
+        pathExists = actualMessageXmlDocument.descendantWithPath(path) != undefined;
+      }
+    }
 
     if (pathExists) {
       if (attribute && pathIsRootElement) {
@@ -125,19 +138,36 @@ function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocume
     }
 
   } else if (type === messageComponentType.POSITION) {
-    var parentPathIsRootElement = expectedMessageComponent.parentPath === actualMessageXmlDocument.name;
+    var parentPathIsRootElement, pathToParentElement, countOfChildElements, elementAtSpecifiedPosition;
 
-    var pathToParentElement, countOfChildElements, elementAtSpecifiedPosition;
-    pathToParentElement = expectedMessageComponent.parentPath,
-      attribute = expectedMessageComponent.attribute,
-      countOfChildElements = parentPathIsRootElement ? actualMessageXmlDocument.children.length : actualMessageXmlDocument.descendantWithPath(pathToParentElement).children.length;
+    parentPathIsRootElement = expectedMessageComponent.parentPath === actualMessageXmlDocument.name;
+    pathToParentElement = expectedMessageComponent.parentPath;
+    attribute = expectedMessageComponent.attribute;
+
+    if (!parentPathIsRootElement) {
+      if (pathToParentElement.substring(0, actualMessageXmlDocument.name.length + 1).toLowerCase() != actualMessageXmlDocument.name.toLowerCase() + '.') {
+        return undefined;
+      } else {
+        pathToParentElement = pathToParentElement.substring(actualMessageXmlDocument.name.length + 1, pathToParentElement.length);
+      }
+    }
+
+    if (parentPathIsRootElement) {
+      countOfChildElements = actualMessageXmlDocument.children.length;
+    } else {
+
+      if (_.isUndefined(actualMessageXmlDocument.descendantWithPath(pathToParentElement))){
+        return undefined;
+      }else{
+        countOfChildElements = actualMessageXmlDocument.descendantWithPath(pathToParentElement).children.length;
+      }
+    }
 
     if (countOfChildElements >= expectedMessageComponent.elementPosition) {
       var expectedPosition = expectedMessageComponent.elementPosition - 1;
       elementAtSpecifiedPosition = parentPathIsRootElement ? actualMessageXmlDocument.children[expectedPosition] : actualMessageXmlDocument.descendantWithPath(pathToParentElement).children[expectedPosition];
 
       if (elementAtSpecifiedPosition.name === expectedMessageComponent.element) {
-
         if (_.has(expectedMessageComponent, 'attribute')) {
           pathToElement = _.has(elementAtSpecifiedPosition.attr, attribute) ? elementAtSpecifiedPosition : undefined;
         } else {
@@ -156,7 +186,15 @@ function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocume
     pathIsRootElement = pathToElementEnclosingRepeatingGroup === actualMessageXmlDocument.name;
     attribute = expectedMessageComponent.attribute;
 
-    if (!pathIsRootElement && _.isUndefined(actualMessageXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup))){
+    if (!pathIsRootElement) {
+      if (pathToElementEnclosingRepeatingGroup.substring(0, actualMessageXmlDocument.name.length + 1).toLowerCase() != actualMessageXmlDocument.name.toLowerCase() + '.') {
+        return undefined;
+      } else {
+        pathToElementEnclosingRepeatingGroup = pathToElementEnclosingRepeatingGroup.substring(actualMessageXmlDocument.name.length + 1, pathToElementEnclosingRepeatingGroup.length);
+      }
+    }
+
+    if (!pathIsRootElement && _.isUndefined(actualMessageXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup))) {
       return undefined;
     }
 
@@ -172,9 +210,9 @@ function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocume
       .value();
 
     if (matchingGroups.length > 0 && version <= matchingGroups.length) {
-      pathToElement = pathIsRootElement ? actualMessageXmlDocument.children[matchingGroups[version-1]].descendantWithPath(pathToElementFromRepeatingElement) : actualMessageXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children[matchingGroups[version - 1]].descendantWithPath(pathToElementFromRepeatingElement);
-      if (_.has(expectedMessageComponent, 'attribute')){
-        if(!_.has(pathToElement.attr, attribute)) {
+      pathToElement = pathIsRootElement ? actualMessageXmlDocument.children[matchingGroups[version - 1]].descendantWithPath(pathToElementFromRepeatingElement) : actualMessageXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroup).children[matchingGroups[version - 1]].descendantWithPath(pathToElementFromRepeatingElement);
+      if (_.has(expectedMessageComponent, 'attribute')) {
+        if (!_.has(pathToElement.attr, attribute)) {
           return undefined;
         }
       }
@@ -188,9 +226,9 @@ function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocume
 }
 
 function getValueAtPath(pathToElement, attribute) {
-  if (attribute){
+  if (attribute) {
     return pathToElement.attr[attribute];
-  }else{
+  } else {
     return pathToElement.val;
   }
 }

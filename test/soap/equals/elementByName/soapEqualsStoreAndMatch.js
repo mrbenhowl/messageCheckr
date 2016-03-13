@@ -11,8 +11,8 @@ describe('soap - store and match check', function () {
 
   it('should report a match where the actual element is a valid UUID', function () {
     var expectedMessage = [
-      {path: 'SOAP-ENV:Body.validUuidElement', equals: '{store(nameForGuidFieldTwo)}'},
-      {path: 'SOAP-ENV:Body.duplicateOfUuidElementAbove', equals: '{matches(nameForGuidFieldTwo)}'}
+      {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.validUuidElement', equals: '{store(nameForGuidFieldTwo)}'},
+      {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.duplicateOfUuidElementAbove', equals: '{matches(nameForGuidFieldTwo)}'}
     ];
 
     var result = messageCheckr({
@@ -28,7 +28,7 @@ describe('soap - store and match check', function () {
       description: 'Check actual value 49276fbd-d143-4fb4-9a00-6b60ae6b0c9e matches value 49276fbd-d143-4fb4-9a00-6b60ae6b0c9e in {store(nameForGuidFieldTwo)}',
       expected: {equals: '{matches(nameForGuidFieldTwo)}'},
       pass: true,
-      target: {path: 'SOAP-ENV:Body.duplicateOfUuidElementAbove'}
+      target: {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.duplicateOfUuidElementAbove'}
     });
   });
 });

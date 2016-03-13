@@ -10,7 +10,7 @@ describe('soap - attribute length check', function () {
 
   it('should report a mismatch where an attribute\'s actual length does not match the expected length', function () {
     var expectedMessage = [
-      {path: 'SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns', equals: '{length(41)}'}
+      {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns', equals: '{length(41)}'}
     ];
 
     var result = messageCheckr({
@@ -24,7 +24,7 @@ describe('soap - attribute length check', function () {
     assert.deepEqual(result.checks[1], {
       actual: 'http://www.testing.com/integration/event',
       expected: '{length(41)}',
-      target: {path: 'SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns'},
+      target: {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns'},
       description: 'Check actual value http://www.testing.com/integration/event has a length equal to 41',
       pass: false
     });
@@ -32,7 +32,7 @@ describe('soap - attribute length check', function () {
 
   it('should report a match where an attribute\'s actual length does match the expected length', function () {
     var expectedMessage = [
-      {path: 'SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns', equals: '{length(40)}'}
+      {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns', equals: '{length(40)}'}
     ];
 
     var result = messageCheckr({
@@ -46,7 +46,7 @@ describe('soap - attribute length check', function () {
     assert.deepEqual(result.checks[1], {
       actual: 'http://www.testing.com/integration/event',
       expected: '{length(40)}',
-      target: {path: 'SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns'},
+      target: {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns'},
       description: 'Check actual value http://www.testing.com/integration/event has a length equal to 40',
       pass: true
     });
@@ -54,7 +54,7 @@ describe('soap - attribute length check', function () {
 
   it('should report a mismatch where an attribute\'s actual length is not less than the given < expected length', function () {
     var expectedMessage = [
-      {path: 'SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns', equals: '{length(<40)}'}
+      {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns', equals: '{length(<40)}'}
     ];
 
     var result = messageCheckr({
@@ -68,7 +68,7 @@ describe('soap - attribute length check', function () {
     assert.deepEqual(result.checks[1], {
       actual: 'http://www.testing.com/integration/event',
       expected: '{length(<40)}',
-      target: {path: 'SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns'},
+      target: {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns'},
       description: 'Check actual value http://www.testing.com/integration/event has a length less than 40',
       pass: false
     });
@@ -76,7 +76,7 @@ describe('soap - attribute length check', function () {
 
   it('should report a match where an attribute\'s actual length is less than the given (< expected length)', function () {
     var expectedMessage = [
-      {path: 'SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns', equals: '{length(<41)}'}
+      {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns', equals: '{length(<41)}'}
     ];
 
     var result = messageCheckr({
@@ -90,7 +90,7 @@ describe('soap - attribute length check', function () {
     assert.deepEqual(result.checks[1], {
       actual: 'http://www.testing.com/integration/event',
       expected: '{length(<41)}',
-      target: {path: 'SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns'},
+      target: {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns'},
       description: 'Check actual value http://www.testing.com/integration/event has a length less than 41',
       pass: true
     });
@@ -98,7 +98,7 @@ describe('soap - attribute length check', function () {
 
   it('should report a mismatch where an attribute\'s actual length is not greater than the given > expected length', function () {
     var expectedMessage = [
-      {path: 'SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns', equals: '{length(>40)}'}
+      {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns', equals: '{length(>40)}'}
     ];
 
     var result = messageCheckr({
@@ -112,7 +112,7 @@ describe('soap - attribute length check', function () {
     assert.deepEqual(result.checks[1], {
       actual: 'http://www.testing.com/integration/event',
       expected: '{length(>40)}',
-      target: {path: 'SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns'},
+      target: {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns'},
       description: 'Check actual value http://www.testing.com/integration/event has a length greater than 40',
       pass: false
     });
@@ -120,7 +120,7 @@ describe('soap - attribute length check', function () {
 
   it('should report a match where an attribute\'s actual length is greater than the given (> expected length)', function () {
     var expectedMessage = [
-      {path: 'SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns', equals: '{length(>39)}'}
+      {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns', equals: '{length(>39)}'}
     ];
 
     var result = messageCheckr({
@@ -134,7 +134,7 @@ describe('soap - attribute length check', function () {
     assert.deepEqual(result.checks[1], {
       actual: 'http://www.testing.com/integration/event',
       expected: '{length(>39)}',
-      target: {path: 'SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns'},
+      target: {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.testAttributeElement', attribute: 'xmlns'},
       description: 'Check actual value http://www.testing.com/integration/event has a length greater than 39',
       pass: true
     });

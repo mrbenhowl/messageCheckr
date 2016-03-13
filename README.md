@@ -51,12 +51,10 @@ and we want to check the following:
 First create the expected message as follows:
 
     var expectedMessage = [
-        {path: 'testRootElement', attribute: 'xmlns', equals: 'http://www.testing.com/integration/event'},
-        {path: 'elementOne', equals: 'hello'},
-        {path: 'anotherElement.elementTwo', equals: '{integer}'},
+        {path: 'testRootElement.testRootElement', attribute: 'xmlns', equals: 'http://www.testing.com/integration/event'},
+        {path: 'testRootElement.elementOne', equals: 'hello'},
+        {path: 'testRootElement.anotherElement.elementTwo', equals: '{integer}'},
     ];
-
-Notice above that except in the case of checking something about the root element, the root element is not required when specifying a path to an element within it.
 
 To check the above message we need to make a call to messageCheckr as follows:
 
@@ -76,57 +74,33 @@ messageCheckr returns an object with the attribute `allChecksPassed` which will 
 The object returned by messageCheckr also has an attribute called `checks`. In the case above the `checks` object will be empty because there are no failing checks. By default only failing checks are present. If you wish to see all checks provide the parameter `verbose` to messageCheckr(). If `verbose` was supplied (and set to true) checks would contain the following:
 
     [
-      {
-        "pass": true,
-        "path": "testRootElement",
-        "actual": "testRootElement",
-        "expected": "testRootElement",
-        "description": "Check actual root element testRootElement is equal to expected root element testRootElement"
-      },
-      {
-        "pass": true,
-        "path": "testRootElement (attribute: xmlns)",
-        "actual": true,
-        "expected": true,
-        "description": "Check existence of path: testRootElement (attribute: xmlns)"
-      },
-      {
-        "pass": true,
-        "path": "testRootElement (attribute: xmlns)",
-        "actual": "http://www.testing.com/integration/event",
-        "expected": "http://www.testing.com/integration/event",
-        "description": "Check actual value http://www.testing.com/integration/event is equal to http://www.testing.com/integration/event"
-      },
-      {
-        "pass": true,
-        "path": "elementOne",
-        "actual": true,
-        "expected": true,
-        "description": "Check existence of path: elementOne"
-      },
-      {
-        "pass": true,
-        "path": "elementOne",
-        "actual": "hello",
-        "expected": "hello",
-        "description": "Check actual value hello is equal to hello"
-      },
-      {
-        "pass": true,
-        "path": "anotherElement.elementTwo",
-        "actual": true,
-        "expected": true,
-        "description": "Check existence of path: anotherElement.elementTwo"
-      },
-      {
-        "pass": true,
-        "path": "anotherElement.elementTwo",
-        "actual": "123",
-        "expected": "{integer}",
-        "description": "Check actual value 123 is an integer"
-      }
+        {
+            "pass":true,
+            "target":"testRootElement",
+            "actual":"testRootElement",
+            "expected":"testRootElement",
+            "description":"Check actual root element testRootElement is equal to expected root element testRootElement"
+        },
+        {
+            "pass":true,
+            "target":{"path":"testRootElement","attribute":"xmlns"},
+            "actual":"http://www.testing.com/integration/event",
+            "expected":"http://www.testing.com/integration/event",
+            "description":"Check actual value http://www.testing.com/integration/event is equal to http://www.testing.com/integration/event"},
+        {
+            "pass":true,
+            "target":{"path":"testRootElement.elementOne"},
+            "actual":"hello",
+            "expected":"hello",
+            "description":"Check actual value hello is equal to hello"},
+        {
+            "pass":true,
+            "target":{"path":"testRootElement.anotherElement.elementTwo"},
+            "actual":"123",
+            "expected":"{integer}",
+            "description":"Check actual value 123 is an integer"
+        }
     ]
-
 
 In projects where I use messageCheckr I assert its result as follows, which will print out failing checks if there are any.
 
@@ -166,7 +140,7 @@ Create the expected message as follows:
 
     var expectedMessage = [
         {path: 'SOAP-ENV:Envelope', attribute: 'xmlns:SOAP-ENV', equals: 'http://schemas.xmlsoap.org/soap/envelope/'},
-        {path: 'SOAP-ENV:Body.elementOne', equals: 'hello'}
+        {path: 'SOAP-ENV:Envelope.SOAP-ENV:Body.elementOne', equals: 'hello'}
     ];
 
 Then make a call to messageCheckr. Notice in the case of specifying the path for elementOne we have excluded the 'm' namespace, messageCheckr removes all non-SOAP namespaces. The decision for this again was related to differences I noticed when testing messageCheckr on different environments.
@@ -222,11 +196,11 @@ Example:
     </testRootElement>
 
     var expectedMessage = [
-        {path: 'elementOne', equals: 'hello'}
+        {path: 'testRootElement.elementOne', equals: 'hello'}
     ];
 
     var expectedMessage = [
-        {path: 'elementOne', equals: /^hel/}
+        {path: 'testRootElement.elementOne', equals: /^hel/}
     ];
 
 ### {path: 'path.to.element', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}
@@ -240,7 +214,7 @@ Example (local timezone):
     // where YYYY-MM-DD is today's date
 
     var expectedMessage = [
-        {path: 'elementOne', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'}
+        {path: 'testRootElement.elementOne', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'}
     ];
     // local-timezone will be translated to the local date in the format specified in dateFormat.
 
@@ -253,7 +227,7 @@ Example (UTC time):
     // where MMMM is the current month (e.g. January) and YYYY is the current year
 
     var expectedMessage = [
-        {path: 'elementOne', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'MMMM YYYY'}
+        {path: 'testRootElement.elementOne', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'MMMM YYYY'}
     ];
     // utc-timezone will be translated to the utc date in the format specified in dateFormat.
 
@@ -270,11 +244,11 @@ Example:
     </testRootElement>
 
     var expectedMessage = [
-        {path: 'elementOne', contains: 'howl'}
+        {path: 'testRootElement.elementOne', contains: 'howl'}
     ];
 
     var expectedMessage = [
-        {path: 'elementOne', contains: 3}
+        {path: 'testRootElement.elementOne', contains: 3}
     ];
 
 ### {path: 'path.to.element', attribute: 'attribute name', equals: operator - see section Operators}
@@ -287,15 +261,15 @@ Example:
     </testRootElement>
 
     var expectedMessage = [
-        {path: 'elementOne', attribute: 'attribute1', equals: '{integer}'}
+        {path: 'testRootElement.elementOne', attribute: 'attribute1', equals: '{integer}'}
     ];
 
     var expectedMessage = [
-        {path: 'elementOne', attribute: 'attribute1', equals: 123456}
+        {path: 'testRootElement.elementOne', attribute: 'attribute1', equals: 123456}
     ];
 
     var expectedMessage = [
-        {path: 'elementOne', attribute: 'attribute1', equals: '123456'}
+        {path: 'testRootElement.elementOne', attribute: 'attribute1', equals: '123456'}
     ];
 
 ### {path: 'path.to.element', attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}
@@ -309,7 +283,7 @@ Example (local timezone):
     // where YYYY-MM-DD is today's date
 
     var expectedMessage = [
-        {path: 'elementOne', attribute: 'attributeContainingDateTimestamp', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'}
+        {path: 'testRootElement.elementOne', attribute: 'attributeContainingDateTimestamp', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'}
     ];
     // local-timezone will be translated to the local date in the format specified in dateFormat.
 
@@ -322,7 +296,7 @@ Example (UTC time):
     // where MMMM is the current month (e.g. January) and YYYY is the current year
 
     var expectedMessage = [
-        {path: 'elementOne', attribute: 'attributeContainingDateTimestamp', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'MMMM YYYY'}
+        {path: 'testRootElement.elementOne', attribute: 'attributeContainingDateTimestamp', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'MMMM YYYY'}
     ];
     // utc-timezone will be translated to the utc date in the format specified in dateFormat.
 
@@ -339,11 +313,11 @@ Example:
     </testRootElement>
 
     var expectedMessage = [
-        {path: 'elementOne', attribute: 'attribute1', contains: 'brilliant'}
+        {path: 'testRootElement.elementOne', attribute: 'attribute1', contains: 'brilliant'}
     ];
 
     var expectedMessage = [
-        {path: 'elementOne', attribute: 'attribute2', contains: 34}
+        {path: 'testRootElement.elementOne', attribute: 'attribute2', contains: 34}
     ];
 
 ### {path: 'path.to.element', pathShouldNotExist: true}
@@ -356,7 +330,7 @@ Example:
     </testRootElement>
 
     var expectedMessage = [
-        {path: 'elementTwo', pathShouldNotExist: true}
+        {path: 'testRootElement.elementTwo', pathShouldNotExist: true}
     ];
 
 ### {parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, equals: operator - see section Operators}
@@ -386,7 +360,7 @@ Example:
        </testRootElement>
 
     var expectedMessage = [
-        {parentPath: 'anotherElement', element: 'elementOne', elementPosition: 3,  equals: 'me'}
+        {parentPath: 'testRootElement.anotherElement', element: 'elementOne', elementPosition: 3,  equals: 'me'}
     ];
 
 ### {parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}
@@ -501,10 +475,10 @@ Example:
     </testRootElement>
 
     var expectedMessage = [
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: 10002},
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', equals: 'hello'},
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', equals: '{integer}'},
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', equals: '{alpha}'}
+       {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: 10002},
+       {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', equals: 'hello'},
+       {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', equals: '{integer}'},
+       {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', equals: '{alpha}'}
     ];
 
 
@@ -529,8 +503,8 @@ Example:
     // where YYYY-MM-DD is today's date (local) and DD-MM-YYYY is today's date (UTC)
 
     var expectedMessage = [
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'},
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'DD-MM-YYYY'},
+       {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'},
+       {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'DD-MM-YYYY'},
     ];
 
     // local-timezone and utc-timezone will be translated to the local date and utc date respectively in the format specified in the dateFormat attributes.
@@ -554,8 +528,8 @@ Example:
     </testRootElement>
 
     var expectedMessage = [
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', contains: 100},
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', equals: 'howl'},
+       {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', contains: 100},
+       {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', equals: 'howl'},
     ];
 
 
@@ -580,10 +554,10 @@ Example:
     </testRootElement>
 
     var expectedMessage = [
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: 'toffee'},
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'attribute2', equals: 'chocolate'},
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: 'tea'},
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'attribute2', equals: 'coffee'}
+       {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: 'toffee'},
+       {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'attribute2', equals: 'chocolate'},
+       {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: 'tea'},
+       {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'attribute2', equals: 'coffee'}
     ];
 
 ### {repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}
@@ -607,8 +581,8 @@ Example:
     // where YYYY-MM-DD is today's date (local) and DD-MM-YYYY is today's date (UTC)
 
     var expectedMessage = [
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat:'YYYY-MM-DD'},
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat:'DD-MM-YYYY'}
+       {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat:'YYYY-MM-DD'},
+       {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat:'DD-MM-YYYY'}
     ];
 
     // local-timezone and utc-timezone will be translated to the local date and utc date respectively in the format specified in the dateFormat attributes.
@@ -634,10 +608,10 @@ Example:
     </testRootElement>
 
     var expectedMessage = [
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', contains: 'toffee'},
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'attribute2', contains: 123},
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', contains: 'ea'},
-       {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'attribute2', contains: 2}
+       {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', contains: 'toffee'},
+       {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'attribute2', contains: 123},
+       {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'attribute1', contains: 'ea'},
+       {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'attribute2', contains: 2}
     ];
 
 
@@ -660,7 +634,7 @@ Example:
     </testRootElement>
 
     var expectedMessage = [
-        {repeatingGroup: {path: 'elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', pathShouldNotExist: true}
+        {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', pathShouldNotExist: true}
     ];
 
 Operators
@@ -794,8 +768,8 @@ Use {store(nameOfStore)} to store the value specified by a path. Then use {match
     </testRootElement>
 
     var expectedMessage = [
-        {path: 'elementOne', equals: '{store(whatever)}'}
-        {path: 'elementTwo', equals: '{matches(whatever)}'}
+        {path: 'testRootElement.elementOne', equals: '{store(whatever)}'}
+        {path: 'testRootElement.elementTwo', equals: '{matches(whatever)}'}
     ];
 
     // in the example above we are asserting the value of <elementTwo> matches the value of <elementOne>
@@ -849,8 +823,6 @@ I am planning to work on the following tasks/features in the near future:
 
 * [Support for position delimited messages](https://github.com/mrbenhowl/messageCheckr/issues/6)
 * [The ability to check floating point numbers](https://github.com/mrbenhowl/messageCheckr/issues/7)
-* [Converter for Cucumber.js datatable to enable use in cucumber tests (separate repo)](https://github.com/mrbenhowl/messageCheckr/issues/8)
 * [Refactor - review any TODOs in the code](https://github.com/mrbenhowl/messageCheckr/issues/11)
 * [Add unit test code coverage reports](https://github.com/mrbenhowl/messageCheckr/issues/10)
 * [The ability to check <?xml version="1.0" encoding="UTF-8" standalone="yes"?> for JMS messages](https://github.com/mrbenhowl/messageCheckr/issues/12)
-* I think you should have to specify the full path including parent

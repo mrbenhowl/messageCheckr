@@ -32,7 +32,7 @@ describe('soap - attribute value check', function () {
 
   it('should report a match where an attribute\'s actual value matches the expected value (inside soap header tag)', function () {
     var expectedMessage = [
-      {path: 'SOAP-ENV:Header', attribute: 'testAttribute', equals: 'testAttributeValueInsideSoapHeaderTag'}
+      {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Header', attribute: 'testAttribute', equals: 'testAttributeValueInsideSoapHeaderTag'}
     ];
 
     var result = messageCheckr({
@@ -48,13 +48,13 @@ describe('soap - attribute value check', function () {
       expected: 'testAttributeValueInsideSoapHeaderTag',
       description: 'Check actual value testAttributeValueInsideSoapHeaderTag is equal to testAttributeValueInsideSoapHeaderTag',
       pass: true,
-      target: {path: 'SOAP-ENV:Header', attribute: 'testAttribute'}
+      target: {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Header', attribute: 'testAttribute'}
     });
   });
 
   it('should report a match where an attribute\'s actual value matches the expected value (inside soap body tag)', function () {
     var expectedMessage = [
-      {path: 'SOAP-ENV:Body', attribute: 'testAttribute', equals: 'testAttributeValueInsideSoapBodyTag'}
+      {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body', attribute: 'testAttribute', equals: 'testAttributeValueInsideSoapBodyTag'}
     ];
 
     var result = messageCheckr({
@@ -70,13 +70,13 @@ describe('soap - attribute value check', function () {
       expected: 'testAttributeValueInsideSoapBodyTag',
       description: 'Check actual value testAttributeValueInsideSoapBodyTag is equal to testAttributeValueInsideSoapBodyTag',
       pass: true,
-      target: {path: 'SOAP-ENV:Body', attribute: 'testAttribute'}
+      target: {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body', attribute: 'testAttribute'}
     });
   });
 
   it('should report a match where an attribute\'s actual value matches the expected value (inside a non soap-env prefixed tag)', function () {
     var expectedMessage = [
-      {path: 'SOAP-ENV:Body.testAttributeElement', attribute: 'testAttribute', equals: 'testAttributeValue'}
+      {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.testAttributeElement', attribute: 'testAttribute', equals: 'testAttributeValue'}
     ];
 
     var result = messageCheckr({
@@ -92,7 +92,7 @@ describe('soap - attribute value check', function () {
       expected: 'testAttributeValue',
       description: 'Check actual value testAttributeValue is equal to testAttributeValue',
       pass: true,
-      target: {path: 'SOAP-ENV:Body.testAttributeElement', attribute: 'testAttribute'}
+      target: {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.testAttributeElement', attribute: 'testAttribute'}
     });
   });
 });

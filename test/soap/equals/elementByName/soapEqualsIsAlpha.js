@@ -11,7 +11,7 @@ describe('soap - is alpha check', function () {
 
   it('should report a match where the actual value is alpha (more than 1 letter)', function () {
     var expectedMessage = [
-      {path: 'SOAP-ENV:Body.lettersOnlyField', equals: '{alpha}'}
+      {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.lettersOnlyField', equals: '{alpha}'}
     ];
 
     var result = messageCheckr({
@@ -25,7 +25,7 @@ describe('soap - is alpha check', function () {
     assert.deepEqual(result.checks[1], {
       actual: 'abc',
       expected: '{alpha}',
-      target: {path: 'SOAP-ENV:Body.lettersOnlyField'},
+      target: {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.lettersOnlyField'},
       description: "Check actual value abc is alpha",
       pass: true
     });

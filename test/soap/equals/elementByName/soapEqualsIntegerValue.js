@@ -10,7 +10,7 @@ describe('soap - integer value check', function () {
 
   it('should report a match where the actual integer value matches the expected integer value - single digit', function () {
     var expectedMessage = [
-      {path: 'SOAP-ENV:Body.integerFieldWith1Digit', equals: 1}
+      {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.integerFieldWith1Digit', equals: 1}
     ];
 
     var result = messageCheckr({
@@ -26,7 +26,7 @@ describe('soap - integer value check', function () {
       description: "Check actual value 1 is equal to 1",
       expected: {equals: 1},
       pass: true,
-      target: {path: 'SOAP-ENV:Body.integerFieldWith1Digit'}
+      target: {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.integerFieldWith1Digit'}
     });
   });
 });
