@@ -825,6 +825,10 @@ To run tests:
 
     npm test
 
+To run tests and see coverage:
+
+    npm run coverage
+
 TODO
 ----
 
@@ -832,4 +836,3 @@ I am planning to work on the following tasks/features in the near future:
 
 * [Support for position delimited messages](https://github.com/mrbenhowl/messageCheckr/issues/6)
 * [Refactor - review any TODOs in the code](https://github.com/mrbenhowl/messageCheckr/issues/11)
-* [Add unit test code coverage reports](https://github.com/mrbenhowl/messageCheckr/issues/10)

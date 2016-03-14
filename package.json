@@ -4,7 +4,8 @@
   "description": "Allows the checking of SOAP and JMS (xml based) messages at a path level using Node.js",
   "main": "messageCheckr.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "./node_modules/mocha/bin/_mocha",
+    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,7 @@
     "chai-spies": "0.7.1",
     "chai-subset": "1.2.0",
     "chai-things": "0.2.0",
+    "istanbul": "0.4.2",
     "mocha": "2.3.3",
     "rewire": "2.3.4",
     "winston": "1.1.0"

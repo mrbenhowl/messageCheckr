@@ -1,4 +1,4 @@
-describe.only('jms - is number check', function () {
+describe('jms - is number check', function () {
 
   var actualMsg = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <testRootElement xmlns="http://www.testing.com/integration/event">
