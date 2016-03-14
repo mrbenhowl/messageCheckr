@@ -28,7 +28,6 @@ describe('jms - path checks', function () {
   });
 
   it('should report a path to an attribute is not present where the specified path does exist', function () {
-    //TODO: attribute path check could get a better message
     var expectedMessage = [
       {path: 'testRootElement', attribute: 'wrong', equals: 'http://www.testing.com/integration/event'}
     ];
@@ -72,5 +71,3 @@ describe('jms - path checks', function () {
     });
   });
 });
-
-//TODO: child tests
