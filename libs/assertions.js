@@ -68,6 +68,8 @@ var assertions = {
             this.isAlphaCheck(printablePath, actualValue);
           } else if (expectedValue.match(/^\{integer}$/) != null) {
             this.isInteger(printablePath, actualValue);
+          } else if (expectedValue.match(/^\{number\(\d+\)}$/) != null) {
+            this.isNumber(printablePath, actualValue, parseInt(expectedValue.match(/\d+/)[0]));
           } else if (expectedValue.match(/^\{length\(<\d+\)\}$/) != null) {
             this.lessThanLengthCheck(printablePath, actualValue, parseInt(expectedValue.match(/\d+/)[0]));
           } else if (expectedValue.match(/^\{length\(>\d+\)\}$/) != null) {
@@ -199,8 +201,47 @@ var assertions = {
         }
       );
     }
-  }
-  ,
+  },
+
+  isNumber: function isNumber(path, actualValue, expectedDecimalPlaces) {
+    var descriptionOfCheck = 'Check actual value ' + actualValue + ' is a number with ' + expectedDecimalPlaces + ' decimal places';
+    var addToVerificationResults = function addToVerificationResults(pass, path, actualValue, expectedDecimalPlaces) {
+      verificationResults.add(
+        {
+          pass: pass,
+          target: path,
+          actual: actualValue,
+          expected: '{number(' + expectedDecimalPlaces + ')}',
+          description: descriptionOfCheck
+        }
+      );
+    };
+
+    if (Number.isNaN(Number(actualValue))) {
+      addToVerificationResults(false, path, actualValue, expectedDecimalPlaces);
+    } else {
+      if (validator.isDecimal(actualValue)) {
+        if (actualValue.indexOf('.') != -1) {
+          var digitsAfterPeriod = actualValue.split('.').length === 1 ? actualValue.split('.')[0].length : actualValue.split('.')[1].length;
+
+          if (digitsAfterPeriod === expectedDecimalPlaces) {
+            addToVerificationResults(true, path, actualValue, expectedDecimalPlaces);
+          } else {
+            addToVerificationResults(false, path, actualValue, expectedDecimalPlaces);
+          }
+        } else {
+
+          if (0 === expectedDecimalPlaces){
+            addToVerificationResults(true, path, actualValue, expectedDecimalPlaces);
+          } else{
+            addToVerificationResults(false, path, actualValue, expectedDecimalPlaces);
+          }
+        }
+      } else {
+        addToVerificationResults(false, path, actualValue, expectedDecimalPlaces);
+      }
+    }
+  },
 
   lessThanLengthCheck: function lessThanLengthCheck(path, actualValue, expectedLength) {
     var lessThanExpected = actualValue.toString().length < expectedLength;
@@ -213,8 +254,7 @@ var assertions = {
         description: 'Check actual value ' + actualValue + ' has a length less than ' + expectedLength
       }
     );
-  }
-  ,
+  },
 
   greaterThanLengthCheck: function greaterThanLengthCheck(path, actualValue, expectedLength) {
     var greaterThanExpected = actualValue.toString().length > expectedLength;
@@ -227,8 +267,7 @@ var assertions = {
         description: 'Check actual value ' + actualValue + ' has a length greater than ' + expectedLength
       }
     );
-  }
-  ,
+  },
 
   equalLengthCheck: function equalLengthCheck(path, actualValue, expectedLength) {
     var equal = actualValue.toString().length === expectedLength;
@@ -241,8 +280,7 @@ var assertions = {
         description: 'Check actual value ' + actualValue + ' has a length equal to ' + expectedLength
       }
     );
-  }
-  ,
+  },
 
   regexCheck: function regexCheck(path, actualValue, regexPattern, expected) {
     verificationResults.add(
@@ -254,8 +292,7 @@ var assertions = {
         description: 'Check actual value ' + actualValue + ' against regex ' + regexPattern.toString()
       }
     );
-  }
-  ,
+  },
 
   timestampCheck: function timestampCheck(path, regexPattern, actualValue, timezone, dateFormat, expected) {
     var currentDate, regexObj;

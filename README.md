@@ -645,6 +645,7 @@ The following is a list of operators (i.e. assertions) which can be applied to a
 - **'string'**
 - **integer**
 - **'{integer}'**
+- **'{number(d)}' where d is an integer to indicate the number of expected decimal places**
 - **'{alpha}'**
 - **'{uuid}'**
 - **'{alphanumeric}'**
@@ -680,6 +681,14 @@ Expect the value to be an integer. Use with `equals`.
 Example:
 
     equals: '{integer}'
+
+### '{number(d)}' where d is an integer to indicate the number of expected decimal places
+
+Expect the value to be number with d decimal places. Use with `equals`
+
+Example:
+
+    equals: '{number(2)}'
 
 ### '{alpha}'
 
@@ -822,6 +831,5 @@ TODO
 I am planning to work on the following tasks/features in the near future:
 
 * [Support for position delimited messages](https://github.com/mrbenhowl/messageCheckr/issues/6)
-* [The ability to check floating point numbers](https://github.com/mrbenhowl/messageCheckr/issues/7)
 * [Refactor - review any TODOs in the code](https://github.com/mrbenhowl/messageCheckr/issues/11)
 * [Add unit test code coverage reports](https://github.com/mrbenhowl/messageCheckr/issues/10)
