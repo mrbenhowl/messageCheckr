@@ -1,7 +1,7 @@
 {
   "name": "messagecheckr",
   "version": "2.0.0",
-  "description": "Allows the checking of SOAP and JMS (xml based) messages at a path level using Node.js",
+  "description": "messageChecker verifies SOAP and Java Message Service (JMS) messages and position delimited messages.",
   "main": "messageCheckr.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/_mocha",
@@ -15,9 +15,13 @@
     "xml",
     "soap",
     "jms",
+    "position",
+    "delimited",
     "validation",
     "validator",
-    "assertion"
+    "verify",
+    "assertion",
+    "check"
   ],
   "author": "Ben Howl <mrbenhowl@gmail.com>",
   "license": "MIT",

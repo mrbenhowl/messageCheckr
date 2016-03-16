@@ -1,7 +1,7 @@
 messageCheckr [![Build Status](https://travis-ci.org/mrbenhowl/messageCheckr.svg)](https://travis-ci.org/mrbenhowl/messageCheckr)
 =============
 
-messageChecker allows the checking of SOAP and Java Message Service (JMS) xml messages at a path level using Node.js
+messageChecker verifies SOAP and Java Message Service (JMS) messages and position delimited messages.
 
 Contents
 --------
@@ -10,7 +10,8 @@ Contents
 * [Usage](#usage)
   * [JMS messages](#jms-messages)
   * [SOAP messages](#soap-messages)
-* [expectedMessage types](#expectedmessage-types)
+  * [Position delimited messages](#position-delimited-messages)
+* [expectedMessage types for SOAP and JMS](#expectedmessage-types-for-soap-and-jms)
 * [Operators](#operators)
 * [Date Format (dateFormat)](#date-format-dateformat)
 * [For Contributors](#for-contributors)
@@ -131,7 +132,7 @@ Example SOAP message
     </soap-env:Envelope>`
 
 
-Let's say we want to check the following for the above SOAP message:
+Let's say we want to check the following for the above message:
 
 * \<soap-env:Envelope\> has the attribute `xmlns:soap-env` with the value `http://schemas.xmlsoap.org/soap/envelope/`
 * \<m:elementOne\> has the value `hello`
@@ -145,8 +146,40 @@ Create the expected message as follows:
 
 Then make a call to messageCheckr. Notice in the case of specifying the path for elementOne we have excluded the 'm' namespace, messageCheckr removes all non-SOAP namespaces. The decision for this again was related to differences I noticed when testing messageCheckr on different environments.
 
-expectedMessage types
----------------------
+###Position delimited messages
+
+To check these <sarcasm>lovely</sarcasm> position delimited messages you need to make a call to messageCheckr with type set to 'position':
+
+    var result = messageCheckr({
+      type: 'position',
+      actualMsg: actualMessage,
+      expectedMsg: expectedMessage
+    });
+
+Example position delimited message
+
+    start of messageNext part of message123456.01End of message
+
+Let's say we want to check the following for the above message:
+
+* Between position 0 and 15 the value is 'start of message'
+* Between position 16 and 35 the value contains 'part'
+* Between position 36 and 44 the value is 123456.01
+* Between position 36 and 44 the value is a number with 2 decimal places
+* Between position 45 and 58 the value matches the regex / of /
+
+`expectedMessage` is defined as follows:
+
+    var expectedMessage = [
+        {begin: 0,  end: 10, equals: 'start of message'},
+        {begin: 16, end: 35, contains: 'part'},
+        {begin: 36, end: 44, equals: 123456.01},
+        {begin: 36, end: 44, equals: {number(2)}},
+        {begin: 45, end: 58, equals: / of /},
+    ];
+
+expectedMessage types for SOAP/JMS
+----------------------------------
 
 The following is a list of all possible types that you can use to construct an `expectedMessage`
 
@@ -387,3 +420,4 @@ TODO
 I am planning to work on the following tasks/features in the near future:
 
 * [Support for position delimited messages](https://github.com/mrbenhowl/messageCheckr/issues/6)
+* update top of github page
