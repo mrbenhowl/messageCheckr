@@ -174,8 +174,8 @@ Let's say we want to check the following for the above message:
         {begin: 0,  end: 10, equals: 'start of message'},
         {begin: 16, end: 35, contains: 'part'},
         {begin: 36, end: 44, equals: 123456.01},
-        {begin: 36, end: 44, equals: {number(2)}},
-        {begin: 45, end: 58, equals: / of /},
+        {begin: 36, end: 44, equals: '{number(2)}'},
+        {begin: 45, end: 58, equals: / of /}
     ];
 
 expectedMessage types for SOAP/JMS
