@@ -57,6 +57,31 @@ describe('readme tests', function () {
     });
   });
 
+
+  describe('position delimited example', function () {
+    var actualMsg = `start of messageNext part of message123456.01End of message`;
+
+    it('should work', function () {
+      var expectedMessage = [
+        {begin: 0,  end: 10, equals: 'start of message'},
+        {begin: 16, end: 35, contains: 'part'},
+        {begin: 36, end: 44, equals: 123456.01},
+        {begin: 36, end: 44, equals: '{number(2)}'},
+        {begin: 45, end: 58, equals: / of /}
+    ];
+
+      var result = messageCheckr({
+        type: 'position',
+        verbose: true,
+        actualMsg: actualMsg,
+        expectedMsg: expectedMessage
+      });
+
+      assert.equal(result.allChecksPassed, true);
+    });
+  });
+
+
   describe('expectedMessage Types', function () {
 
     it("{path: 'path.to.element', equals: operator - see section Operators')", function () {

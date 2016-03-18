@@ -1,10 +1,10 @@
 var messageComponentType = require('./messageComponentType');
 
-var messageComponent = function (expectedMessageComponent, actualMessageXmlDocument) {
+var messageComponent = function (messageType, expectedMessageComponent, actualMessageXmlDocument) {
 
   var type, expected, actualValue, printablePath, pathToElement, pathExists;
 
-  var result = validate(expectedMessageComponent);
+  var result = validate(messageType, expectedMessageComponent);
   type = result.type;
   expected = result.expected;
 
@@ -38,7 +38,7 @@ var messageComponent = function (expectedMessageComponent, actualMessageXmlDocum
 
 module.exports = messageComponent;
 
-function validate(expectedMessageComponent) {
+function validate(messageTyoe, expectedMessageComponent) {
 
   if (_.isNull(expectedMessageComponent) ||
     _.isArray(expectedMessageComponent) ||
@@ -62,7 +62,7 @@ function validate(expectedMessageComponent) {
       || _.isEqual(expectedMessageComponentKeys, ['attribute', 'contains', 'path', 'repeatingGroup'])
       || _.isEqual(expectedMessageComponentKeys, ['contains', 'path', 'repeatingGroup'])
       || _.isEqual(expectedMessageComponentKeys, ['path', 'pathShouldNotExist', 'repeatingGroup'])) {
-      type = messageComponentType.REPEATING_GROUP;
+      type = messageComponentType.XML_REPEATING_GROUP;
       expected = _.omit(_.clone(expectedMessageComponent), ['path', 'repeatingGroup', 'attribute']);
     }
 
@@ -78,7 +78,7 @@ function validate(expectedMessageComponent) {
 
       if (!Number.isInteger(expectedMessageComponent.elementPosition)) throw new Error('elementPosition should be an integer');
       if (expectedMessageComponent.elementPosition < 1) throw new Error('elementPosition should be greater than 0');
-      type = messageComponentType.POSITION;
+      type = messageComponentType.XML_POSITION;
       expected = _.omit(_.clone(expectedMessageComponent), ['parentPath', 'element', 'elementPosition', 'attribute']);
     }
 
@@ -91,7 +91,7 @@ function validate(expectedMessageComponent) {
       || _.isEqual(expectedMessageComponentKeys, ['attribute', 'dateFormat', 'equals', 'path'])
       || _.isEqual(expectedMessageComponentKeys, ['attribute', 'contains', 'path'])
       || _.isEqual(expectedMessageComponentKeys, ['path', 'pathShouldNotExist'])) {
-      type = messageComponentType.STANDARD;
+      type = messageComponentType.XML_STANDARD;
       expected = _.omit(_.clone(expectedMessageComponent), ['path', 'attribute']);
     }
   }
@@ -106,7 +106,7 @@ function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocume
   // returns undefined if cannot find element, otherwise it returns xmlDoc type
   var pathToElement;
 
-  if (type === messageComponentType.STANDARD) {
+  if (type === messageComponentType.XML_STANDARD) {
 
     var path = expectedMessageComponent.path,
       pathIsRootElement = expectedMessageComponent.path === actualMessageXmlDocument.name,
@@ -137,7 +137,7 @@ function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocume
       }
     }
 
-  } else if (type === messageComponentType.POSITION) {
+  } else if (type === messageComponentType.XML_POSITION) {
     var parentPathIsRootElement, pathToParentElement, countOfChildElements, elementAtSpecifiedPosition;
 
     parentPathIsRootElement = expectedMessageComponent.parentPath === actualMessageXmlDocument.name;
@@ -176,7 +176,7 @@ function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocume
       }
     }
 
-  } else if (type === messageComponentType.REPEATING_GROUP) {
+  } else if (type === messageComponentType.XML_REPEATING_GROUP) {
     var pathIsRootElement, pathToElementEnclosingRepeatingGroup, repeatingElement, pathToElementFromRepeatingElement, version, matchingGroups;
 
     pathToElementEnclosingRepeatingGroup = expectedMessageComponent.repeatingGroup.path;

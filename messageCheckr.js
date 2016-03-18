@@ -23,22 +23,24 @@ var messageCheckr = function messageCheckr(params) {
     cleansedMessage = cleanRawSoapMessage(actualMsg);
     xmlDocument = convertToXmlDocumentType(cleansedMessage);
     assertions.checkRootElement(xmlDocument, 'SOAP-ENV:Envelope');
-    checkAllMessageComponents(xmlDocument, expectedMsg);
+    checkAllMessageComponents('xml', xmlDocument, expectedMsg);
   } else if (type === 'jms') {
     cleansedMessage = cleanRawXmlMessage(actualMsg);
     xmlDocument = convertToXmlDocumentType(cleansedMessage);
     assertions.checkRootElement(xmlDocument, expectedRootElement);
-    checkAllMessageComponents(xmlDocument, expectedMsg);
+    checkAllMessageComponents('xml', xmlDocument, expectedMsg);
+  } else if (type === 'position'){
+    checkAllMessageComponents('position', actualMsg, expectedMsg)
   } else {
-    throw new Error('type ' + type + ' is not handled');
+    throw new Error('type "' + type + '" is not handled');
   }
 
   return ({allChecksPassed: verificationResults.getOverallResult(), checks: verificationResults.getAllChecks(params.verbose)});
 };
 
-function checkAllMessageComponents(actualMsgAsXmlDocument, expectedMsg) {
+function checkAllMessageComponents(messageType, actualMsg, expectedMsg) {
   expectedMsg.forEach(function (expectedMsgComponent) {
-    var msgComponent = messageComponent(expectedMsgComponent, actualMsgAsXmlDocument);
+    var msgComponent = messageComponent(messageType, expectedMsgComponent, actualMsg);
     assertions.verifyMessageComponent(msgComponent);
   });
 }
