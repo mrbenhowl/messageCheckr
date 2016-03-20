@@ -158,22 +158,22 @@ To check these <sarcasm>lovely</sarcasm> position delimited messages you need to
 
 Example position delimited message
 
-    start of messageNext part of message123456.01End of message
+    start of messageNext part of message123456.10End of message
 
 Let's say we want to check the following for the above message:
 
 * Between position 0 and 15 the value is 'start of message'
 * Between position 16 and 35 the value contains 'part'
-* Between position 36 and 44 the value is 123456.01
+* Between position 36 and 44 the value is 123456.10
 * Between position 36 and 44 the value is a number with 2 decimal places
 * Between position 45 and 58 the value matches the regex / of /
 
 `expectedMessage` is defined as follows:
 
     var expectedMessage = [
-        {begin: 0,  end: 10, equals: 'start of message'},
+        {begin: 0,  end: 15, equals: 'start of message'},
         {begin: 16, end: 35, contains: 'part'},
-        {begin: 36, end: 44, equals: 123456.01},
+        {begin: 36, end: 44, equals: 123456.10},
         {begin: 36, end: 44, equals: '{number(2)}'},
         {begin: 45, end: 58, equals: / of /}
     ];

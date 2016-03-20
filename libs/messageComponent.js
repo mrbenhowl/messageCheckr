@@ -1,19 +1,28 @@
 var messageComponentType = require('./messageComponentType');
 
-var messageComponent = function (messageType, expectedMessageComponent, actualMessageXmlDocument) {
+var messageComponent = function (messageType, expectedMessageComponent, actualMessage) {
 
-  var type, expected, actualValue, printablePath, pathToElement, pathExists;
+  var type, expected, actualValue, printablePath, pathToXmlElement, pathExists;
 
   var result = validate(messageType, expectedMessageComponent);
   type = result.type;
   expected = result.expected;
 
-  pathToElement = getPathToElement(expectedMessageComponent, type, actualMessageXmlDocument);
-  pathExists = !_.isUndefined(pathToElement);
+  if (messageType === 'xml'){
+    pathToXmlElement = getPathToXmlElement(expectedMessageComponent, type, actualMessage);
+    pathExists = !_.isUndefined(pathToXmlElement);
+  } else {
+    pathExists = expectedMessageComponent.end <= actualMessage.length;
+  }
+
   printablePath = determinePrintablePath(expectedMessageComponent);
 
   if (pathExists) {
-    actualValue = getValueAtPath(pathToElement, expectedMessageComponent.attribute);
+    if (messageType === 'xml'){
+      actualValue = getValueAtPath(pathToXmlElement, expectedMessageComponent.attribute);
+    } else {
+      actualValue = actualMessage.substring(expectedMessageComponent.begin, expectedMessageComponent.end+1);
+    }
   }
 
   return {
@@ -38,7 +47,7 @@ var messageComponent = function (messageType, expectedMessageComponent, actualMe
 
 module.exports = messageComponent;
 
-function validate(messageTyoe, expectedMessageComponent) {
+function validate(messageType, expectedMessageComponent) {
 
   if (_.isNull(expectedMessageComponent) ||
     _.isArray(expectedMessageComponent) ||
@@ -53,56 +62,73 @@ function validate(messageTyoe, expectedMessageComponent) {
     expectedMessageComponentKeys = _.keys(expectedMessageComponent).sort(),
     expected;
 
-  if (_.has(expectedMessageComponent, 'repeatingGroup') && _.isEqual(_.keys(expectedMessageComponent.repeatingGroup).sort(), ['number', 'path', 'repeater'])) {
+  if (messageType === 'xml') {
 
-    if (_.isEqual(expectedMessageComponentKeys, ['equals', 'path', 'repeatingGroup'])
-      || _.isEqual(expectedMessageComponentKeys, ['dateFormat', 'equals', 'path', 'repeatingGroup'])
-      || _.isEqual(expectedMessageComponentKeys, ['attribute', 'equals', 'path', 'repeatingGroup'])
-      || _.isEqual(expectedMessageComponentKeys, ['attribute', 'dateFormat', 'equals', 'path', 'repeatingGroup'])
-      || _.isEqual(expectedMessageComponentKeys, ['attribute', 'contains', 'path', 'repeatingGroup'])
-      || _.isEqual(expectedMessageComponentKeys, ['contains', 'path', 'repeatingGroup'])
-      || _.isEqual(expectedMessageComponentKeys, ['path', 'pathShouldNotExist', 'repeatingGroup'])) {
-      type = messageComponentType.XML_REPEATING_GROUP;
-      expected = _.omit(_.clone(expectedMessageComponent), ['path', 'repeatingGroup', 'attribute']);
+    if (_.has(expectedMessageComponent, 'repeatingGroup') && _.isEqual(_.keys(expectedMessageComponent.repeatingGroup).sort(), ['number', 'path', 'repeater'])) {
+
+      if (_.isEqual(expectedMessageComponentKeys, ['equals', 'path', 'repeatingGroup'])
+        || _.isEqual(expectedMessageComponentKeys, ['dateFormat', 'equals', 'path', 'repeatingGroup'])
+        || _.isEqual(expectedMessageComponentKeys, ['attribute', 'equals', 'path', 'repeatingGroup'])
+        || _.isEqual(expectedMessageComponentKeys, ['attribute', 'dateFormat', 'equals', 'path', 'repeatingGroup'])
+        || _.isEqual(expectedMessageComponentKeys, ['attribute', 'contains', 'path', 'repeatingGroup'])
+        || _.isEqual(expectedMessageComponentKeys, ['contains', 'path', 'repeatingGroup'])
+        || _.isEqual(expectedMessageComponentKeys, ['path', 'pathShouldNotExist', 'repeatingGroup'])) {
+        type = messageComponentType.XML_REPEATING_GROUP;
+        expected = _.omit(_.clone(expectedMessageComponent), ['path', 'repeatingGroup', 'attribute']);
+      }
+
+    } else if (_.has(expectedMessageComponent, 'parentPath')) {
+
+      if (_.isEqual(expectedMessageComponentKeys, ['element', 'elementPosition', 'equals', 'parentPath'])
+        || _.isEqual(expectedMessageComponentKeys, ['dateFormat', 'element', 'elementPosition', 'equals', 'parentPath'])
+        || _.isEqual(expectedMessageComponentKeys, ['contains', 'element', 'elementPosition', 'parentPath'])
+        || _.isEqual(expectedMessageComponentKeys, ['attribute', 'element', 'elementPosition', 'equals', 'parentPath'])
+        || _.isEqual(expectedMessageComponentKeys, ['attribute', 'dateFormat', 'element', 'elementPosition', 'equals', 'parentPath'])
+        || _.isEqual(expectedMessageComponentKeys, ['attribute', 'contains', 'element', 'elementPosition', 'parentPath'])
+        || _.isEqual(expectedMessageComponentKeys, ['element', 'elementPosition', 'parentPath', 'pathShouldNotExist'])) {
+
+        if (!Number.isInteger(expectedMessageComponent.elementPosition)) throw new Error('elementPosition should be an integer');
+        if (expectedMessageComponent.elementPosition < 1) throw new Error('elementPosition should be greater than 0');
+        type = messageComponentType.XML_POSITION;
+        expected = _.omit(_.clone(expectedMessageComponent), ['parentPath', 'element', 'elementPosition', 'attribute']);
+      }
+
+    } else {
+
+      if (_.isEqual(expectedMessageComponentKeys, ['equals', 'path'])
+        || _.isEqual(expectedMessageComponentKeys, ['dateFormat', 'equals', 'path'])
+        || _.isEqual(expectedMessageComponentKeys, ['contains', 'path'])
+        || _.isEqual(expectedMessageComponentKeys, ['attribute', 'equals', 'path'])
+        || _.isEqual(expectedMessageComponentKeys, ['attribute', 'dateFormat', 'equals', 'path'])
+        || _.isEqual(expectedMessageComponentKeys, ['attribute', 'contains', 'path'])
+        || _.isEqual(expectedMessageComponentKeys, ['path', 'pathShouldNotExist'])) {
+        type = messageComponentType.XML_STANDARD;
+        expected = _.omit(_.clone(expectedMessageComponent), ['path', 'attribute']);
+      }
     }
 
-  } else if (_.has(expectedMessageComponent, 'parentPath')) {
+  } else if (messageType === 'position') {
+    if (_.isEqual(expectedMessageComponentKeys, ['begin', 'end', 'equals'])
+      || _.isEqual(expectedMessageComponentKeys, ['begin', 'contains', 'end'])) {
 
-    if (_.isEqual(expectedMessageComponentKeys, ['element', 'elementPosition', 'equals', 'parentPath'])
-      || _.isEqual(expectedMessageComponentKeys, ['dateFormat', 'element', 'elementPosition', 'equals', 'parentPath'])
-      || _.isEqual(expectedMessageComponentKeys, ['contains', 'element', 'elementPosition', 'parentPath'])
-      || _.isEqual(expectedMessageComponentKeys, ['attribute', 'element', 'elementPosition', 'equals', 'parentPath'])
-      || _.isEqual(expectedMessageComponentKeys, ['attribute', 'dateFormat', 'element', 'elementPosition', 'equals', 'parentPath'])
-      || _.isEqual(expectedMessageComponentKeys, ['attribute', 'contains', 'element', 'elementPosition', 'parentPath'])
-      || _.isEqual(expectedMessageComponentKeys, ['element', 'elementPosition', 'parentPath', 'pathShouldNotExist'])) {
-
-      if (!Number.isInteger(expectedMessageComponent.elementPosition)) throw new Error('elementPosition should be an integer');
-      if (expectedMessageComponent.elementPosition < 1) throw new Error('elementPosition should be greater than 0');
-      type = messageComponentType.XML_POSITION;
-      expected = _.omit(_.clone(expectedMessageComponent), ['parentPath', 'element', 'elementPosition', 'attribute']);
+      type = messageComponentType.POSITION_DELIMITED;
+      expected = _.omit(_.clone(expectedMessageComponent), ['begin', 'end']);
     }
 
   } else {
-
-    if (_.isEqual(expectedMessageComponentKeys, ['equals', 'path'])
-      || _.isEqual(expectedMessageComponentKeys, ['dateFormat', 'equals', 'path'])
-      || _.isEqual(expectedMessageComponentKeys, ['contains', 'path'])
-      || _.isEqual(expectedMessageComponentKeys, ['attribute', 'equals', 'path'])
-      || _.isEqual(expectedMessageComponentKeys, ['attribute', 'dateFormat', 'equals', 'path'])
-      || _.isEqual(expectedMessageComponentKeys, ['attribute', 'contains', 'path'])
-      || _.isEqual(expectedMessageComponentKeys, ['path', 'pathShouldNotExist'])) {
-      type = messageComponentType.XML_STANDARD;
-      expected = _.omit(_.clone(expectedMessageComponent), ['path', 'attribute']);
-    }
+    throw new Error('messageType ' + messageType + ' not expected');
   }
 
   if (type === 'UNKNOWN') throw new Error('Expected message component does not match any expected patterns. The invalid component is ' + JSON.stringify(expectedMessageComponent));
 
-  return {type: type, expected: expected};
+  return {
+    type: type,
+    expected: expected
+  };
 }
 
 
-function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocument) {
+function getPathToXmlElement(expectedMessageComponent, type, actualMessageXmlDocument) {
   // returns undefined if cannot find element, otherwise it returns xmlDoc type
   var pathToElement;
 
@@ -156,9 +182,9 @@ function getPathToElement(expectedMessageComponent, type, actualMessageXmlDocume
       countOfChildElements = actualMessageXmlDocument.children.length;
     } else {
 
-      if (_.isUndefined(actualMessageXmlDocument.descendantWithPath(pathToParentElement))){
+      if (_.isUndefined(actualMessageXmlDocument.descendantWithPath(pathToParentElement))) {
         return undefined;
-      }else{
+      } else {
         countOfChildElements = actualMessageXmlDocument.descendantWithPath(pathToParentElement).children.length;
       }
     }

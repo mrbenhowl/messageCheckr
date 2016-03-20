@@ -33,16 +33,28 @@ var assertions = {
         if (_.has(messageComponent.getExpected(), 'equals')) {
           var expectedValue = messageComponent.getExpected().equals;
 
-          if (Number.isInteger(expectedValue)) {
-            verificationResults.add(
-              {
-                pass: parseInt(actualValue) === expectedValue,
-                target: printablePath,
-                actual: parseInt(actualValue),
-                expected: messageComponent.getExpected(),
-                description: 'Check actual value ' + actualValue + ' is equal to ' + expectedValue
-              }
-            );
+          if(_.isNumber(expectedValue)){
+            if (Number.isInteger(expectedValue)) {
+              verificationResults.add(
+                {
+                  pass: parseInt(actualValue) === expectedValue,
+                  target: printablePath,
+                  actual: parseInt(actualValue),
+                  expected: messageComponent.getExpected(),
+                  description: 'Check actual value ' + actualValue + ' is equal to ' + expectedValue
+                }
+              );
+            } else if (validator.isDecimal(expectedValue)){
+              verificationResults.add(
+                {
+                  pass: parseFloat(actualValue) === expectedValue,
+                  target: printablePath,
+                  actual: parseFloat(actualValue),
+                  expected: messageComponent.getExpected(),
+                  description: 'Check actual value ' + actualValue + ' is equal to ' + expectedValue
+                }
+              );
+            }
           } else if (_.isRegExp(expectedValue)) {
             if (expectedValue.toString().indexOf('local-timezone') != -1) {
               this.timestampCheck(printablePath, expectedValue, actualValue, 'local-timezone', messageComponent.getExpected().dateFormat, messageComponent.getExpected());
