@@ -15,7 +15,6 @@ Contents
 * [Operators](#operators)
 * [Date Format (dateFormat)](#date-format-dateformat)
 * [For Contributors](#for-contributors)
-* [TODO](#todo)
 
 Compatibility
 ------------
