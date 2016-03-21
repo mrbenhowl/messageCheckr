@@ -413,11 +413,3 @@ To run tests:
 To run tests and see coverage:
 
     npm run coverage
-
-TODO
-----
-
-I am planning to work on the following tasks/features in the near future:
-
-* [Support for position delimited messages](https://github.com/mrbenhowl/messageCheckr/issues/6)
-* update top of github page
