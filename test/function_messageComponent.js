@@ -146,6 +146,50 @@ describe('messageComponent()', function () {
       }, 'elementPosition should be greater than 0');
     });
 
+    // POSITION_DELIMITED
+
+    it('should throw an error when "begin" is not number', function () {
+      assert.throw(() => {
+        validate('position', {begin: "a", end: 10, equals: "test"})
+      }, 'begin should be an integer');
+    });
+
+    it('should throw an error when "end" is not a number', function () {
+      assert.throw(() => {
+        validate('position', {begin: 0, end: '1', equals: "test"})
+      }, 'end should be an integer');
+    });
+
+    it('should throw an error when "begin" is a float', function () {
+      assert.throw(() => {
+        validate('position', {begin: 0.1, end: 10, equals: "test"})
+      }, 'begin should be an integer');
+    });
+
+    it('should throw an error when "end" is a float', function () {
+      assert.throw(() => {
+        validate('position', {begin: 0, end: 10.10, equals: "test"})
+      }, 'end should be an integer');
+    });
+
+    it('should throw an error when "begin" is less than 0', function () {
+      assert.throw(() => {
+        validate('position', {begin: -1, end: 10, equals: "test"})
+      }, 'begin should be greater or equal to 0');
+    });
+
+    it('should throw an error when "end" is less than 0', function () {
+      assert.throw(() => {
+        validate('position', {begin: 1, end: -1, equals: "test"})
+      }, 'end should be greater or equal to 0');
+    });
+
+    it('should throw an error when "end" is less than "begin"', function () {
+      assert.throw(() => {
+        validate('position', {begin: 1, end: 0, equals: "test"})
+      }, 'end should be greater than begin');
+    });
+
     // PATTERN NOT RECOGNISED
 
     it('should throw an error when "expectedMessageComponent" does not match any expected pattern', function () {
@@ -842,5 +886,3 @@ describe('messageComponent()', function () {
     });
   });
 });
-
-

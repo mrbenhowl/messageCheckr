@@ -111,6 +111,12 @@ function validate(messageType, expectedMessageComponent) {
     if (_.isEqual(expectedMessageComponentKeys, ['begin', 'end', 'equals'])
       || _.isEqual(expectedMessageComponentKeys, ['begin', 'contains', 'end'])) {
 
+      if (!Number.isInteger(expectedMessageComponent.begin)) throw new Error('begin should be an integer');
+      if (!Number.isInteger(expectedMessageComponent.end)) throw new Error('end should be an integer');
+      if (expectedMessageComponent.begin < 0) throw new Error('begin should be greater or equal to 0');
+      if (expectedMessageComponent.end < 0) throw new Error('end should be greater or equal to 0');
+      if (expectedMessageComponent.end < expectedMessageComponent.begin) throw new Error('end should be greater than begin');
+
       type = messageComponentType.POSITION_DELIMITED;
       expected = _.omit(_.clone(expectedMessageComponent), ['begin', 'end']);
     }

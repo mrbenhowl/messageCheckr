@@ -30,6 +30,7 @@ var messageCheckr = function messageCheckr(params) {
     assertions.checkRootElement(xmlDocument, expectedRootElement);
     checkAllMessageComponents('xml', xmlDocument, expectedMsg);
   } else if (type === 'position'){
+    if (!_.isString(actualMsg)) throw new Error('actualMsg should be a string when type is "position"');
     checkAllMessageComponents('position', actualMsg, expectedMsg)
   } else {
     throw new Error('type "' + type + '" is not handled');
