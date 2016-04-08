@@ -1,20 +1,32 @@
 var cleanRawXmlMessage = function cleanRawXmlMessage(rawMessage) {
-  var scanMessageFromPosition, cleansedMessage;
+  var scanMessageFromPosition, cleansedMessage, xmlTagPosition;
 
-  scanMessageFromPosition = rawMessage.toLowerCase().indexOf('<?xml');
-  if (scanMessageFromPosition === -1) throw new Error('message does contain the initial <?xml attribute.');
+  xmlTagPosition = rawMessage.toLowerCase().indexOf('<?xml');
 
-  cleansedMessage =
-    rawMessage.substr(scanMessageFromPosition)
-      .replace(/(<\?xml)/gi, '<?XML')
-      .replace(/<([a-z0-9\-]+):/gi, function (str) {
-        if (str != '<?XML:') {
-          return '<';
-        } else {
-          return str;
-        }
-      })
-      .replace(/<\/([a-z0-9\-]+):/gi, '</');
+  if (xmlTagPosition != -1) {
+    scanMessageFromPosition = xmlTagPosition;
+  } else {
+    scanMessageFromPosition = rawMessage.indexOf('<');
+  }
+
+  cleansedMessage = rawMessage.substr(scanMessageFromPosition);
+
+  if (xmlTagPosition != -1) {
+    cleansedMessage =
+      rawMessage.replace(/(<\?xml)/gi, '<?XML')
+        .replace(/<([a-z0-9\-]+):/gi, function (str) {
+          if (str != '<?XML:') {
+            return '<';
+          } else {
+            return str;
+          }
+        })
+        .replace(/<\/([a-z0-9\-]+):/gi, '</');
+  } else {
+    cleansedMessage =
+      rawMessage.replace(/<([a-z0-9\-]+):/gi, '<')
+        .replace(/<\/([a-z0-9\-]+):/gi, '</');
+  }
 
   return cleansedMessage;
 };
