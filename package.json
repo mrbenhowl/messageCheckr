@@ -21,7 +21,8 @@
     "validator",
     "verify",
     "assertion",
-    "check"
+    "check",
+    "fun"
   ],
   "author": "Ben Howl <mrbenhowl@gmail.com>",
   "license": "MIT",
