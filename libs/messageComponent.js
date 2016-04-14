@@ -1,4 +1,5 @@
 var messageComponentType = require('./messageComponentType');
+var _ = require('lodash');
 
 var messageComponent = function (messageType, expectedMessageComponent, actualMessage) {
 
