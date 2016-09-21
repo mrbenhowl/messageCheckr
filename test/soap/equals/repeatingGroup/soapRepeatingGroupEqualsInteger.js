@@ -1,4 +1,4 @@
-describe('jms - repeating element equals integer', function () {
+describe('soap - repeating element equals integer', function () {
 
   var actualMsg =
     `<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
