@@ -17,7 +17,7 @@ describe('jms - repeating element equals integer', function () {
       </soap-env:Body>
     </soap-env:Envelope>`;
 
-  it('xshould report a match where the actual repeating group element value does match the expected value', function () {
+  it('should report a match where the actual repeating group element value does match the expected value', function () {
     var expectedMessage = [
       {repeatingGroup: {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: 10001},
       {repeatingGroup: {path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', equals: 10003},
