@@ -177,8 +177,8 @@ Let's say we want to check the following for the above message:
         {begin: 45, end: 58, equals: / of /}
     ];
 
-expectedMessage types for SOAP/JMS
-----------------------------------
+expectedMessage types for SOAP and JMS
+--------------------------------------
 
 The following is a list of all possible types that you can use to construct an `expectedMessage`
 
