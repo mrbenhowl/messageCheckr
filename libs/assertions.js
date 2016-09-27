@@ -1,12 +1,11 @@
 var _ = require('lodash'),
   moment = require('moment'),
   validator = require('validator'),
-  verificationResults = require('./verificationResults'),
   store = require('./store');
 
 var assertions = {
 
-  verifyMessageComponent: function verifyMessageComponent(messageComponent) {
+  verifyMessageComponent: function verifyMessageComponent(verificationResults, messageComponent) {
 
     if (messageComponent.getExpected().pathShouldNotExist) {
       verificationResults.add(
@@ -57,11 +56,11 @@ var assertions = {
             }
           } else if (_.isRegExp(expectedValue)) {
             if (expectedValue.toString().indexOf('local-timezone') != -1) {
-              this.timestampCheck(printablePath, expectedValue, actualValue, 'local-timezone', messageComponent.getExpected().dateFormat, messageComponent.getExpected());
+              this.timestampCheck(verificationResults, printablePath, expectedValue, actualValue, 'local-timezone', messageComponent.getExpected().dateFormat, messageComponent.getExpected());
             } else if (expectedValue.toString().indexOf('utc-timezone') != -1) {
-              this.timestampCheck(printablePath, expectedValue, actualValue, 'utc-timezone', messageComponent.getExpected().dateFormat, messageComponent.getExpected());
+              this.timestampCheck(verificationResults, printablePath, expectedValue, actualValue, 'utc-timezone', messageComponent.getExpected().dateFormat, messageComponent.getExpected());
             } else {
-              this.regexCheck(printablePath, actualValue, expectedValue, messageComponent.getExpected());
+              this.regexCheck(verificationResults, printablePath, actualValue, expectedValue, messageComponent.getExpected());
             }
           } else if (expectedValue.match(/^\{store\(.*\)}$/) != null) {
             var storeName = expectedValue.match(/\(([^)]+)\)/)[1];
@@ -71,29 +70,29 @@ var assertions = {
             store.add(storeName, actualValue);
           } else if (expectedValue.match(/^\{matches\([a-zA-Z]*\)}$/) != null) {
             var storeName = expectedValue.match(/\(([^)]+)\)/)[1];
-            this.storeCheck(printablePath, storeName, actualValue, messageComponent.getExpected());
+            this.storeCheck(verificationResults, printablePath, storeName, actualValue, messageComponent.getExpected());
           } else if (expectedValue.match(/^\{uuid}$/) != null) {
-            this.uuidCheck(printablePath, actualValue);
+            this.uuidCheck(verificationResults, printablePath, actualValue);
           } else if (expectedValue.match(/^\{alphanumeric}$/) != null) {
-            this.isAlphanumericCheck(printablePath, actualValue);
+            this.isAlphanumericCheck(verificationResults, printablePath, actualValue);
           } else if (expectedValue.match(/^\{alpha}$/) != null) {
-            this.isAlphaCheck(printablePath, actualValue);
+            this.isAlphaCheck(verificationResults, printablePath, actualValue);
           } else if (expectedValue.match(/^\{integer}$/) != null) {
-            this.isInteger(printablePath, actualValue);
+            this.isInteger(verificationResults, printablePath, actualValue);
           } else if (expectedValue.match(/^\{number\(\d+\)}$/) != null) {
-            this.isNumber(printablePath, actualValue, parseInt(expectedValue.match(/\d+/)[0]));
+            this.isNumber(verificationResults, printablePath, actualValue, parseInt(expectedValue.match(/\d+/)[0]));
           } else if (expectedValue.match(/^\{length\(<\d+\)\}$/) != null) {
-            this.lessThanLengthCheck(printablePath, actualValue, parseInt(expectedValue.match(/\d+/)[0]));
+            this.lessThanLengthCheck(verificationResults, printablePath, actualValue, parseInt(expectedValue.match(/\d+/)[0]));
           } else if (expectedValue.match(/^\{length\(>\d+\)\}$/) != null) {
-            this.greaterThanLengthCheck(printablePath, actualValue, parseInt(expectedValue.match(/\d+/)[0]));
+            this.greaterThanLengthCheck(verificationResults, printablePath, actualValue, parseInt(expectedValue.match(/\d+/)[0]));
           } else if (expectedValue.match(/^\{length\(\d+\)\}$/) != null) {
-            this.equalLengthCheck(printablePath, actualValue, parseInt(expectedValue.match(/\d+/)[0]));
+            this.equalLengthCheck(verificationResults, printablePath, actualValue, parseInt(expectedValue.match(/\d+/)[0]));
           } else {
-            this.equalsCheck(printablePath, actualValue, expectedValue);
+            this.equalsCheck(verificationResults, printablePath, actualValue, expectedValue);
           }
 
         } else if (_.has(messageComponent.getExpected(), 'contains')) {
-          this.containsCheck(printablePath, messageComponent.getActualValue(), messageComponent.getExpected().contains, messageComponent.getExpected());
+          this.containsCheck(verificationResults, printablePath, messageComponent.getActualValue(), messageComponent.getExpected().contains, messageComponent.getExpected());
         } else {
           throw new Error('I have not accounted for something, whoops!');
         }
@@ -101,7 +100,7 @@ var assertions = {
     }
   },
 
-  checkRootElement: function checkRootElement(xmlDocument, expectedRootElement) {
+  checkRootElement: function checkRootElement(verificationResults, xmlDocument, expectedRootElement) {
     verificationResults.add(
       {
         pass: xmlDocument.name === expectedRootElement,
@@ -113,7 +112,7 @@ var assertions = {
     );
   },
 
-  equalsCheck: function equalsCheck(path, actualValue, expectedValue) {
+  equalsCheck: function equalsCheck(verificationResults, path, actualValue, expectedValue) {
     verificationResults.add(
       {
         pass: actualValue === expectedValue,
@@ -125,7 +124,7 @@ var assertions = {
     );
   },
 
-  containsCheck: function containsCheck(path, actualValue, containsExpectedValue, expected) {
+  containsCheck: function containsCheck(verificationResults, path, actualValue, containsExpectedValue, expected) {
     verificationResults.add(
       {
         pass: actualValue.indexOf(containsExpectedValue) != -1,
@@ -137,7 +136,7 @@ var assertions = {
     );
   },
 
-  uuidCheck: function uuidCheck(path, actualValue) {
+  uuidCheck: function uuidCheck(verificationResults, path, actualValue) {
     verificationResults.add(
       {
         pass: validator.isUUID(actualValue),
@@ -149,7 +148,7 @@ var assertions = {
     );
   },
 
-  storeCheck: function storeCheck(path, storeName, actualValue, expected) {
+  storeCheck: function storeCheck(verificationResults, path, storeName, actualValue, expected) {
     var valuePreviouslyStored = store.get(storeName);
 
     verificationResults.add(
@@ -163,7 +162,7 @@ var assertions = {
     );
   },
 
-  isAlphanumericCheck: function isAlphanumericCheck(path, actualValue) {
+  isAlphanumericCheck: function isAlphanumericCheck(verificationResults, path, actualValue) {
     verificationResults.add(
       {
         pass: validator.isAlphanumeric(actualValue),
@@ -173,10 +172,9 @@ var assertions = {
         description: 'Check actual value ' + actualValue + ' is alphanumeric'
       }
     );
-  }
-  ,
+  },
 
-  isAlphaCheck: function isAlphaCheck(path, actualValue) {
+  isAlphaCheck: function isAlphaCheck(verificationResults, path, actualValue) {
     verificationResults.add(
       {
         pass: validator.isAlpha(actualValue),
@@ -186,10 +184,9 @@ var assertions = {
         description: 'Check actual value ' + actualValue + ' is alpha'
       }
     );
-  }
-  ,
+  },
 
-  isInteger: function isInteger(path, actualValue) {
+  isInteger: function isInteger(verificationResults, path, actualValue) {
     var descriptionOfCheck = 'Check actual value ' + actualValue + ' is an integer';
 
     if (Number.isNaN(Number(actualValue))) {
@@ -215,9 +212,9 @@ var assertions = {
     }
   },
 
-  isNumber: function isNumber(path, actualValue, expectedDecimalPlaces) {
+  isNumber: function isNumber(verificationResults, path, actualValue, expectedDecimalPlaces) {
     var descriptionOfCheck = 'Check actual value ' + actualValue + ' is a number with ' + expectedDecimalPlaces + ' decimal places';
-    var addToVerificationResults = function addToVerificationResults(pass, path, actualValue, expectedDecimalPlaces) {
+    var addToVerificationResults = function addToVerificationResults(verificationResults, pass, path, actualValue, expectedDecimalPlaces) {
       verificationResults.add(
         {
           pass: pass,
@@ -230,32 +227,32 @@ var assertions = {
     };
 
     if (Number.isNaN(Number(actualValue))) {
-      addToVerificationResults(false, path, actualValue, expectedDecimalPlaces);
+      addToVerificationResults(verificationResults, false, path, actualValue, expectedDecimalPlaces);
     } else {
       if (validator.isDecimal(actualValue)) {
         if (actualValue.indexOf('.') != -1) {
           var digitsAfterPeriod = actualValue.split('.').length === 1 ? actualValue.split('.')[0].length : actualValue.split('.')[1].length;
 
           if (digitsAfterPeriod === expectedDecimalPlaces) {
-            addToVerificationResults(true, path, actualValue, expectedDecimalPlaces);
+            addToVerificationResults(verificationResults, true, path, actualValue, expectedDecimalPlaces);
           } else {
-            addToVerificationResults(false, path, actualValue, expectedDecimalPlaces);
+            addToVerificationResults(verificationResults, false, path, actualValue, expectedDecimalPlaces);
           }
         } else {
 
           if (0 === expectedDecimalPlaces){
-            addToVerificationResults(true, path, actualValue, expectedDecimalPlaces);
+            addToVerificationResults(verificationResults, true, path, actualValue, expectedDecimalPlaces);
           } else{
-            addToVerificationResults(false, path, actualValue, expectedDecimalPlaces);
+            addToVerificationResults(verificationResults, false, path, actualValue, expectedDecimalPlaces);
           }
         }
       } else {
-        addToVerificationResults(false, path, actualValue, expectedDecimalPlaces);
+        addToVerificationResults(verificationResults, false, path, actualValue, expectedDecimalPlaces);
       }
     }
   },
 
-  lessThanLengthCheck: function lessThanLengthCheck(path, actualValue, expectedLength) {
+  lessThanLengthCheck: function lessThanLengthCheck(verificationResults, path, actualValue, expectedLength) {
     var lessThanExpected = actualValue.toString().length < expectedLength;
     verificationResults.add(
       {
@@ -268,7 +265,7 @@ var assertions = {
     );
   },
 
-  greaterThanLengthCheck: function greaterThanLengthCheck(path, actualValue, expectedLength) {
+  greaterThanLengthCheck: function greaterThanLengthCheck(verificationResults, path, actualValue, expectedLength) {
     var greaterThanExpected = actualValue.toString().length > expectedLength;
     verificationResults.add(
       {
@@ -281,7 +278,7 @@ var assertions = {
     );
   },
 
-  equalLengthCheck: function equalLengthCheck(path, actualValue, expectedLength) {
+  equalLengthCheck: function equalLengthCheck(verificationResults, path, actualValue, expectedLength) {
     var equal = actualValue.toString().length === expectedLength;
     verificationResults.add(
       {
@@ -294,7 +291,7 @@ var assertions = {
     );
   },
 
-  regexCheck: function regexCheck(path, actualValue, regexPattern, expected) {
+  regexCheck: function regexCheck(verificationResults, path, actualValue, regexPattern, expected) {
     verificationResults.add(
       {
         pass: regexPattern.test(actualValue),
@@ -306,7 +303,7 @@ var assertions = {
     );
   },
 
-  timestampCheck: function timestampCheck(path, regexPattern, actualValue, timezone, dateFormat, expected) {
+  timestampCheck: function timestampCheck(verificationResults, path, regexPattern, actualValue, timezone, dateFormat, expected) {
     var currentDate, regexObj;
 
     if (_.isUndefined(dateFormat)) {

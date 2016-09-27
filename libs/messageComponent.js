@@ -3,47 +3,123 @@ var _ = require('lodash');
 
 var messageComponent = function (messageType, expectedMessageComponent, actualMessage) {
 
-  var type, expected, actualValue, printablePath, pathToXmlElement, pathExists;
+  var type, expectedParameters, actualValue, printablePath, pathToXmlElement, pathsToXmlElementsWithinRepeatingGroups, pathExists;
 
   var result = validate(messageType, expectedMessageComponent);
   type = result.type;
-  expected = result.expected;
+  expectedParameters = result.expected;
 
-  if (messageType === 'xml'){
-    pathToXmlElement = getPathToXmlElement(expectedMessageComponent, type, actualMessage);
-    pathExists = !_.isUndefined(pathToXmlElement);
+  if (messageType === 'xml') {
+    if (type === messageComponentType.XML_REPEATING_GROUP_HAS_ELEMENTS) {
+      pathsToXmlElementsWithinRepeatingGroups = getPathsToXmlContainingGroups(expectedMessageComponent, type, actualMessage);
+      pathExists = (pathsToXmlElementsWithinRepeatingGroups.length > 0);
+    } else {
+      pathToXmlElement = getPathToXmlElement(expectedMessageComponent, type, actualMessage);
+      pathExists = !_.isUndefined(pathToXmlElement);
+    }
   } else {
     pathExists = expectedMessageComponent.end <= actualMessage.length;
   }
 
   printablePath = determinePrintablePath(expectedMessageComponent);
 
-  if (pathExists) {
-    if (messageType === 'xml'){
+  if (messageType === 'xml') {
+    if (pathExists && type != messageComponentType.XML_REPEATING_GROUP_HAS_ELEMENTS) {
       actualValue = getValueAtPath(pathToXmlElement, expectedMessageComponent.attribute);
-    } else {
-      actualValue = actualMessage.substring(expectedMessageComponent.begin, expectedMessageComponent.end+1);
+    }
+  } else {
+    if (pathExists) {
+      actualValue = actualMessage.substring(expectedMessageComponent.begin, expectedMessageComponent.end + 1);
     }
   }
 
-  return {
+  if (messageType != 'xml' || (messageType === 'xml' && type != messageComponentType.XML_REPEATING_GROUP_HAS_ELEMENTS)) {
 
-    isPathPresent: function isPathPresent() {
-      return pathExists;
-    },
+    return {
 
-    getActualValue: function getActualValue() {
-      return actualValue;
-    },
+      getType: function getType() {
+        return type;
+      },
 
-    getExpected: function getExpected() {
-      return expected;
-    },
+      isPathPresent: function isPathPresent() {
+        return pathExists;
+      },
 
-    getPrintablePath: function getPrintablePath() {
-      return printablePath;
-    }
-  };
+      getActualValue: function getActualValue() {
+        return actualValue;
+      },
+
+      getExpected: function getExpected() {
+        return expectedParameters;
+      },
+
+      getPrintablePath: function getPrintablePath() {
+        return printablePath;
+      }
+    };
+  }
+
+  if (type === messageComponentType.XML_REPEATING_GROUP_HAS_ELEMENTS) {
+    var obj = {
+
+      getType: function getType() {
+        return messageComponentType.XML_REPEATING_GROUP_HAS_ELEMENTS;
+      },
+
+      getPrintablePath: function getPrintablePath() {
+        return printablePath;
+      },
+
+      groupsWithAllElementsPresent: []
+    };
+
+    pathsToXmlElementsWithinRepeatingGroups.forEach((repeatingGroup, repeatingGroupIndex) => {
+
+      obj.groupsWithAllElementsPresent.push({});
+
+      expectedMessageComponent.repeatingGroupHasElements.elements.forEach((elem, elementIndex) => {
+        obj.groupsWithAllElementsPresent[repeatingGroupIndex][elem.path] = {};
+
+        var actualValue = getValueAtPath(_.find(repeatingGroup, function (o) {
+          if (elem.attribute) {
+            return elem.attribute === o.attribute && elem.path === o.element;
+          } else {
+            return elem.path === o.element;
+          }
+        }).path, elem.attribute);
+
+        var expected = _.find(expectedParameters, function (o) {
+
+          if (elem.attribute){
+            return elem.attribute === o.attribute && elem.path === o.element;
+          } else {
+            return elem.path === o.path;
+          }
+        });
+
+        var printablePath = determinePrintablePath(elem);
+
+        obj.groupsWithAllElementsPresent[repeatingGroupIndex][elem.path].getActualValue = function(){
+          return actualValue;
+        };
+
+        obj.groupsWithAllElementsPresent[repeatingGroupIndex][elem.path].getExpected = function(){
+          return expected;
+        };
+
+        obj.groupsWithAllElementsPresent[repeatingGroupIndex][elem.path].isPathPresent = function(){
+          return true;
+        };
+
+        obj.groupsWithAllElementsPresent[repeatingGroupIndex][elem.path].getPrintablePath = function(){
+          return printablePath;
+        };
+      });
+    });
+
+    return obj;
+  }
+
 };
 
 module.exports = messageComponent;
@@ -59,13 +135,35 @@ function validate(messageType, expectedMessageComponent) {
     throw new Error('The following expectedMessageComponent is not valid: ' + JSON.stringify(expectedMessageComponent));
   }
 
-  var type = messageComponentType.UNKNOWN,
-    expectedMessageComponentKeys = _.keys(expectedMessageComponent).sort(),
-    expected;
+  var type = messageComponentType.UNKNOWN, expected;
 
   if (messageType === 'xml') {
 
-    if (_.has(expectedMessageComponent, 'repeatingGroup') && _.isEqual(_.keys(expectedMessageComponent.repeatingGroup).sort(), ['number', 'path', 'repeater'])) {
+    if (_.has(expectedMessageComponent, 'repeatingGroupHasElements') && _.isEqual(_.keys(expectedMessageComponent.repeatingGroupHasElements).sort(), ['elements', 'path', 'repeater'])) {
+
+      if (!_.isArray(expectedMessageComponent.repeatingGroupHasElements.elements)) throw new Error('Message component type repeatingGroupContains should have an attribute called elements that is an array');
+      var expected = [];
+
+      // validate each component within repeatingGroupContains.elements[]
+      for (var component of expectedMessageComponent.repeatingGroupHasElements.elements) {
+
+        var expectedMessageComponentKeys = _.keys(component).sort();
+
+        if (_.isEqual(expectedMessageComponentKeys, ['equals', 'path'])
+          || _.isEqual(expectedMessageComponentKeys, ['dateFormat', 'equals', 'path'])
+          || _.isEqual(expectedMessageComponentKeys, ['attribute', 'equals', 'path'])
+          || _.isEqual(expectedMessageComponentKeys, ['attribute', 'dateFormat', 'equals', 'path'])
+          || _.isEqual(expectedMessageComponentKeys, ['attribute', 'contains', 'path'])
+          || _.isEqual(expectedMessageComponentKeys, ['contains', 'path'])
+          || _.isEqual(expectedMessageComponentKeys, ['path', 'pathShouldNotExist'])) {
+          type = messageComponentType.XML_REPEATING_GROUP_HAS_ELEMENTS;
+          expected.push(_.clone(component));
+        }
+      }
+
+    } else if (_.has(expectedMessageComponent, 'repeatingGroup') && _.isEqual(_.keys(expectedMessageComponent.repeatingGroup).sort(), ['number', 'path', 'repeater'])) {
+
+      var expectedMessageComponentKeys = _.keys(expectedMessageComponent).sort();
 
       if (_.isEqual(expectedMessageComponentKeys, ['equals', 'path', 'repeatingGroup'])
         || _.isEqual(expectedMessageComponentKeys, ['dateFormat', 'equals', 'path', 'repeatingGroup'])
@@ -79,6 +177,8 @@ function validate(messageType, expectedMessageComponent) {
       }
 
     } else if (_.has(expectedMessageComponent, 'parentPath')) {
+
+      var expectedMessageComponentKeys = _.keys(expectedMessageComponent).sort();
 
       if (_.isEqual(expectedMessageComponentKeys, ['element', 'elementPosition', 'equals', 'parentPath'])
         || _.isEqual(expectedMessageComponentKeys, ['dateFormat', 'element', 'elementPosition', 'equals', 'parentPath'])
@@ -96,6 +196,8 @@ function validate(messageType, expectedMessageComponent) {
 
     } else {
 
+      var expectedMessageComponentKeys = _.keys(expectedMessageComponent).sort();
+
       if (_.isEqual(expectedMessageComponentKeys, ['equals', 'path'])
         || _.isEqual(expectedMessageComponentKeys, ['dateFormat', 'equals', 'path'])
         || _.isEqual(expectedMessageComponentKeys, ['contains', 'path'])
@@ -109,6 +211,9 @@ function validate(messageType, expectedMessageComponent) {
     }
 
   } else if (messageType === 'position') {
+
+    var expectedMessageComponentKeys = _.keys(expectedMessageComponent).sort();
+
     if (_.isEqual(expectedMessageComponentKeys, ['begin', 'end', 'equals'])
       || _.isEqual(expectedMessageComponentKeys, ['begin', 'contains', 'end'])) {
 
@@ -256,6 +361,73 @@ function getPathToXmlElement(expectedMessageComponent, type, actualMessageXmlDoc
   }
 
   return pathToElement;
+}
+
+function getPathsToXmlContainingGroups(expectedMessageComponent, type, actualMessageXmlDocument) {
+  // returns an empty array if cannot find any matching repeating group, otherwise it returns a path to each repeating group
+  var repeatingGroupsWithAllElements = [];
+
+  if (type === messageComponentType.XML_REPEATING_GROUP_HAS_ELEMENTS) {
+    var pathIsRootElement, pathToElementEnclosingRepeatingGroups, repeatingElementName, repeatingGroups, pathToElementFromRepeatingElement, matchingGroups, attribute,
+      numberOfRepeatingGroups;
+
+    pathToElementEnclosingRepeatingGroups = expectedMessageComponent.repeatingGroupHasElements.path;
+    pathIsRootElement = pathToElementEnclosingRepeatingGroups === actualMessageXmlDocument.name;
+    repeatingElementName = expectedMessageComponent.repeatingGroupHasElements.repeater;
+
+    if (!pathIsRootElement) {
+      pathToElementEnclosingRepeatingGroups = pathToElementEnclosingRepeatingGroups.substring(actualMessageXmlDocument.name.length + 1, pathToElementEnclosingRepeatingGroups.length);
+    }
+
+    if (actualMessageXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroups)
+      && actualMessageXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroups).descendantWithPath(repeatingElementName)) {
+
+      repeatingGroups = _.filter(actualMessageXmlDocument.descendantWithPath(pathToElementEnclosingRepeatingGroups).children, function (o) {
+        return o.name === repeatingElementName;
+      });
+
+      numberOfRepeatingGroups = repeatingGroups.length;
+    }
+
+    if (numberOfRepeatingGroups > 0) {
+      // check the expected component are present in each occurrence of the repeating groups,
+
+      for (var actualRepeatingGroup of repeatingGroups) {
+        // check actualRepeatingGroup contains all expected elements (not value just the path)
+        var allExpectedElementsPresent = true;
+        var pathsToElementsPresent = [];
+
+        for (var elem of expectedMessageComponent.repeatingGroupHasElements.elements) {
+          pathToElementFromRepeatingElement = elem.path;
+          attribute = elem.attribute;
+
+          if (actualRepeatingGroup.descendantWithPath(pathToElementFromRepeatingElement)) {
+            if (attribute) {
+              if (_.has(actualRepeatingGroup.descendantWithPath(pathToElementFromRepeatingElement).attr, attribute)) {
+                pathsToElementsPresent.push({ element: pathToElementFromRepeatingElement, attribute: attribute, path: actualRepeatingGroup.descendantWithPath(pathToElementFromRepeatingElement).attr[attribute] });
+              } else {
+                allExpectedElementsPresent = false;
+                break;
+              }
+            } else {
+              pathsToElementsPresent.push({ element: pathToElementFromRepeatingElement, path: actualRepeatingGroup.descendantWithPath(pathToElementFromRepeatingElement) });
+            }
+          } else {
+            allExpectedElementsPresent = false;
+            break;
+          }
+        }
+
+        if (allExpectedElementsPresent) {
+          repeatingGroupsWithAllElements.push(pathsToElementsPresent);
+        }
+      }
+    }
+
+    return repeatingGroupsWithAllElements;
+  } else {
+    throw new Error('Unexpected messageComponentType. Expected XML_REPEATING_GROUP_HAS_ELEMENTS.')
+  }
 }
 
 function getValueAtPath(pathToElement, attribute) {

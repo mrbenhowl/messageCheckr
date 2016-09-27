@@ -5,13 +5,14 @@ var convertToXmlDocumentType = require('./libs/convertToXmlDocumentType'),
   verificationResults = require('./libs/verificationResults'),
   assertions = require('./libs/assertions'),
   store = require('./libs/store'),
-  messageComponent = require('./libs/messageComponent');
+  messageComponent = require('./libs/messageComponent'),
+  messageComponentType = require('./libs/messageComponentType');
 
 var messageCheckr = function messageCheckr(params) {
-  var type, actualMsg, expectedMsg, expectedRootElement, cleansedMessage, xmlDocument;
+  var type, actualMsg, expectedMsg, expectedRootElement, cleansedMessage, xmlDocument, results;
 
   validateParams(params);
-  verificationResults.initialise();
+  results = verificationResults.initialise();
   store.initialise();
 
   type = params.type;
@@ -22,27 +23,58 @@ var messageCheckr = function messageCheckr(params) {
   if (type === 'soap') {
     cleansedMessage = cleanRawSoapMessage(actualMsg);
     xmlDocument = convertToXmlDocumentType(cleansedMessage);
-    assertions.checkRootElement(xmlDocument, 'SOAP-ENV:Envelope');
-    checkAllMessageComponents('xml', xmlDocument, expectedMsg);
+    assertions.checkRootElement(results, xmlDocument, 'SOAP-ENV:Envelope');
+    checkAllMessageComponents('xml', xmlDocument, expectedMsg, results);
   } else if (type === 'jms') {
     cleansedMessage = cleanRawXmlMessage(actualMsg);
     xmlDocument = convertToXmlDocumentType(cleansedMessage);
-    assertions.checkRootElement(xmlDocument, expectedRootElement);
-    checkAllMessageComponents('xml', xmlDocument, expectedMsg);
-  } else if (type === 'position'){
+    assertions.checkRootElement(results, xmlDocument, expectedRootElement);
+    checkAllMessageComponents('xml', xmlDocument, expectedMsg, results);
+  } else if (type === 'position') {
     if (!_.isString(actualMsg)) throw new Error('actualMsg should be a string when type is "position"');
-    checkAllMessageComponents('position', actualMsg, expectedMsg)
+    checkAllMessageComponents('position', actualMsg, expectedMsg, results)
   } else {
     throw new Error('type "' + type + '" is not handled');
   }
 
-  return ({allChecksPassed: verificationResults.getOverallResult(), checks: verificationResults.getAllChecks(params.verbose)});
+  return ({ allChecksPassed: results.getOverallResult(), checks: results.getAllChecks(params.verbose) });
 };
 
-function checkAllMessageComponents(messageType, actualMsg, expectedMsg) {
+function checkAllMessageComponents(messageType, actualMsg, expectedMsg, results) {
   expectedMsg.forEach(function (expectedMsgComponent) {
     var msgComponent = messageComponent(messageType, expectedMsgComponent, actualMsg);
-    assertions.verifyMessageComponent(msgComponent);
+
+    if (msgComponent.getType() != messageComponentType.XML_REPEATING_GROUP_HAS_ELEMENTS) {
+      assertions.verifyMessageComponent(results, msgComponent);
+    } else {
+
+      var tempVerificationResults;
+      for (var group of msgComponent.groupsWithAllElementsPresent) {
+        tempVerificationResults = verificationResults.initialise();
+
+        for (var component in group) {
+          assertions.verifyMessageComponent(tempVerificationResults, group[component]);
+        }
+
+        if (tempVerificationResults.allChecksPassed) {
+          break;
+        }
+      }
+
+      var result = {
+        target: msgComponent.getPrintablePath(),
+        description: 'Check for repeating group containing all specified elements and their corresponding values.'
+      };
+
+      if (tempVerificationResults.allChecksPassed) {
+        result.pass = true;
+      } else {
+        result.pass = false;
+        result.expected = 'No repeating groups match the expected.';
+      }
+
+      results.add(result);
+    }
   });
 }
 

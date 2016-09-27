@@ -19,7 +19,7 @@ Contents
 Compatibility
 ------------
 
-Works with Node.js v0.12.* and higher
+Works with Node.js v4.* and higher
 
 Getting Started
 ---------------

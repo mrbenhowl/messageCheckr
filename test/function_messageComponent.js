@@ -74,6 +74,14 @@ describe('messageComponent()', function () {
       assert.deepEqual(validate('xml', {path: "a", pathShouldNotExist: "b"}), {type: messageComponentType.XML_STANDARD, expected: {pathShouldNotExist: "b"}});
     });
 
+    // XML_REPEATING_GROUP_CONTAINS
+
+    it('should throw an error when "repeatingGroupHasElements.elements" is not an array', function () {
+      assert.throw(() => {
+        validate('xml', {repeatingGroupHasElements: { path: '', repeater: '', elements: ''} })
+      }, 'Message component type repeatingGroupContains should have an attribute called elements that is an array');
+    });
+    
     // XML_REPEATING_GROUP
 
     it('should return {type: messageComponentType.XML_REPEATING_GROUP, expected: {equals: "e"}} when "expectedMessageComponent" is {repeatingGroup: {path: "a", repeater: "b", number: "c"},  path: "d", equals: "e"}', function () {
