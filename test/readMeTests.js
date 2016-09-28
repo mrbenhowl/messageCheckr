@@ -84,6 +84,12 @@ describe('readme tests', function () {
 
   describe('expectedMessage Types', function () {
 
+    /**
+     *
+     * Element by name
+     *
+     */
+
     it("{path: 'path.to.element', equals: operator - see section Operators')", function () {
 
       var actualMessage =
@@ -358,6 +364,12 @@ describe('readme tests', function () {
       assert.equal(result.allChecksPassed, true);
     });
 
+    /**
+     *
+     * Element by position
+     *
+     */
+
     it("{parentPath: 'path to parent of child element', element: 'element name',  elementPosition: integer > 0, equals: operator - see section Operators}", function () {
       var actualMessage =
         `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -541,6 +553,12 @@ describe('readme tests', function () {
 
       assert.equal(result.allChecksPassed, true);
     });
+
+    /**
+     *
+     * Repeating groups of elements (where position is known)
+     *
+     */
 
     it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', equals: operator - see section Operators}", function () {
 
@@ -784,6 +802,271 @@ describe('readme tests', function () {
 
       assert.equal(result.allChecksPassed, true);
     });
+
+
+    /**
+     *
+     * Repeating groups of elements (where position cannot be guaranteed)
+     *
+     */
+
+    it(`{repeatingGroupHasElements: {
+            path: 'path to element containing repeating group', 
+            repeater: 'repeating group name'}, 
+            elements: [
+              { path: 'element name', equals: operator - see section Operators },
+              { path: 'element name', equals: operator - see section Operators },
+            ]
+          }
+       }`, function () {
+
+      var actualMessage =
+        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+           <testRootElement xmlns="http://www.testing.com/integration/event">
+            <elementOne>
+              <thingContainingRepeatingGroups>
+                <RepeatingGroup>
+                  <fieldOneOfRepeatingGroup>10001</fieldOneOfRepeatingGroup>
+                  <fieldTwoOfRepeatingGroup>hello</fieldTwoOfRepeatingGroup>
+                </RepeatingGroup>
+                <RepeatingGroup>
+                  <fieldOneOfRepeatingGroup>10002</fieldOneOfRepeatingGroup>
+                  <fieldTwoOfRepeatingGroup>goodbye</fieldTwoOfRepeatingGroup>
+                </RepeatingGroup>
+              </thingContainingRepeatingGroups>
+            </elementOne>
+          </testRootElement>`;
+
+      var expectedMessage = [
+        {
+          repeatingGroupHasElements: {
+            path: 'testRootElement.elementOne.thingContainingRepeatingGroups',
+            repeater: 'RepeatingGroup',
+            elements: [
+              { path: 'fieldOneOfRepeatingGroup', equals: 10002 },
+              { path: 'fieldTwoOfRepeatingGroup', equals: 'goodbye' }
+            ]
+          }
+        }
+      ];
+
+      var result = messageCheckr({
+        type: 'jms',
+        verbose: true,
+        actualMsg: actualMessage,
+        expectedMsg: expectedMessage,
+        expectedRootElement: 'testRootElement'
+      });
+
+      assert.equal(result.allChecksPassed, true);
+    });
+
+    // it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}", function () {
+    //
+    //   var currentLocalDate = moment().format('YYYY-MM-DD');
+    //   var currentUtcDate = moment().utc().format('DD-MM-YYYY');
+    //
+    //   var actualMessage =
+    //     `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    //     <testRootElement xmlns="http://www.testing.com/integration/event">
+    //     <elementOne>
+    //       <thingContainingRepeatingGroups>
+    //         <RepeatingGroup>
+    //           <fieldOneOfRepeatingGroup>` + currentLocalDate + `T18:39:00.896+11:00</fieldOneOfRepeatingGroup>
+    //         </RepeatingGroup>
+    //         <RepeatingGroup>
+    //           <fieldOneOfRepeatingGroup>T18:39:00.896+11:00 ` + currentUtcDate + `</fieldOneOfRepeatingGroup>
+    //         </RepeatingGroup>
+    //       </thingContainingRepeatingGroups>
+    //     </elementOne>
+    //     </testRootElement>`;
+    //
+    //   var expectedMessage = [
+    //     {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'},
+    //     {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'DD-MM-YYYY'}
+    //   ];
+    //
+    //   var result = messageCheckr({
+    //     type: 'jms',
+    //     verbose: true,
+    //     actualMsg: actualMessage,
+    //     expectedMsg: expectedMessage,
+    //     expectedRootElement: 'testRootElement'
+    //   });
+
+      // assert.equal(result.allChecksPassed, true);
+    // });
+    //
+    // it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', contains: 'string' or integer}", function () {
+    //   var actualMessage = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    //     <testRootElement xmlns="http://www.testing.com/integration/event">
+    //       <elementOne>
+    //         <thingContainingRepeatingGroups>
+    //           <RepeatingGroup>
+    //             <fieldOneOfRepeatingGroup>10001</fieldOneOfRepeatingGroup>
+    //           </RepeatingGroup>
+    //           <RepeatingGroup>
+    //             <fieldOneOfRepeatingGroup>hello mr howl</fieldOneOfRepeatingGroup>
+    //           </RepeatingGroup>
+    //         </thingContainingRepeatingGroups>
+    //       </elementOne>
+    //     </testRootElement>`;
+    //
+    //   var expectedMessage = [
+    //     {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', contains: 100},
+    //     {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', contains: 'howl'}
+    //   ];
+    //
+    //   var result = messageCheckr({
+    //     type: 'jms',
+    //     verbose: true,
+    //     actualMsg: actualMessage,
+    //     expectedMsg: expectedMessage,
+    //     expectedRootElement: 'testRootElement'
+    //   });
+    //
+    //   assert.equal(result.allChecksPassed, true);
+    // });
+    //
+    // it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', pathShouldNotExist: true}", function () {
+    //   var actualMessage =
+    //     `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    //     <testRootElement xmlns="http://www.testing.com/integration/event">
+    //     <elementOne>
+    //       <thingContainingRepeatingGroups>
+    //         <RepeatingGroup>
+    //           <fieldOneOfRepeatingGroup>10001</fieldOneOfRepeatingGroup>
+    //         </RepeatingGroup>
+    //         <RepeatingGroup>
+    //           <fieldOneOfRepeatingGroup>hello mr howl</fieldOneOfRepeatingGroup>
+    //         </RepeatingGroup>
+    //       </thingContainingRepeatingGroups>
+    //     </elementOne>
+    //     </testRootElement>`;
+    //
+    //   var expectedMessage = [
+    //     {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', pathShouldNotExist: true}
+    //   ];
+    //
+    //   var result = messageCheckr({
+    //     type: 'jms',
+    //     verbose: true,
+    //     actualMsg: actualMessage,
+    //     expectedMsg: expectedMessage,
+    //     expectedRootElement: 'testRootElement'
+    //   });
+    //
+    //   assert.equal(result.allChecksPassed, true);
+    // });
+    //
+    // it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', equals: operator - see section Operators}", function () {
+    //   var actualMessage = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    //     <testRootElement xmlns="http://www.testing.com/integration/event">
+    //       <elementOne>
+    //         <thingContainingRepeatingGroups>
+    //           <RepeatingGroup>
+    //             <fieldOneOfRepeatingGroup testAttribute1="toffee">not interested in this value</fieldOneOfRepeatingGroup>
+    //             <fieldTwoOfRepeatingGroup testAttribute2="chocolate">not interested in this value</fieldTwoOfRepeatingGroup>
+    //           </RepeatingGroup>
+    //           <RepeatingGroup>
+    //             <fieldOneOfRepeatingGroup testAttribute1="tea">not interested in this value</fieldOneOfRepeatingGroup>
+    //             <fieldTwoOfRepeatingGroup testAttribute2="coffee">not interested in this value</fieldTwoOfRepeatingGroup>
+    //           </RepeatingGroup>
+    //         </thingContainingRepeatingGroups>
+    //       </elementOne>
+    //     </testRootElement>`;
+    //
+    //   var expectedMessage = [
+    //     {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', equals: 'toffee'},
+    //     {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2', equals: 'chocolate'},
+    //     {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', equals: 'tea'},
+    //     {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2', equals: 'coffee'}
+    //   ];
+    //
+    //   var result = messageCheckr({
+    //     type: 'jms',
+    //     verbose: true,
+    //     actualMsg: actualMessage,
+    //     expectedMsg: expectedMessage,
+    //     expectedRootElement: 'testRootElement'
+    //   });
+    //
+    //   assert.equal(result.allChecksPassed, true);
+    // });
+    //
+    // it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', contains: 'string' or integer}", function () {
+    //
+    //   var actualMessage =
+    //     `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    //      <testRootElement xmlns="http://www.testing.com/integration/event">
+    //       <elementOne>
+    //         <thingContainingRepeatingGroups>
+    //           <RepeatingGroup>
+    //               <fieldOneOfRepeatingGroup testAttribute1="toffee">not interested in this value</fieldOneOfRepeatingGroup>
+    //               <fieldTwoOfRepeatingGroup testAttribute2="123">not interested in this value</fieldTwoOfRepeatingGroup>
+    //           </RepeatingGroup>
+    //           <RepeatingGroup>
+    //               <fieldOneOfRepeatingGroup testAttribute1="tea">not interested in this value</fieldOneOfRepeatingGroup>
+    //               <fieldTwoOfRepeatingGroup testAttribute2="123">not interested in this value</fieldTwoOfRepeatingGroup>
+    //           </RepeatingGroup>
+    //         </thingContainingRepeatingGroups>
+    //       </elementOne>
+    //     </testRootElement>`;
+    //
+    //   var expectedMessage = [
+    //     {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', contains: 'toffee'},
+    //     {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2', contains: 123},
+    //     {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', contains: 'ea'},
+    //     {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldTwoOfRepeatingGroup', attribute: 'testAttribute2', contains: 2}
+    //   ];
+    //
+    //   var result = messageCheckr({
+    //     type: 'jms',
+    //     verbose: true,
+    //     actualMsg: actualMessage,
+    //     expectedMsg: expectedMessage,
+    //     expectedRootElement: 'testRootElement'
+    //   });
+    //
+    //   assert.equal(result.allChecksPassed, true);
+    // });
+    //
+    // it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}", function () {
+    //
+    //   var localDate = moment().format('YYYY-MM-DD');
+    //   var utcDate = moment().utc().format('DD-MM-YYYY');
+    //
+    //   var actualMessage =
+    //     `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    //     <testRootElement xmlns="http://www.testing.com/integration/event">
+    //     <elementOne>
+    //       <thingContainingRepeatingGroups>
+    //         <RepeatingGroup>
+    //           <fieldOneOfRepeatingGroup testAttribute1="` + localDate + `T18:39:00.896+11:00">not interested in this value</fieldOneOfRepeatingGroup>
+    //         </RepeatingGroup>
+    //         <RepeatingGroup>
+    //           <fieldOneOfRepeatingGroup testAttribute1="T18:39:00.896+11:00 ` + utcDate + `">not interested in this value</fieldOneOfRepeatingGroup>
+    //         </RepeatingGroup>
+    //       </thingContainingRepeatingGroups>
+    //     </elementOne>
+    //   </testRootElement>`;
+    //
+    //   var expectedMessage = [
+    //     {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'},
+    //     {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'DD-MM-YYYY'}
+    //   ];
+    //
+    //   var result = messageCheckr({
+    //     type: 'jms',
+    //     verbose: true,
+    //     actualMsg: actualMessage,
+    //     expectedMsg: expectedMessage,
+    //     expectedRootElement: 'testRootElement'
+    //   });
+    //
+    //   assert.equal(result.allChecksPassed, true);
+    // });
+
   });
 });
 

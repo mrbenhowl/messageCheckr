@@ -242,6 +242,7 @@ where **OPTIONS** can be one of the following:
     - attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'
     - attribute: 'attribute name', contains: 'string' or integer
 
+
 See the [wiki](https://github.com/mrbenhowl/messageCheckr/wiki/expectedMessage-types-for-SOAP-and-JMS-in-detail) for a detailed example of each of the above expectedMessage types.
 
 Operators
