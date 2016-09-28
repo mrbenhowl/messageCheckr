@@ -358,6 +358,190 @@ describe('readme tests', function () {
       assert.equal(result.allChecksPassed, true);
     });
 
+    it("{parentPath: 'path to parent of child element', element: 'element name',  elementPosition: integer > 0, equals: operator - see section Operators}", function () {
+      var actualMessage =
+        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+          <testRootElement xmlns="http://www.testing.com/integration/event">
+            <elementOne>hello</elementOne>
+            <elementTwo>its</elementTwo>
+            <elementOne>me</elementOne>
+            <elementTwo>ben</elementTwo>
+          </testRootElement>`;
+
+      var expectedMessage = [
+        {parentPath: 'testRootElement', element: 'elementOne', elementPosition: 3, equals: 'me'}
+      ];
+
+      var result = messageCheckr({
+        type: 'jms',
+        verbose: true,
+        actualMsg: actualMessage,
+        expectedMsg: expectedMessage,
+        expectedRootElement: 'testRootElement'
+      });
+
+      assert.equal(result.allChecksPassed, true);
+
+      actualMessage =
+        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        <testRootElement xmlns="http://www.testing.com/integration/event">
+          <anotherElement>
+            <elementOne>hello</elementOne>
+            <elementTwo>its</elementTwo>
+            <elementOne>me</elementOne>
+            <elementTwo>ben</elementTwo>
+          </anotherElement>
+        </testRootElement>`;
+
+      expectedMessage = [
+        {parentPath: 'testRootElement.anotherElement', element: 'elementOne', elementPosition: 3, equals: 'me'}
+      ];
+
+      result = messageCheckr({
+        type: 'jms',
+        verbose: true,
+        actualMsg: actualMessage,
+        expectedMsg: expectedMessage,
+        expectedRootElement: 'testRootElement'
+      });
+
+      assert.equal(result.allChecksPassed, true);
+    });
+
+    it("{parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}", function () {
+
+      var localDate = moment().format('DD-MM-YYYY');
+
+      var actualMessage =
+        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+       <testRootElement xmlns="http://www.testing.com/integration/event">
+         <elementOne>YYYY-MM-DDT18:39:00.896+11:00</elementOne>
+         <elementTwo>YYYY-MM-DDT18:39:00.896+11:00</elementTwo>
+         <elementOne>` + localDate + `T18:39:00.896+11:00</elementOne>
+         <elementTwo>YYYY-MM-DDT18:39:00.896+11:00</elementTwo>
+       </testRootElement>`;
+
+      var expectedMessage = [
+        {parentPath: 'testRootElement', element: 'elementOne', elementPosition: 3, equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'DD-MM-YYYY'}
+      ];
+
+      var result = messageCheckr({
+        type: 'jms',
+        verbose: true,
+        actualMsg: actualMessage,
+        expectedMsg: expectedMessage,
+        expectedRootElement: 'testRootElement'
+      });
+
+      assert.equal(result.allChecksPassed, true);
+    });
+
+    it("{parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, contains: 'string' or integer}", function () {
+
+      var actualMessage =
+        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        <testRootElement xmlns="http://www.testing.com/integration/event">
+          <elementOne>hello</elementOne>
+          <elementTwo>its</elementTwo>
+          <elementOne>me</elementOne>
+          <elementTwo>ben</elementTwo>
+        </testRootElement>`;
+
+      var expectedMessage = [
+        {parentPath: 'testRootElement', element: 'elementOne', elementPosition: 3, contains: 'me'},
+        {parentPath: 'testRootElement', element: 'elementTwo', elementPosition: 4, contains: 'be'}
+      ];
+
+      var result = messageCheckr({
+        type: 'jms',
+        verbose: true,
+        actualMsg: actualMessage,
+        expectedMsg: expectedMessage,
+        expectedRootElement: 'testRootElement'
+      });
+
+      assert.equal(result.allChecksPassed, true);
+    });
+
+    it("{parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, attribute: 'attribute name', equals: operator - see section Operators}", function () {
+
+      var actualMessage =
+        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        <testRootElement xmlns="http://www.testing.com/integration/event">
+          <elementOne attribute1="123">hello</elementOne>
+          <elementTwo attribute1="1234">its</elementTwo>
+          <elementOne attribute1="12345">me</elementOne>
+          <elementTwo attribute1="123456">ben</elementTwo>
+        </testRootElement>`;
+
+      var expectedMessage = [
+        {parentPath: 'testRootElement', element: 'elementOne', elementPosition: 3, attribute: 'attribute1', equals: 12345}
+      ];
+
+      var result = messageCheckr({
+        type: 'jms',
+        verbose: true,
+        actualMsg: actualMessage,
+        expectedMsg: expectedMessage,
+        expectedRootElement: 'testRootElement'
+      });
+
+      assert.equal(result.allChecksPassed, true);
+    });
+
+    it("{parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}", function () {
+      var localDate = moment().format('DD-MM-YYYY');
+
+      var actualMessage =
+        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        <testRootElement xmlns="http://www.testing.com/integration/event">
+          <elementOne attribute1="YYYY-MM-DDT18:39:00.896+11:00">not interested in this value</elementOne>
+          <elementTwo attribute1="YYYY-MM-DDT18:39:00.896+11:00">not interested in this value</elementTwo>
+          <elementOne attribute1="` + localDate + `T18:39:00.896+11:00">not interested in this value</elementOne>
+          <elementTwo attribute1="YYYY-MM-DDT18:39:00.896+11:00">not interested in this value</elementTwo>
+        </testRootElement>`;
+
+      var expectedMessage = [
+        {parentPath: 'testRootElement', element: 'elementOne', elementPosition: 3, attribute: 'attribute1', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'DD-MM-YYYY'}
+      ];
+
+      var result = messageCheckr({
+        type: 'jms',
+        verbose: true,
+        actualMsg: actualMessage,
+        expectedMsg: expectedMessage,
+        expectedRootElement: 'testRootElement'
+      });
+
+      assert.equal(result.allChecksPassed, true);
+    });
+
+    it("{parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, attribute: 'attribute name', contains: 'string' or integer}", function () {
+
+      var actualMessage =
+        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        <testRootElement xmlns="http://www.testing.com/integration/event">
+          <elementOne attribute1="123">not interested in this value</elementOne>
+          <elementTwo attribute1="1234">not interested in this value</elementTwo>
+          <elementOne attribute1="12345">not interested in this value</elementOne>
+          <elementTwo attribute1="123456">not interested in this value</elementTwo>
+        </testRootElement>`;
+
+      var expectedMessage = [
+        {parentPath: 'testRootElement', element: 'elementOne', elementPosition: 3, attribute: 'attribute1', contains: 2345}
+      ];
+
+      var result = messageCheckr({
+        type: 'jms',
+        verbose: true,
+        actualMsg: actualMessage,
+        expectedMsg: expectedMessage,
+        expectedRootElement: 'testRootElement'
+      });
+
+      assert.equal(result.allChecksPassed, true);
+    });
+
     it("{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', equals: operator - see section Operators}", function () {
 
       var actualMessage =
@@ -588,190 +772,6 @@ describe('readme tests', function () {
       var expectedMessage = [
         {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 1}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'YYYY-MM-DD'},
         {repeatingGroup: {path: 'testRootElement.elementOne.thingContainingRepeatingGroups', repeater: 'RepeatingGroup', number: 2}, path: 'fieldOneOfRepeatingGroup', attribute: 'testAttribute1', equals: /T\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d utc-timezone/, dateFormat: 'DD-MM-YYYY'}
-      ];
-
-      var result = messageCheckr({
-        type: 'jms',
-        verbose: true,
-        actualMsg: actualMessage,
-        expectedMsg: expectedMessage,
-        expectedRootElement: 'testRootElement'
-      });
-
-      assert.equal(result.allChecksPassed, true);
-    });
-
-    it("{parentPath: 'path to parent of child element', element: 'element name',  elementPosition: integer > 0, equals: operator - see section Operators}", function () {
-      var actualMessage =
-        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-          <testRootElement xmlns="http://www.testing.com/integration/event">
-            <elementOne>hello</elementOne>
-            <elementTwo>its</elementTwo>
-            <elementOne>me</elementOne>
-            <elementTwo>ben</elementTwo>
-          </testRootElement>`;
-
-      var expectedMessage = [
-        {parentPath: 'testRootElement', element: 'elementOne', elementPosition: 3, equals: 'me'}
-      ];
-
-      var result = messageCheckr({
-        type: 'jms',
-        verbose: true,
-        actualMsg: actualMessage,
-        expectedMsg: expectedMessage,
-        expectedRootElement: 'testRootElement'
-      });
-
-      assert.equal(result.allChecksPassed, true);
-
-      actualMessage =
-        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-        <testRootElement xmlns="http://www.testing.com/integration/event">
-          <anotherElement>
-            <elementOne>hello</elementOne>
-            <elementTwo>its</elementTwo>
-            <elementOne>me</elementOne>
-            <elementTwo>ben</elementTwo>
-          </anotherElement>
-        </testRootElement>`;
-
-      expectedMessage = [
-        {parentPath: 'testRootElement.anotherElement', element: 'elementOne', elementPosition: 3, equals: 'me'}
-      ];
-
-      result = messageCheckr({
-        type: 'jms',
-        verbose: true,
-        actualMsg: actualMessage,
-        expectedMsg: expectedMessage,
-        expectedRootElement: 'testRootElement'
-      });
-
-      assert.equal(result.allChecksPassed, true);
-    });
-
-    it("{parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}", function () {
-
-      var localDate = moment().format('DD-MM-YYYY');
-
-      var actualMessage =
-        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-       <testRootElement xmlns="http://www.testing.com/integration/event">
-         <elementOne>YYYY-MM-DDT18:39:00.896+11:00</elementOne>
-         <elementTwo>YYYY-MM-DDT18:39:00.896+11:00</elementTwo>
-         <elementOne>` + localDate + `T18:39:00.896+11:00</elementOne>
-         <elementTwo>YYYY-MM-DDT18:39:00.896+11:00</elementTwo>
-       </testRootElement>`;
-
-      var expectedMessage = [
-        {parentPath: 'testRootElement', element: 'elementOne', elementPosition: 3, equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'DD-MM-YYYY'}
-      ];
-
-      var result = messageCheckr({
-        type: 'jms',
-        verbose: true,
-        actualMsg: actualMessage,
-        expectedMsg: expectedMessage,
-        expectedRootElement: 'testRootElement'
-      });
-
-      assert.equal(result.allChecksPassed, true);
-    });
-
-    it("{parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, contains: 'string' or integer}", function () {
-
-      var actualMessage =
-        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-        <testRootElement xmlns="http://www.testing.com/integration/event">
-          <elementOne>hello</elementOne>
-          <elementTwo>its</elementTwo>
-          <elementOne>me</elementOne>
-          <elementTwo>ben</elementTwo>
-        </testRootElement>`;
-
-      var expectedMessage = [
-        {parentPath: 'testRootElement', element: 'elementOne', elementPosition: 3, contains: 'me'},
-        {parentPath: 'testRootElement', element: 'elementTwo', elementPosition: 4, contains: 'be'}
-      ];
-
-      var result = messageCheckr({
-        type: 'jms',
-        verbose: true,
-        actualMsg: actualMessage,
-        expectedMsg: expectedMessage,
-        expectedRootElement: 'testRootElement'
-      });
-
-      assert.equal(result.allChecksPassed, true);
-    });
-
-    it("{parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, attribute: 'attribute name', equals: operator - see section Operators}", function () {
-
-      var actualMessage =
-        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-        <testRootElement xmlns="http://www.testing.com/integration/event">
-          <elementOne attribute1="123">hello</elementOne>
-          <elementTwo attribute1="1234">its</elementTwo>
-          <elementOne attribute1="12345">me</elementOne>
-          <elementTwo attribute1="123456">ben</elementTwo>
-        </testRootElement>`;
-
-      var expectedMessage = [
-        {parentPath: 'testRootElement', element: 'elementOne', elementPosition: 3, attribute: 'attribute1', equals: 12345}
-      ];
-
-      var result = messageCheckr({
-        type: 'jms',
-        verbose: true,
-        actualMsg: actualMessage,
-        expectedMsg: expectedMessage,
-        expectedRootElement: 'testRootElement'
-      });
-
-      assert.equal(result.allChecksPassed, true);
-    });
-
-    it("{parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'}", function () {
-      var localDate = moment().format('DD-MM-YYYY');
-
-      var actualMessage =
-        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-        <testRootElement xmlns="http://www.testing.com/integration/event">
-          <elementOne attribute1="YYYY-MM-DDT18:39:00.896+11:00">not interested in this value</elementOne>
-          <elementTwo attribute1="YYYY-MM-DDT18:39:00.896+11:00">not interested in this value</elementTwo>
-          <elementOne attribute1="` + localDate + `T18:39:00.896+11:00">not interested in this value</elementOne>
-          <elementTwo attribute1="YYYY-MM-DDT18:39:00.896+11:00">not interested in this value</elementTwo>
-        </testRootElement>`;
-
-      var expectedMessage = [
-        {parentPath: 'testRootElement', element: 'elementOne', elementPosition: 3, attribute: 'attribute1', equals: /local-timezoneT\d\d:\d\d:\d\d\.\d\d\d\+\d\d:\d\d/, dateFormat: 'DD-MM-YYYY'}
-      ];
-
-      var result = messageCheckr({
-        type: 'jms',
-        verbose: true,
-        actualMsg: actualMessage,
-        expectedMsg: expectedMessage,
-        expectedRootElement: 'testRootElement'
-      });
-
-      assert.equal(result.allChecksPassed, true);
-    });
-
-    it("{parentPath: 'path to parent of child element', element: 'element name', elementPosition: integer > 0, attribute: 'attribute name', contains: 'string' or integer}", function () {
-
-      var actualMessage =
-        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-        <testRootElement xmlns="http://www.testing.com/integration/event">
-          <elementOne attribute1="123">not interested in this value</elementOne>
-          <elementTwo attribute1="1234">not interested in this value</elementTwo>
-          <elementOne attribute1="12345">not interested in this value</elementOne>
-          <elementTwo attribute1="123456">not interested in this value</elementTwo>
-        </testRootElement>`;
-
-      var expectedMessage = [
-        {parentPath: 'testRootElement', element: 'elementOne', elementPosition: 3, attribute: 'attribute1', contains: 2345}
       ];
 
       var result = messageCheckr({

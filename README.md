@@ -184,6 +184,7 @@ The following is a list of all possible types that you can use to construct an `
 
 ### Element by name
 - **{path: 'path.to.element', OPTIONS}**
+
 where **OPTIONS** can be one of the following:
 
     - equals: operator - see section Operators
@@ -196,6 +197,7 @@ where **OPTIONS** can be one of the following:
 
 ### Element by position
 - **{parentPath: 'path to parent of child element', element: 'name of element', elementPosition: integer > 0, OPTIONS}**
+
 where **OPTIONS** can be one of the following:
 
     - equals: operator - see section Operators
@@ -206,8 +208,9 @@ where **OPTIONS** can be one of the following:
     - attribute: 'attribute name', contains: 'string' or integer
     - pathShouldNotExist: true
 
-### Repeating groups of elements
+### Repeating groups of elements (where position is known)
 - **{repeatingGroup: {path: 'path to element containing repeating group', repeater: 'repeating group name', number: integer - occurrence}, path: 'element name', OPTIONS}**
+
 where **OPTIONS** can be one of the following:
 
     - equals: operator - see section Operators
@@ -218,6 +221,26 @@ where **OPTIONS** can be one of the following:
     - attribute: 'attribute name', contains: 'string' or integer
     - pathShouldNotExist: true
 
+### Repeating groups of elements (where position cannot be guaranteed)
+
+- **{repeatingGroupHasElements: {
+            path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.thingContainingRepeatingGroups',
+            repeater: 'RepeatingGroup',
+            &nbsp;&nbsp;&nbsp;&nbsp;elements: [
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ path: 'fieldOneOfRepeatingGroup', OPTIONS },
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ path: 'fieldTwoOfRepeatingGroup', OPTIONS }
+                &nbsp;&nbsp;&nbsp;&nbsp;]
+                &nbsp;&nbsp;}
+                }**
+
+where **OPTIONS** can be one of the following:
+
+    - equals: operator - see section Operators
+    - equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'
+    - contains: 'string' or integer
+    - attribute: 'attribute name', equals: operator - see section Operators
+    - attribute: 'attribute name', equals: /regex containing utc-timezone or local-timezone/, dateFormat: 'see section Date Format'
+    - attribute: 'attribute name', contains: 'string' or integer
 
 See the [wiki](https://github.com/mrbenhowl/messageCheckr/wiki/expectedMessage-types-for-SOAP-and-JMS-in-detail) for a detailed example of each of the above expectedMessage types.
 
