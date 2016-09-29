@@ -91,7 +91,7 @@ var messageComponent = function (messageType, expectedMessageComponent, actualMe
         var expected = _.find(expectedParameters, function (o) {
 
           if (elem.attribute){
-            return elem.attribute === o.attribute && elem.path === o.element;
+            return elem.attribute === o.attribute && elem.path === o.path;
           } else {
             return elem.path === o.path;
           }
@@ -404,7 +404,7 @@ function getPathsToXmlContainingGroups(expectedMessageComponent, type, actualMes
           if (actualRepeatingGroup.descendantWithPath(pathToElementFromRepeatingElement)) {
             if (attribute) {
               if (_.has(actualRepeatingGroup.descendantWithPath(pathToElementFromRepeatingElement).attr, attribute)) {
-                pathsToElementsPresent.push({ element: pathToElementFromRepeatingElement, attribute: attribute, path: actualRepeatingGroup.descendantWithPath(pathToElementFromRepeatingElement).attr[attribute] });
+                pathsToElementsPresent.push({ element: pathToElementFromRepeatingElement, attribute: attribute, path: actualRepeatingGroup.descendantWithPath(pathToElementFromRepeatingElement)});
               } else {
                 allExpectedElementsPresent = false;
                 break;
