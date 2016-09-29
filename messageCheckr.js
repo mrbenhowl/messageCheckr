@@ -66,7 +66,7 @@ function checkAllMessageComponents(messageType, actualMsg, expectedMsg, results)
         description: 'Check for repeating group containing all specified elements and their corresponding values.'
       };
 
-      if (tempVerificationResults.allChecksPassed) {
+      if (msgComponent.groupsWithAllElementsPresent.length > 0 && tempVerificationResults.allChecksPassed) {
         result.pass = true;
       } else {
         result.pass = false;

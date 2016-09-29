@@ -271,4 +271,43 @@ describe('soap - repeating group has elements', function () {
       }
     });
   });
+
+  it('should report a mismatch where the an element\'s path does not exist in any repeating group', function () {
+    var expectedMessage = [
+      {
+        repeatingGroupHasElements: {
+          path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.thingContainingRepeatingGroups',
+          repeater: 'RepeatingGroup',
+          elements: [
+            { path: 'fieldOneOfRepeatingGroup1', equals: 10001 },
+            { path: 'fieldTwoOfRepeatingGroup', equals: 10002 }
+          ]
+        }
+      }
+    ];
+
+    var result = messageCheckr({
+      type: 'soap',
+      verbose: true,
+      actualMsg: actualMsgWithThreeDifferentRepeatingGroups,
+      expectedMsg: expectedMessage
+    });
+
+    assert.equal(result.allChecksPassed, false);
+    assert.deepEqual(result.checks[1], {
+      description: 'Check for repeating group containing all specified elements and their corresponding values.',
+      expected: 'No repeating groups match the expected.',
+      pass: false,
+      target: {
+        repeatingGroupHasElements: {
+          path: 'SOAP-ENV:ENVELOPE.SOAP-ENV:Body.thingContainingRepeatingGroups',
+          repeater: 'RepeatingGroup',
+          elements: [
+            { path: 'fieldOneOfRepeatingGroup1', equals: 10001 },
+            { path: 'fieldTwoOfRepeatingGroup', equals: 10002 }
+          ]
+        }
+      }
+    });
+  });
 });
