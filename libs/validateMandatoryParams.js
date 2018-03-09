@@ -1,6 +1,6 @@
 var _ = require('lodash');
 
-var validateParams = function (params) {
+var validateMandatoryParams = function (params) {
 
   if (!_.has(params, 'type')) {
     throw new Error('messageCheckr requires the property "type" as part of the "params" argument');
@@ -27,5 +27,5 @@ var validateParams = function (params) {
   }
 };
 
-module.exports = validateParams;
+module.exports = validateMandatoryParams;
 

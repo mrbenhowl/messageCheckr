@@ -48,6 +48,29 @@ describe('cleanRawSoapMessage()', function () {
     assert.equal(result, expectedMsg);
   });
 
+  it('should convert all references of soap to SOAP-ENV', function () {
+    var result, actualMsg, expectedMsg;
+
+    actualMsg =
+      `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      <soap:Header/>
+      <soap:Body>
+          <element>hello</element>
+      </soap:Body>
+    </soap:Envelope>`;
+
+    expectedMsg =
+      `<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+      <SOAP-ENV:Header/>
+      <SOAP-ENV:Body>
+          <element>hello</element>
+      </SOAP-ENV:Body>
+    </SOAP-ENV:Envelope>`;
+
+    result = cleanRawSoapMessage(actualMsg);
+    assert.equal(result, expectedMsg);
+  });
+
   it('should leave all references of SOAP-ENV unchanged', function () {
     var result, actualMsg;
 

@@ -30,7 +30,7 @@
     "lodash": "3.10.1",
     "validator": "4.1.0",
     "xmldoc": "0.3.2",
-    "moment": "2.10.6"
+    "moment": "2.19.3"
   },
   "devDependencies": {
     "chai": "3.3.0",

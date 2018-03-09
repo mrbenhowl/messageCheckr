@@ -119,7 +119,7 @@ To check a SOAP message make a call to messageCheckr as follows:
 
 In the case of SOAP messages you don't need to specify the `expectedRootElement`, this is because it will automatically check the root element is `SOAP-ENV:Envelope`.
 
-When creating an `expectedMessage` for checking a SOAP message you need to specify the path using uppercase SOAP-ENV regardless of whether the actual message is using soap-env or soapenv - both of these get converted to SOAP-ENV. When creating messageCheckr for a Java project I noticed when the app was deployed to Apache Tomcat the character case of SOAP-ENV was the opposite to what it was when deployed to IBM WebSphere. As the retrieval of a path is case sensitive there was a need to convert all references to SOAP-ENV to one character case.
+When creating an `expectedMessage` for checking a SOAP message you need to specify the path using uppercase SOAP-ENV regardless of whether the actual message is using soap-env, soapenv or soap - all of these get converted to SOAP-ENV. When creating messageCheckr for a Java project I noticed when the app was deployed to Apache Tomcat the character case of SOAP-ENV was the opposite to what it was when deployed to IBM WebSphere. As the retrieval of a path is case sensitive there was a need to convert all references to SOAP-ENV to one character case.
 
 Example SOAP message
 

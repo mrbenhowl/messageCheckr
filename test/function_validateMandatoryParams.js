@@ -1,10 +1,10 @@
-var validateParams = require('../libs/validateParams.js');
+var validateMandatoryParams = require('../libs/validateMandatoryParams.js');
 
-describe('validateParams()', function () {
+describe('validateMandatoryParams()', function () {
 
   it('should throw an error where params does not have property "type"', function () {
     assert.throws(function () {
-        validateParams({
+        validateMandatoryParams({
           actualMsg: 'test',
           expectedMsg: 'test',
           expectedRootElement: 'test'
@@ -15,7 +15,7 @@ describe('validateParams()', function () {
 
   it('should throw an error where params does not have property "actualMsg"', function () {
     assert.throws(function () {
-        validateParams({
+        validateMandatoryParams({
           type: 'jms',
           verbose: true,
           expectedMsg: 'test',
@@ -27,7 +27,7 @@ describe('validateParams()', function () {
 
   it('should throw an error where params does not have property "expectedMsg"', function () {
     assert.throws(function () {
-        validateParams({
+        validateMandatoryParams({
           type: 'jms',
           verbose: true,
           actualMsg: 'test',
@@ -39,7 +39,7 @@ describe('validateParams()', function () {
 
   it('should throw an error where params does not have property "expectedRootElement" and type === "jms"', function () {
     assert.throws(function () {
-        validateParams({
+        validateMandatoryParams({
           type: 'jms',
           verbose: true,
           actualMsg: 'test',
@@ -51,7 +51,7 @@ describe('validateParams()', function () {
 
   it('should not throw an error where params does not have property "expectedRootElement" and type === "soap"', function () {
     assert.doesNotThrow(function () {
-        validateParams({
+        validateMandatoryParams({
           type: 'soap',
           verbose: true,
           actualMsg: 'test',
@@ -63,7 +63,7 @@ describe('validateParams()', function () {
 
   it('should not throw an error where params has all expected properties provided', function () {
     assert.doesNotThrow(function () {
-      validateParams({
+      validateMandatoryParams({
         type: 'jms',
         verbose: true,
         actualMsg: 'test',
@@ -74,7 +74,7 @@ describe('validateParams()', function () {
   });
 
   it('should be called by messageCheckr', function () {
-    // tried to do this with sinon.spy(validateParams) but could not get it to work
+    // tried to do this with sinon.spy(validateMandatoryParams) but could not get it to work
 
     var actualMsg = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
     <testRootElement xmlns="http://www.testing.com/integration/event">
@@ -99,7 +99,7 @@ describe('validateParams()', function () {
     </testRootElement>`;
 
     assert.throws(function () {
-      validateParams({
+      validateMandatoryParams({
         type: 'jms',
         verbose: true,
         actualMsg: actualMsg,
@@ -109,7 +109,7 @@ describe('validateParams()', function () {
     }, Error, 'expectedMsg should be an array');
 
     assert.throws(function () {
-      validateParams({
+      validateMandatoryParams({
         type: 'jms',
         verbose: true,
         actualMsg: actualMsg,
@@ -120,7 +120,7 @@ describe('validateParams()', function () {
 
     var expectedIsAnObject = {key: 'value'};
     assert.throws(function () {
-      validateParams({
+      validateMandatoryParams({
         type: 'jms',
         verbose: true,
         actualMsg: actualMsg,
@@ -138,7 +138,7 @@ describe('validateParams()', function () {
     var emptyArray = [];
 
     assert.throws(function () {
-      validateParams({
+      validateMandatoryParams({
         type: 'jms',
         verbose: true,
         actualMsg: actualMsg,

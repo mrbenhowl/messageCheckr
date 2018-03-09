@@ -1,5 +1,5 @@
 var convertToXmlDocumentType = require('./libs/convertToXmlDocumentType'),
-  validateParams = require('./libs/validateParams.js'),
+  validateMandatoryParams = require('./libs/validateMandatoryParams.js'),
   cleanRawSoapMessage = require('./libs/cleanRawSoapMessage'),
   cleanRawXmlMessage = require('./libs/cleanRawXmlMessage'),
   verificationResults = require('./libs/verificationResults'),
@@ -11,7 +11,7 @@ var convertToXmlDocumentType = require('./libs/convertToXmlDocumentType'),
 var messageCheckr = function messageCheckr(params) {
   var type, actualMsg, expectedMsg, expectedRootElement, cleansedMessage, xmlDocument, results;
 
-  validateParams(params);
+  validateMandatoryParams(params);
   results = verificationResults.initialise();
   store.initialise();
 
