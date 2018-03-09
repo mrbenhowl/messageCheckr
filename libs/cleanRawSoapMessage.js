@@ -8,7 +8,8 @@ var cleanRawSoapMessage = function cleanRawSoapMessage(rawMessage) {
 
   cleansedMessage =
     rawMessage.substr(scanMessageFromPosition)
-      .replace(/(soap-env|soapenv)/gi, 'SOAP-ENV')
+      .replace(/(soap-env:|soapenv:|soap:)/gi, 'SOAP-ENV:')
+      .replace(/(soap-env=|soapenv=|soap=)/gi, 'SOAP-ENV=')
       .replace(/<([a-z0-9\-]+):/gi, function (str) {
         if (str != '<SOAP-ENV:') {
           return '<';
