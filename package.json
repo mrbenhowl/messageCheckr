@@ -1,6 +1,6 @@
 {
   "name": "messagecheckr",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "messageChecker verifies SOAP and Java Message Service (JMS) messages and position delimited messages.",
   "main": "messageCheckr.js",
   "scripts": {
